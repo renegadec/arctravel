@@ -88,7 +88,7 @@ export default function ChatBot() {
         setMessages([
           {
             role: "bot",
-            text: `Hi! I&#39;m <strong>Tariro</strong>, your ArcTravel assistant. What should I call you? 🇿🇼`,
+            text: `Hi! I&#39;m <strong>Tino</strong>, your assistant from Arc Travel &amp; Tours. What should I call you? 🇿🇼`,
           },
         ]);
       }, 300);
@@ -124,7 +124,7 @@ export default function ChatBot() {
     try {
       // Build history for API: skip the greeting + name intro messages
       const historyMessages = messages
-        .filter((m) => m.text !== "Hi! I&#39;m <strong>Tariro</strong>, your ArcTravel assistant. What should I call you? 🇿🇼")
+        .filter((m) => m.text !== "Hi! I&#39;m <strong>Tino</strong>, your assistant from Arc Travel &amp; Tours. What should I call you? 🇿🇼")
         .filter((m) => !m.text.startsWith("Nice to meet you"))
         .slice(1) // skip user's name message
         .map((m) => ({
@@ -227,11 +227,11 @@ export default function ChatBot() {
           {/* Header */}
           <div className="flex items-center gap-3 rounded-t-2xl bg-[#002a62] px-4 py-3 text-white">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ff8912]/20">
-              <Bot className="h-4 w-4 text-[#ff8912]" />
+              <User className="h-4 w-4 text-[#ff8912]" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold">Tariro</p>
-              <p className="text-xs text-white/60">ArcTravel assistant</p>
+              <p className="text-sm font-semibold">Tino</p>
+              <p className="text-xs text-white/60">Arc Travel &amp; Tours</p>
             </div>
             <button onClick={() => setOpen(false)} className="text-white/50 hover:text-white transition-colors" aria-label="Close chat">
               <X className="h-4 w-4" />
