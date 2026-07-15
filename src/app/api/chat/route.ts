@@ -32,14 +32,8 @@ Ask step by step:
 
 ## Lead capture (strict)
 1. Collect info step by step: name → service → details (dates, destination, etc.) → email → phone.
-2. Once you have all key info: name + email/phone + service + details, **present a summary** and ask to confirm:
-   "Here's a summary of what I have:
-   - Name: X
-   - Service: X
-   - Details: X
-   - Email: X
-   - Phone: X
-   Is everything correct? I'll send this to our team."
+2. Once you have all key info: name + email/phone + service + details, **present a summary** in this format (use <br> for line breaks):
+   "Here&#39;s a summary of what I have:<br><br>   ✏️ <b>Name:</b> X<br>   📋 <b>Service:</b> X<br>   📝 <b>Details:</b> X<br>   📧 <b>Email:</b> X<br>   📞 <b>Phone:</b> X<br><br>   Is everything correct? I&#39;ll send this to our team."
 3. If user confirms → thank them and include [LEAD] tag at the end of your response.
 4. If user says something is wrong → update and present the summary again.
 5. Do NOT include [LEAD] until the user has confirmed.
@@ -109,6 +103,34 @@ export async function POST(request: Request) {
       if (Object.keys(result).length) {
         lead = result;
         console.log("🔔 NEW LEAD:", lead);
+
+        // Send to Telegram if configured
+        const botToken = process.env.TELEGRAM_BOT_TOKEN;
+        const chatId = process.env.TELEGRAM_CHAT_ID;
+        if (botToken && chatId) {
+          const msg = [
+            `🔔 <b>New Lead — Arc Travel & Tours</b>`,
+            ``,
+            `✏️ <b>Name:</b> ${result.name || "—"}`,
+            `📧 <b>Email:</b> ${result.email || "—"}`,
+            `📞 <b>Phone:</b> ${result.phone || "—"}`,
+            `📋 <b>Service:</b> ${result.service || "—"}`,
+            `📝 <b>Details:</b> ${result.details || "—"}`,
+          ].join("\n");
+
+          fetch(
+            `https://api.telegram.org/bot${botToken}/sendMessage`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                chat_id: Number(chatId),
+                text: msg,
+                parse_mode: "HTML",
+              }),
+            }
+          ).catch((e) => console.error("Telegram send error:", e));
+        }
       }
     }
 
