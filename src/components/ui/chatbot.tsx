@@ -12,10 +12,10 @@ interface Message {
 const quickActions = [
   { label: "Book a flight", keywords: ["flight", "plane"] },
   { label: "Car rentals", keywords: ["car", "rental", "vehicle"] },
-  { label: "Places to stay", keywords: ["hotel", "lodge", "bnb", "accommodation"] },
+  { label: "Places to stay", keywords: ["hotel", "lodge", "bnb"] },
   { label: "Visa help", keywords: ["visa", "passport"] },
-  { label: "Guided tours", keywords: ["tour", "safari", "excursion"] },
-  { label: "Speak to a human", keywords: ["human", "agent", "person"] },
+  { label: "Guided tours", keywords: ["tour", "safari"] },
+  { label: "Speak to a human", keywords: ["human", "agent"] },
 ];
 
 function LeadForm({ onSubmit }: { onSubmit: (data: { name: string; email: string; phone: string; service: string; message: string }) => void }) {
@@ -32,7 +32,7 @@ function LeadForm({ onSubmit }: { onSubmit: (data: { name: string; email: string
 
   return (
     <form onSubmit={handleSubmit} className="space-y-2.5 p-1">
-      <p className="text-xs font-medium text-gray-500">Fill this in and we&apos;ll get back to you:</p>
+      <p className="text-xs font-medium text-gray-500">We&apos;ll get back to you within 24 hours:</p>
       <div className="relative">
         <User className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
         <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-8 pr-3 text-xs outline-none focus:border-[#ff8912]/40" />
@@ -67,22 +67,49 @@ function LeadForm({ onSubmit }: { onSubmit: (data: { name: string; email: string
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "bot",
-      text: `Hi! I&#39;m <strong>Astra</strong>, your ArcTravel assistant. What should I call you? ✈️`,
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showActions, setShowActions] = useState(false);
   const [showLeadForm, setShowLeadForm] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
+  const [started, setStarted] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, showLeadForm]);
+
+  // Initial greeting when chat opens
+  useEffect(() => {
+    if (open && !started) {
+      setStarted(true);
+      setTimeout(() => {
+        setMessages([
+          {
+            role: "bot",
+            text: `Hi! I&#39;m <strong>Tariro</strong>, your ArcTravel assistant. What should I call you? 🇿🇼`,
+          },
+        ]);
+      }, 300);
+    }
+  }, [open, started]);
+
+  function handleNameSubmit(name: string) {
+    const trimmed = name.trim();
+    if (!trimmed) return;
+    setUserName(trimmed);
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", text: trimmed },
+      {
+        role: "bot",
+        text: `Nice to meet you, <strong>${trimmed}</strong>! What can I help you with today? 🎯`,
+      },
+    ]);
+    setInput("");
+    setShowActions(true);
+  }
 
   async function sendMessage(text: string) {
     if (!text.trim() || loading) return;
@@ -95,11 +122,19 @@ export default function ChatBot() {
     setInput("");
 
     try {
+      // Build history for API: skip the greeting + name intro messages
+      const historyMessages = messages
+        .filter((m) => m.text !== "Hi! I&#39;m <strong>Tariro</strong>, your ArcTravel assistant. What should I call you? 🇿🇼")
+        .filter((m) => !m.text.startsWith("Nice to meet you"))
+        .slice(1) // skip user's name message
+        .map((m) => ({
+          role: m.role === "bot" ? "assistant" as const : "user" as const,
+          content: m.text.replace(/<[^>]*>/g, ""),
+        }));
+
       const apiMessages = [
-        ...messages.slice(1).map((m) => ({
-          role: m.role === "bot" ? "assistant" : "user",
-          content: m.text,
-        })),
+        { role: "user" as const, content: `The customer's name is ${userName}.` },
+        ...historyMessages,
         { role: "user" as const, content: text },
       ];
 
@@ -116,27 +151,16 @@ export default function ChatBot() {
           ...prev,
           { role: "bot", text: `⚠️ ${data.error}` },
         ]);
-        setShowActions(true);
         return;
       }
 
       const botReply = data.reply || "Let me connect you with our team.";
-
-      // If this was the first exchange (name), store it and show actions
-      if (!userName) {
-        setUserName(text);
-        setShowActions(true);
-      } else {
-        setShowActions(true);
-      }
-
       setMessages((prev) => [...prev, { role: "bot", text: botReply }]);
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "bot", text: "⚠️ Sorry, I'm having trouble connecting. Try again or visit our contact page." },
+        { role: "bot", text: "⚠️ Sorry, I'm having trouble. Try again or visit our contact page." },
       ]);
-      setShowActions(true);
     } finally {
       setLoading(false);
     }
@@ -145,7 +169,6 @@ export default function ChatBot() {
   function handleQuickAction(label: string) {
     if (label === "Speak to a human") {
       setShowLeadForm(true);
-      setShowActions(false);
       setMessages((prev) => [
         ...prev,
         { role: "user", text: "I'd like to speak to someone" },
@@ -157,8 +180,7 @@ export default function ChatBot() {
   }
 
   function handleLeadSubmit(data: { name: string; email: string; phone: string; service: string; message: string }) {
-    const details = `Name: ${data.name}, Email: ${data.email}, Phone: ${data.phone}, Service: ${data.service}, Message: ${data.message}`;
-    console.log("🔔 LEAD FORM:", details);
+    console.log("🔔 LEAD FORM:", data);
     setShowLeadForm(false);
     setMessages((prev) => [
       ...prev,
@@ -167,12 +189,23 @@ export default function ChatBot() {
         text: `Thanks ${data.name}! We've received your inquiry and will get back to you within 24 hours. <a href="/contact" class="text-[#ff8912] underline">Visit our contact page</a> for more options. 🎯`,
       },
     ]);
-    setShowActions(true);
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
+      if (!userName) {
+        handleNameSubmit(input);
+      } else {
+        sendMessage(input);
+      }
+    }
+  }
+
+  function handleSendClick() {
+    if (!userName) {
+      handleNameSubmit(input);
+    } else {
       sendMessage(input);
     }
   }
@@ -197,7 +230,7 @@ export default function ChatBot() {
               <Bot className="h-4 w-4 text-[#ff8912]" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold">Astra</p>
+              <p className="text-sm font-semibold">Tariro</p>
               <p className="text-xs text-white/60">ArcTravel assistant</p>
             </div>
             <button onClick={() => setOpen(false)} className="text-white/50 hover:text-white transition-colors" aria-label="Close chat">
@@ -244,11 +277,11 @@ export default function ChatBot() {
 
               <div ref={bottomRef} />
 
-              {/* Quick actions */}
-              {showActions && !loading && !showLeadForm && (
+              {/* Quick actions — shown once after name, then removed after selection */}
+              {showActions && !loading && !showLeadForm && userName && messages.filter(m => m.role === "user").length === 1 && (
                 <div className="pt-2 space-y-1.5">
                   <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">
-                    {userName ? `What can I help you with, ${userName}?` : "Quick options"}
+                    What can I help you with, {userName}?
                   </p>
                   <div className="grid grid-cols-2 gap-1.5">
                     {quickActions.map((action) => (
@@ -280,7 +313,7 @@ export default function ChatBot() {
                 className="flex-1 rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-[#ff8912]/50 focus:bg-white disabled:opacity-50"
               />
               <button
-                onClick={() => sendMessage(input)}
+                onClick={handleSendClick}
                 disabled={!input.trim() || loading}
                 className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#ff8912] text-white transition-colors hover:bg-[#e67a00] disabled:opacity-40 disabled:cursor-not-allowed"
               >
