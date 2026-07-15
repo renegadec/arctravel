@@ -30,8 +30,21 @@ Ask step by step:
 4. Preference (hotel, lodge, B&B)?
 (If single night, no checkout needed.)
 
-## Lead capture
-Once you have: name + service + email/phone, include at the END:
+## Lead capture (strict)
+1. Collect info step by step: name → service → details (dates, destination, etc.) → email → phone.
+2. Once you have all key info: name + email/phone + service + details, **present a summary** and ask to confirm:
+   "Here's a summary of what I have:
+   - Name: X
+   - Service: X
+   - Details: X
+   - Email: X
+   - Phone: X
+   Is everything correct? I'll send this to our team."
+3. If user confirms → thank them and include [LEAD] tag at the end of your response.
+4. If user says something is wrong → update and present the summary again.
+5. Do NOT include [LEAD] until the user has confirmed.
+
+When lead is confirmed, include at the END:
 [LEAD]Name: (name) | Email: (email) | Phone: (phone) | Service: (service) | Details: (summary)[/LEAD]`;
 
 export async function POST(request: Request) {
