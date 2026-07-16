@@ -54,7 +54,7 @@ export default function CarRentalsPage() {
               Flexible options for any itinerary.
             </p>
             <Link href="/contact" className="mt-8 inline-block">
-              <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] cursor-pointer">
+              <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
                 Book a Car
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -135,7 +135,7 @@ export default function CarRentalsPage() {
             Tell us your dates and requirements — we&apos;ll find the right car.
           </p>
           <Link href="/contact">
-            <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] cursor-pointer mt-6">
+            <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">
               Request a Vehicle
             </Button>
           </Link>

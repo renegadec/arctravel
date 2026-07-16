@@ -85,7 +85,7 @@ export default function HeroSection() {
               <Link href="/contact" className="w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="w-full bg-[#ff8912] text-white text-sm sm:text-base shadow-lg shadow-[#ff8912]/30 hover:bg-[#e67a00] cursor-pointer"
+                  className="w-full bg-[#ff8912] text-white text-sm sm:text-base shadow-lg shadow-[#ff8912]/25 hover:bg-[#e67a00] active:scale-[0.97] transition-all cursor-pointer"
                 >
                   Get a Free Quote
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -95,7 +95,7 @@ export default function HeroSection() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="w-full border-2 border-white/50 bg-white/10 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm cursor-pointer"
+                  className="w-full border-2 border-white/25 bg-white/5 text-white hover:bg-white/15 hover:border-white/40 backdrop-blur-sm active:scale-[0.97] transition-all cursor-pointer"
                 >
                   Explore Services
                 </Button>
@@ -119,7 +119,7 @@ export default function HeroSection() {
           </div>
 
           {/* Right: Globe */}
-          <div className="flex items-center justify-center lg:justify-end">
+          <div className="max-lg:hidden flex items-center justify-center lg:justify-end">
             <div className="h-[480px] w-[480px] sm:h-[560px] sm:w-[560px]">
               <GlobeWrapper />
             </div>
