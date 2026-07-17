@@ -110,10 +110,10 @@ export default function HeroSection() {
               <Phone className="h-3.5 w-3.5" />
               <span>Or call us: </span>
               <a
-                href="tel:+263772660362"
+                href="tel:+263786577594"
                 className="font-medium text-white/70 hover:text-white transition-colors"
               >
-                +263 772 660 362
+                078 657 7594
               </a>
             </div>
           </div>
