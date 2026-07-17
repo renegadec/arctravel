@@ -65,7 +65,7 @@ export default function CapeTownPage() {
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">Cape Town</h1>
             <p className="mt-4 text-lg text-white/75">Stunning coastal city with Table Mountain, vibrant waterfront, wine country, and incredible beaches.</p>
-            <Link href="/book" className="mt-8 inline-block">
+            <Link href="/book?destination=Cape+Town&notes=Cape+Town+destination+page" className="mt-8 inline-block">
               <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
                 Plan Your Trip <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -109,7 +109,7 @@ export default function CapeTownPage() {
             <Mountain className="mx-auto h-10 w-10 text-accent" />
             <h2 className="mt-4 text-2xl font-bold">Ready for Cape Town?</h2>
             <p className="mx-auto mt-3 max-w-lg text-muted-foreground">Tell us your dates and interests — we'll arrange flights, accommodation, tours, and transport.</p>
-            <Link href="/book"><Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">Start Planning</Button></Link>
+            <Link href="/book?destination=Cape+Town&notes=Cape+Town+destination+page"><Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">Start Planning</Button></Link>
           </div>
         </div>
       </section>
