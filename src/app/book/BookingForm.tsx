@@ -36,17 +36,17 @@ const formSchema = z.object({
   service: z.string().min(1, "Select at least one service"),
   // Step 2: Trip details
   destination: z.string().min(2, "Enter your destination"),
-  departureDate: z.string().min(1, "Select your departure date"),
+  departureDate: z.string().optional(),
   returnDate: z.string().optional(),
-  travellers: z.string().min(1, "Enter number of travellers"),
+  travellers: z.string().optional(),
   // Step 3: Preferences
-  budget: z.string().min(1, "Select a budget range"),
+  budget: z.string().optional(),
   accommodation: z.string().optional(),
   extras: z.string().optional(),
   // Step 4: Contact
   name: z.string().min(2, "Enter your full name"),
   email: z.string().email("Enter a valid email"),
-  phone: z.string().min(5, "Enter a valid phone number"),
+  phone: z.string().optional(),
   notes: z.string().optional(),
 });
 
