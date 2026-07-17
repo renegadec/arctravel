@@ -179,8 +179,30 @@ export default function ChatBot() {
     sendMessage(label);
   }
 
-  function handleLeadSubmit(data: { name: string; email: string; phone: string; service: string; message: string }) {
-    console.log("🔔 LEAD FORM:", data);
+  async function handleLeadSubmit(data: { name: string; email: string; phone: string; service: string; message: string }) {
+    // Send notification to Telegram
+    try {
+      await fetch("/api/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "Chatbot",
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          service: data.service || "Chat inquiry",
+          destination: data.message?.split(",")[0]?.trim() || "—",
+          departureDate: "—",
+          returnDate: "",
+          travellers: "—",
+          budget: "—",
+          notes: data.message || "—",
+        }),
+      });
+    } catch (err) {
+      console.error("Failed to send chat lead:", err);
+    }
+
     setShowLeadForm(false);
     setMessages((prev) => [
       ...prev,
