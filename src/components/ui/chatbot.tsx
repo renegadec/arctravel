@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Bot, ChevronRight, User, Mail, Phone, Tag } from "lucide-react";
+import { MessageCircle, X, Send, ChevronRight, User, Mail, Phone, Tag, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -18,16 +18,103 @@ const quickActions = [
   { label: "Speak to a human", keywords: ["human", "agent"] },
 ];
 
+function NameInput({
+  onSubmit,
+  onBlur,
+}: {
+  onSubmit: (name: string) => void;
+  onBlur?: () => void;
+}) {
+  const [value, setValue] = useState("");
+  const [error, setError] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  function validate(val: string): boolean {
+    const trimmed = val.trim();
+    if (trimmed.length < 2) {
+      setError("Please enter your name");
+      return false;
+    }
+    if (!/^[a-zA-Z\s'-]+$/.test(trimmed)) {
+      setError("Please use letters only");
+      return false;
+    }
+    setError("");
+    return true;
+  }
+
+  function handleSubmit(e?: React.FormEvent) {
+    e?.preventDefault();
+    if (validate(value)) {
+      onSubmit(value.trim());
+    }
+  }
+
+  function handleChange(val: string) {
+    setValue(val);
+    if (error) validate(val);
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-2">
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1">
+          <User className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
+          <input
+            ref={inputRef}
+            type="text"
+            value={value}
+            onChange={(e) => handleChange(e.target.value)}
+            onBlur={onBlur}
+            placeholder="Enter your name..."
+            className="w-full rounded-lg border border-gray-200 bg-white py-2 pl-8 pr-3 text-xs outline-none transition-colors focus:border-[#ff8912]/50"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={!value.trim()}
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#ff8912] text-white transition-colors hover:bg-[#e67a00] disabled:opacity-40"
+        >
+          <Send className="h-3.5 w-3.5" />
+        </button>
+      </div>
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+    </form>
+  );
+}
+
 function LeadForm({ onSubmit }: { onSubmit: (data: { name: string; email: string; phone: string; service: string; message: string }) => void }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [service, setService] = useState("");
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  function validate(): boolean {
+    const e: Record<string, string> = {};
+    if (!name.trim() || name.trim().length < 2) e.name = "Enter your name";
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = "Enter a valid email";
+    if (!service) e.service = "Select a service";
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    onSubmit({ name, email, phone, service, message });
+    if (validate()) {
+      onSubmit({ name: name.trim(), email: email.trim(), phone, service, message });
+    }
+  }
+
+  function inputClass(field: string) {
+    return errors[field]
+      ? "border-red-300 focus:border-red-400"
+      : "border-gray-200 focus:border-[#ff8912]/40";
   }
 
   return (
@@ -35,19 +122,21 @@ function LeadForm({ onSubmit }: { onSubmit: (data: { name: string; email: string
       <p className="text-xs font-medium text-gray-500">We&apos;ll get back to you within 24 hours:</p>
       <div className="relative">
         <User className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
-        <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-8 pr-3 text-xs outline-none focus:border-[#ff8912]/40" />
+        <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} className={`w-full rounded-lg border bg-gray-50 py-2 pl-8 pr-3 text-xs outline-none ${inputClass("name")}`} />
       </div>
+      {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
       <div className="relative">
         <Mail className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-8 pr-3 text-xs outline-none focus:border-[#ff8912]/40" />
+        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={`w-full rounded-lg border bg-gray-50 py-2 pl-8 pr-3 text-xs outline-none ${inputClass("email")}`} />
       </div>
+      {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
       <div className="relative">
         <Phone className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
         <input type="tel" placeholder="Phone number" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-8 pr-3 text-xs outline-none focus:border-[#ff8912]/40" />
       </div>
       <div className="relative">
         <Tag className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
-        <select value={service} onChange={(e) => setService(e.target.value)} required className="w-full appearance-none rounded-lg border border-gray-200 bg-gray-50 py-2 pl-8 pr-3 text-xs outline-none focus:border-[#ff8912]/40">
+        <select value={service} onChange={(e) => setService(e.target.value)} className={`w-full appearance-none rounded-lg border bg-gray-50 py-2 pl-8 pr-3 text-xs outline-none ${inputClass("service")}`}>
           <option value="">What do you need?</option>
           <option>Flight booking</option>
           <option>Accommodation</option>
@@ -57,6 +146,7 @@ function LeadForm({ onSubmit }: { onSubmit: (data: { name: string; email: string
           <option>Other</option>
         </select>
       </div>
+      {errors.service && <p className="text-xs text-red-500">{errors.service}</p>}
       <textarea placeholder="Any details? (optional)" value={message} onChange={(e) => setMessage(e.target.value)} rows={2} className="w-full rounded-lg border border-gray-200 bg-gray-50 p-2.5 text-xs outline-none focus:border-[#ff8912]/40 resize-none" />
       <button type="submit" className="w-full rounded-lg bg-[#ff8912] py-2 text-xs font-medium text-white hover:bg-[#e67a00] transition-colors">
         Send Inquiry
@@ -72,15 +162,26 @@ export default function ChatBot() {
   const [loading, setLoading] = useState(false);
   const [showActions, setShowActions] = useState(false);
   const [showLeadForm, setShowLeadForm] = useState(false);
+  const [showNameInput, setShowNameInput] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
   const [started, setStarted] = useState(false);
+  const [conversationDone, setConversationDone] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  // Auto-scroll
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, showLeadForm]);
+  }, [messages, showLeadForm, showNameInput]);
 
-  // Initial greeting when chat opens
+  // Auto-focus input after sending
+  useEffect(() => {
+    if (!loading && !showLeadForm && !showNameInput && open) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [loading, showLeadForm, showNameInput, messages, open]);
+
+  // Initial greeting
   useEffect(() => {
     if (open && !started) {
       setStarted(true);
@@ -88,26 +189,25 @@ export default function ChatBot() {
         setMessages([
           {
             role: "bot",
-            text: `Hi! I&#39;m <strong>Tino</strong>, your assistant from Arc Travel &amp; Tours. What should I call you? 🇿🇼`,
+            text: "Hi! I&#39;m <strong>Tino</strong>, your assistant from Arc Travel &amp; Tours. What should I call you? 🇿🇼",
           },
         ]);
+        setShowNameInput(true);
       }, 300);
     }
   }, [open, started]);
 
   function handleNameSubmit(name: string) {
-    const trimmed = name.trim();
-    if (!trimmed) return;
-    setUserName(trimmed);
+    setUserName(name);
+    setShowNameInput(false);
     setMessages((prev) => [
       ...prev,
-      { role: "user", text: trimmed },
+      { role: "user", text: name },
       {
         role: "bot",
-        text: `Nice to meet you, <strong>${trimmed}</strong>! What can I help you with today? 🎯`,
+        text: `Nice to meet you, <strong>${name}</strong>! What can I help you with today? 🎯`,
       },
     ]);
-    setInput("");
     setShowActions(true);
   }
 
@@ -115,6 +215,7 @@ export default function ChatBot() {
     if (!text.trim() || loading) return;
     setShowActions(false);
     setShowLeadForm(false);
+    setConversationDone(false);
     setLoading(true);
 
     const userMsg: Message = { role: "user", text };
@@ -122,20 +223,19 @@ export default function ChatBot() {
     setInput("");
 
     try {
-      // Build history for API: skip the greeting + name intro messages
       const historyMessages = messages
         .filter((m) => m.text !== "Hi! I&#39;m <strong>Tino</strong>, your assistant from Arc Travel &amp; Tours. What should I call you? 🇿🇼")
         .filter((m) => !m.text.startsWith("Nice to meet you"))
-        .slice(1) // skip user's name message
+        .slice(1)
         .map((m) => ({
-          role: m.role === "bot" ? "assistant" as const : "user" as const,
+          role: m.role === "bot" ? ("assistant" as const) : ("user" as const),
           content: m.text.replace(/<[^>]*>/g, ""),
         }));
 
-      const apiMessages = [
-        { role: "user" as const, content: `The customer's name is ${userName}.` },
+      const apiMessages: { role: "user" | "assistant"; content: string }[] = [
+        { role: "user", content: `The customer's name is ${userName}.` },
         ...historyMessages,
-        { role: "user" as const, content: text },
+        { role: "user", content: text },
       ];
 
       const res = await fetch("/api/chat", {
@@ -147,10 +247,7 @@ export default function ChatBot() {
       const data = await res.json();
 
       if (data.error) {
-        setMessages((prev) => [
-          ...prev,
-          { role: "bot", text: `⚠️ ${data.error}` },
-        ]);
+        setMessages((prev) => [...prev, { role: "bot", text: `⚠️ ${data.error}` }]);
         return;
       }
 
@@ -180,7 +277,6 @@ export default function ChatBot() {
   }
 
   async function handleLeadSubmit(data: { name: string; email: string; phone: string; service: string; message: string }) {
-    // Send notification to Telegram
     try {
       await fetch("/api/notify", {
         method: "POST",
@@ -204,11 +300,27 @@ export default function ChatBot() {
     }
 
     setShowLeadForm(false);
+    setConversationDone(true);
     setMessages((prev) => [
       ...prev,
       {
         role: "bot",
-        text: `Thanks ${data.name}! We've received your inquiry and will get back to you within 24 hours. <a href="/contact" class="text-[#ff8912] underline">Visit our contact page</a> for more options. 🎯`,
+        text: `Thanks ${data.name}! We&#39;ve received your inquiry and will get back to you within 24 hours. 🎯`,
+      },
+    ]);
+  }
+
+  function startOver() {
+    setUserName(null);
+    setShowActions(false);
+    setShowLeadForm(false);
+    setShowNameInput(true);
+    setConversationDone(false);
+    setInput("");
+    setMessages([
+      {
+        role: "bot",
+        text: "Hi! I&#39;m <strong>Tino</strong>, your assistant from Arc Travel &amp; Tours. What should I call you? 🇿🇼",
       },
     ]);
   }
@@ -216,18 +328,14 @@ export default function ChatBot() {
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      if (!userName) {
-        handleNameSubmit(input);
-      } else {
+      if (input.trim() && !loading) {
         sendMessage(input);
       }
     }
   }
 
   function handleSendClick() {
-    if (!userName) {
-      handleNameSubmit(input);
-    } else {
+    if (input.trim() && !loading) {
       sendMessage(input);
     }
   }
@@ -277,10 +385,33 @@ export default function ChatBot() {
                 </div>
               ))}
 
+              {/* Name input — shown after first greeting */}
+              {showNameInput && (
+                <div className="rounded-2xl rounded-bl-md bg-gray-100 px-4 py-2">
+                  <NameInput onSubmit={handleNameSubmit} />
+                </div>
+              )}
+
               {/* Lead form */}
               {showLeadForm && (
                 <div className="rounded-2xl rounded-bl-md bg-gray-100 px-4 py-2">
                   <LeadForm onSubmit={handleLeadSubmit} />
+                </div>
+              )}
+
+              {/* Conversation done — show restart / options */}
+              {conversationDone && (
+                <div className="pt-2 space-y-1.5">
+                  <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">
+                    Need help with something else?
+                  </p>
+                  <button
+                    onClick={startOver}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#ff8912]/30 bg-[#ff8912]/5 px-4 py-2.5 text-xs font-medium text-[#002a62] transition-colors hover:bg-[#ff8912]/10"
+                  >
+                    <RefreshCw className="h-3.5 w-3.5" />
+                    Start a new request
+                  </button>
                 </div>
               )}
 
@@ -299,8 +430,8 @@ export default function ChatBot() {
 
               <div ref={bottomRef} />
 
-              {/* Quick actions — shown once after name, then removed after selection */}
-              {showActions && !loading && !showLeadForm && userName && messages.filter(m => m.role === "user").length === 1 && (
+              {/* Quick actions — shown after name, hidden after first selection */}
+              {showActions && !loading && !showLeadForm && !showNameInput && !conversationDone && userName && messages.filter((m) => m.role === "user").length === 1 && (
                 <div className="pt-2 space-y-1.5">
                   <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                     What can I help you with, {userName}?
@@ -322,27 +453,30 @@ export default function ChatBot() {
             </div>
           </div>
 
-          {/* Input */}
-          <div className="border-t border-border p-3">
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={userName ? `Ask me anything, ${userName}...` : "Type your name..."}
-                disabled={loading || showLeadForm}
-                className="flex-1 rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-[#ff8912]/50 focus:bg-white disabled:opacity-50"
-              />
-              <button
-                onClick={handleSendClick}
-                disabled={!input.trim() || loading}
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#ff8912] text-white transition-colors hover:bg-[#e67a00] disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <Send className="h-4 w-4" />
-              </button>
+          {/* Input — hidden during name capture, lead form, and conversation done */}
+          {!showNameInput && !showLeadForm && !conversationDone && (
+            <div className="border-t border-border p-3">
+              <div className="flex items-center gap-2">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder={`Ask me anything, ${userName || "Tino"}...`}
+                  disabled={loading}
+                  className="flex-1 rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-[#ff8912]/50 focus:bg-white disabled:opacity-50"
+                />
+                <button
+                  onClick={handleSendClick}
+                  disabled={!input.trim() || loading}
+                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#ff8912] text-white transition-colors hover:bg-[#e67a00] disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </>
