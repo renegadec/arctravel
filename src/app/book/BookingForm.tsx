@@ -19,6 +19,7 @@ import { services } from "@/lib/constants";
 import {
   Plane,
   CheckCircle,
+  Check,
   ArrowRight,
   ArrowLeft,
   Calendar,
@@ -307,14 +308,14 @@ export default function BookingForm() {
               <div
                 className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium transition-colors ${
                   i < step
-                    ? "bg-accent text-white"
+                    ? "bg-green-500 text-white"
                     : i === step
-                      ? "border-2 border-accent bg-accent/10 text-accent"
+                      ? "border-2 border-green-400 bg-green-50 text-green-600"
                       : "border border-border bg-muted text-muted-foreground"
                 }`}
               >
                 {i < step ? (
-                  <CheckCircle className="h-5 w-5" />
+                  <Check className="h-5 w-5" />
                 ) : (
                   <s.icon className="h-4 w-4" />
                 )}
@@ -329,7 +330,7 @@ export default function BookingForm() {
               {i < steps.length - 1 && (
                 <div
                   className={`mx-3 hidden h-px w-12 sm:block ${
-                    i < step ? "bg-accent" : "bg-border"
+                    i < step ? "bg-green-400" : "bg-border"
                   }`}
                 />
               )}
@@ -349,42 +350,42 @@ export default function BookingForm() {
                 Select the service that best matches your trip needs
               </p>
             </div>
-            <div className="grid gap-2 sm:grid-cols-3">
+            <div className="grid gap-2.5 sm:grid-cols-3">
               {services.map((service) => (
                 <button
                   type="button"
                   key={service.href}
                   onClick={() => setValue("service", service.title)}
-                  className={`group flex items-center gap-3 rounded-xl border p-3 text-left transition-all ${
+                  className={`flex items-center gap-3 rounded-xl border px-4 py-3.5 text-left transition-all ${
                     watchService === service.title
-                      ? "border-accent bg-accent/5 shadow-sm"
-                      : "border-border bg-card hover:border-accent/30 hover:shadow-sm"
+                      ? "border-green-400 bg-green-50 shadow-sm"
+                      : "border-border bg-card hover:border-green-300 hover:shadow-sm"
                   }`}
                 >
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#002a62]/10 text-[#002a62]">
                     <service.icon className="h-4 w-4" />
                   </div>
                   <span className="flex-1 text-sm font-medium leading-tight">{service.title}</span>
                   {watchService === service.title && (
-                    <CheckCircle className="h-4 w-4 shrink-0 text-accent" />
+                    <Check className="h-4 w-4 shrink-0 text-green-600" />
                   )}
                 </button>
               ))}
               <button
                 type="button"
                 onClick={() => setValue("service", "Multiple / Not Sure")}
-                className={`group flex items-center gap-3 rounded-xl border p-3 text-left transition-all ${
+                className={`flex items-center gap-3 rounded-xl border px-4 py-3.5 text-left transition-all ${
                   watchService === "Multiple / Not Sure"
-                    ? "border-accent bg-accent/5 shadow-sm"
-                    : "border-border bg-card hover:border-accent/30 hover:shadow-sm"
+                    ? "border-green-400 bg-green-50 shadow-sm"
+                    : "border-border bg-card hover:border-green-300 hover:shadow-sm"
                 }`}
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-200 text-gray-500">
                   <Sparkles className="h-4 w-4" />
                 </div>
                 <span className="flex-1 text-sm font-medium leading-tight">Not sure</span>
                 {watchService === "Multiple / Not Sure" && (
-                  <CheckCircle className="h-4 w-4 shrink-0 text-accent" />
+                  <Check className="h-4 w-4 shrink-0 text-green-600" />
                 )}
               </button>
             </div>
@@ -508,18 +509,18 @@ export default function BookingForm() {
                     type="button"
                     key={b}
                     onClick={() => setValue("budget", b)}
-                    className={`flex items-center justify-between rounded-xl border p-4 text-left transition-all ${
+                    className={`flex items-center justify-between rounded-xl border px-4 py-3 text-left transition-all ${
                       watchBudget === b
-                        ? "border-accent bg-accent/5 shadow-sm"
-                        : "border-border bg-card hover:border-accent/30"
+                        ? "border-green-400 bg-green-50 shadow-sm"
+                        : "border-border bg-card hover:border-green-300"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <DollarSign className={`h-5 w-5 ${watchBudget === b ? "text-accent" : "text-muted-foreground"}`} />
+                      <DollarSign className={`h-5 w-5 ${watchBudget === b ? "text-green-600" : "text-muted-foreground"}`} />
                       <span className="text-sm font-medium">{b}</span>
                     </div>
                     {watchBudget === b && (
-                      <CheckCircle className="h-5 w-5 shrink-0 text-accent" />
+                      <Check className="h-5 w-5 shrink-0 text-green-600" />
                     )}
                   </button>
                 ))}

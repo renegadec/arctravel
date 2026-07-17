@@ -49,7 +49,7 @@ export default function BookPage() {
 
       {/* Booking form section */}
       <section className="py-16 sm:py-20">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           {/* Form */}
           <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
             <h2 className="text-xl font-bold">Tell Us About Your Trip</h2>
