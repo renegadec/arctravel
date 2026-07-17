@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Plane, ShieldCheck, Clock, CheckCircle } from "lucide-react";
@@ -58,7 +59,9 @@ export default function BookPage() {
               quote
             </p>
             <div className="mt-8">
-              <BookingForm />
+              <Suspense fallback={<div className="flex items-center justify-center py-10"><div className="h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-[#ff8912]" /></div>}>
+                <BookingForm />
+              </Suspense>
             </div>
           </div>
 

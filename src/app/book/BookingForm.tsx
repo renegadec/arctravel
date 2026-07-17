@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -242,6 +243,40 @@ export default function BookingForm() {
   const watchService = watch("service");
   const watchBudget = watch("budget");
   const watchAccommodation = watch("accommodation");
+  const searchParams = useSearchParams();
+  const prefilled = useRef(false);
+
+  // Pre-fill from query params (package bookings)
+  useEffect(() => {
+    if (prefilled.current) return;
+    const svc = searchParams.get("service");
+    const dest = searchParams.get("destination");
+    const budget = searchParams.get("budget");
+    const travellers = searchParams.get("travellers");
+    const notes = searchParams.get("notes");
+
+    if (svc) {
+      setValue("service", svc);
+    }
+    if (dest) {
+      setValue("destination", dest);
+    }
+    if (budget) {
+      setValue("budget", budget);
+    }
+    if (travellers) {
+      setValue("travellers", travellers);
+    }
+    if (notes) {
+      setValue("notes", notes);
+    }
+
+    // If we have service + destination, skip to preferences
+    if (svc && dest) {
+      prefilled.current = true;
+      setStep(2);
+    }
+  }, [searchParams, setValue]);
 
   async function nextStep() {
     let fields: (keyof FormValues)[] = [];
