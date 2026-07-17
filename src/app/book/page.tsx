@@ -126,7 +126,7 @@ export default function BookPage() {
                 <p className="text-xs text-muted-foreground">
                   Reach us directly on WhatsApp
                 </p>
-                <Link href="https://wa.me/263772660362" target="_blank">
+                <Link href="https://wa.me/263786577594" target="_blank">
                   <Button
                     size="sm"
                     className="mt-3 w-full bg-green-500 text-white hover:bg-green-600 cursor-pointer"

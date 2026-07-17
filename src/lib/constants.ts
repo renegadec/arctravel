@@ -126,7 +126,7 @@ export const navLinks = [
 ];
 
 export const contactInfo = {
-  phone: "+263 772 660 362",
+  phone: "078 657 7594",
   email: "info@arctravel.co.zw",
   address: "Harare, Zimbabwe",
 };
@@ -135,7 +135,7 @@ export const socialLinks = {
   instagram: "#",
   facebook: "#",
   linkedin: "#",
-  whatsapp: "#",
+  whatsapp: "https://wa.me/263786577594",
 };
 
 export const destinations: {
