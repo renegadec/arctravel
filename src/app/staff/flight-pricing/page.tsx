@@ -863,8 +863,8 @@ export default function FlightPricingTool() {
                 )}
               </div>
 
-              {/* Copy button */}
-              <div className="flex items-center gap-2">
+              {/* Actions */}
+              <div className="flex items-center gap-2 flex-wrap">
                 {tripType === "round" && (!selectedOutbound || !selectedReturn) && (
                   <p className="text-xs text-amber-600">
                     Select {!selectedOutbound ? "outbound" : ""}
@@ -892,6 +892,16 @@ export default function FlightPricingTool() {
                 </Button>
               </div>
             </div>
+
+            {/* Combined Booking Options */}
+            {(selectedOutbound || (tripType === "oneway" && selectedOutbound)) && tripType === "round" && selectedReturn && (
+              <CombinedBookingOptions outbound={selectedOutbound} returnFlight={selectedReturn} />
+            )}
+            {tripType === "oneway" && selectedOutbound && (
+              <div className="mt-3">
+                <BookingOptionsInline itinerary={selectedOutbound} />
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -1251,7 +1261,7 @@ function FlightCard({
             )}
 
             {/* Booking Options */}
-            <BookingOptionsSection itinerary={itinerary} />
+            <BookingOptionsInline itinerary={itinerary} />
           </div>
         )}
       </div>
@@ -1261,7 +1271,7 @@ function FlightCard({
 
 // ─── Booking Options Section ────────────────────────────
 
-function BookingOptionsSection({ itinerary }: { itinerary: FlightItinerary }) {
+function BookingOptionsInline({ itinerary }: { itinerary: FlightItinerary }) {
   const [options, setOptions] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -1402,6 +1412,187 @@ function BookingOptionsSection({ itinerary }: { itinerary: FlightItinerary }) {
         </div>
       )}
     </div>
+  );
+}
+
+// ─── Combined Booking Options (round trip) ────────────────
+
+function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightItinerary; returnFlight: FlightItinerary }) {
+  const [options, setOptions] = useState<any[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [show, setShow] = useState(false);
+
+  const fetchCombinedOptions = useCallback(async () => {
+    if (options) {
+      setShow(!show);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    const selectedFlights = {
+      outbound: outbound.flights.map((f) => ({
+        departure_id: f.departure_airport.id,
+        arrival_id: f.arrival_airport.id,
+        flight_number: f.flight_number.replace(/\s/g, ""),
+        date: f.departure_airport.time.split(" ")[0],
+      })),
+      return: returnFlight.flights.map((f) => ({
+        departure_id: f.departure_airport.id,
+        arrival_id: f.arrival_airport.id,
+        flight_number: f.flight_number.replace(/\s/g, ""),
+        date: f.departure_airport.time.split(" ")[0],
+      })),
+    };
+
+    const params = new URLSearchParams({
+      departure_id: outbound.flights[0]?.departure_airport.id || "",
+      arrival_id: outbound.flights[outbound.flights.length - 1]?.arrival_airport.id || "",
+      outbound_date: outbound.flights[0]?.departure_airport.time?.split(" ")[0] || "",
+      return_date: returnFlight.flights[0]?.departure_airport.time?.split(" ")[0] || "",
+      type: "1",
+      currency: "USD",
+      hl: "en",
+      adults: "1",
+      selected_flights_json: JSON.stringify(selectedFlights),
+    });
+
+    try {
+      const res = await fetch(`/api/staff/flight-booking-options?${params.toString()}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Failed to load booking options");
+        setShow(true);
+        return;
+      }
+
+      setOptions(data.booking_options || []);
+      setShow(true);
+    } catch {
+      setError("Network error");
+      setShow(true);
+    } finally {
+      setLoading(false);
+    }
+  }, [outbound, returnFlight, options, show]);
+
+  return (
+    <div className="mt-3 border-t border-border pt-3">
+      <button
+        onClick={fetchCombinedOptions}
+        disabled={loading}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed border-primary/30 bg-primary/5 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10 disabled:opacity-50"
+      >
+        {loading ? (
+          <><RefreshCw className="h-4 w-4 animate-spin" /> Loading round-trip booking options...</>
+        ) : show ? (
+          <><ChevronUp className="h-4 w-4" /> Hide combined booking options</>
+        ) : (
+          <><ExternalLink className="h-4 w-4" /> Show combined booking options (outbound + return)</>
+        )}
+      </button>
+
+      {show && (
+        <div className="mt-2">
+          {error && (
+            <p className="text-xs text-red-600">{error}</p>
+          )}
+
+          {options && options.length === 0 && !error && (
+            <p className="text-xs text-muted-foreground">No combined booking options found.</p>
+          )}
+
+          {options && options.length > 0 && (
+            <div className="grid gap-1.5">
+              {options.map((opt, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-between rounded-lg border border-border bg-gray-50 px-3 py-2"
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    {opt.airline_logos?.[0] && (
+                      <img
+                        src={opt.airline_logos[0]}
+                        alt={opt.book_with}
+                        className="h-5 w-5 object-contain"
+                      />
+                    )}
+                    <div className="min-w-0">
+                      <p className="text-xs font-medium text-foreground truncate">
+                        {opt.book_with}
+                      </p>
+                      <p className="text-[10px] text-muted-foreground truncate">
+                        {opt.option_title}
+                        {opt.extensions?.length > 0 && ` · ${opt.extensions[0]}`}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-sm font-bold text-foreground">
+                      US${(opt.price || 0).toFixed(2)}
+                    </span>
+                    {opt.booking_url && (
+                      <BookingButton url={opt.booking_url} postData={opt.post_data} />
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Baggage info */}
+          {options?.some((o) => o.baggage_prices?.length > 0) && (
+            <div className="mt-1.5 rounded bg-blue-50 px-2 py-1">
+              <p className="text-[10px] text-blue-700 font-medium">
+                Baggage: {options.find((o) => o.baggage_prices?.length > 0).baggage_prices.join(" · ")}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Booking Button (form POST for Google clk/f) ────────
+
+function BookingButton({ url, postData }: { url: string; postData: string | null }) {
+  const [resolving, setResolving] = useState(false);
+
+  const handleClick = async () => {
+    if (!postData || !url.includes("clk/f")) {
+      window.open(url, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    setResolving(true);
+    try {
+      const res = await fetch("/api/staff/resolve-booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, postData }),
+      });
+      const data = await res.json();
+      window.open(data.url, "_blank", "noopener,noreferrer");
+    } catch {
+      window.open(url, "_blank", "noopener,noreferrer");
+    } finally {
+      setResolving(false);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      disabled={resolving}
+      className="inline-flex cursor-pointer items-center gap-1 rounded bg-primary px-2 py-1 text-[10px] font-medium text-primary-foreground transition-colors hover:bg-primary/80 disabled:opacity-50"
+    >
+      {resolving ? "Opening..." : "Book"}
+      {!resolving && <ExternalLink className="h-2.5 w-2.5" />}
+    </button>
   );
 }
 

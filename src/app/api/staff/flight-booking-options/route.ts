@@ -14,6 +14,8 @@ export async function GET(request: NextRequest) {
   const departure_id = searchParams.get("departure_id");
   const arrival_id = searchParams.get("arrival_id");
   const outbound_date = searchParams.get("outbound_date");
+  const return_date = searchParams.get("return_date");
+  const type = searchParams.get("type") || "2";
   const adults = searchParams.get("adults") || "1";
   const selectedFlightsJson = searchParams.get("selected_flights_json");
 
@@ -24,23 +26,28 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Use the same google_flights engine with selected_flights_json to get booking options
-  const serpParams = new URLSearchParams({
+  // Build SerpAPI request — type=1 (round trip) when return flight is included
+  const serpParams: Record<string, string> = {
     engine: "google_flights",
     api_key: apiKey,
     departure_id: departure_id.toUpperCase(),
     arrival_id: arrival_id.toUpperCase(),
     outbound_date,
-    type: "2",
+    type,
     currency: "USD",
     hl: "en",
     adults,
     selected_flights_json: selectedFlightsJson,
-  });
+  };
+
+  if (return_date && type === "1") {
+    serpParams.return_date = return_date;
+  }
 
   try {
+    const queryString = new URLSearchParams(serpParams).toString();
     const response = await fetch(
-      `https://serpapi.com/search?${serpParams.toString()}`,
+      `https://serpapi.com/search?${queryString}`,
       { next: { revalidate: 600 } }
     );
 
@@ -78,6 +85,7 @@ function extractBookingOptions(data: any) {
       extensions: item.extensions || [],
       baggage_prices: item.baggage_prices || [],
       booking_url: item.booking_request?.url || null,
+      post_data: item.booking_request?.post_data || null,
       airline: item.airline || false,
       airline_logos: item.airline_logos || [],
     };
