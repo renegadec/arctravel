@@ -3,13 +3,25 @@ import type { NextRequest } from "next/server";
 
 const STAFF_PASSWORD = process.env.STAFF_PASSWORD || "arctravel2026";
 const STAFF_COOKIE = "staff_session";
-const STAFF_PATH = "/staff";
+const FLIGHTS_HOST = "flights.arctravel.co.zw";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const host = request.headers.get("host") || "";
 
-  // Only protect /staff/* routes (except the login page itself)
-  if (!pathname.startsWith(STAFF_PATH)) {
+  // ─── Subdomain routing ──────────────────────────────────
+  // If visiting flights.arctravel.co.zw, rewrite to staff tool
+  if (host === FLIGHTS_HOST) {
+    // If already on a staff path, let it through (auth check below handles it)
+    if (!pathname.startsWith("/staff")) {
+      const url = new URL("/staff/flight-pricing", request.url);
+      url.search = request.nextUrl.search;
+      return NextResponse.rewrite(url);
+    }
+  }
+
+  // ─── Auth protection for /staff/* ────────────────────────
+  if (!pathname.startsWith("/staff")) {
     return NextResponse.next();
   }
 
@@ -37,5 +49,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/staff/:path*",
+  matcher: ["/staff/:path*", "/"],
 };
