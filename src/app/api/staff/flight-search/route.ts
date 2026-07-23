@@ -128,35 +128,57 @@ interface FlightItinerary {
     difference_percent: number;
   };
   departure_token: string;
+  return_flights?: {
+    flights: FlightSegment[];
+    layovers: Layover[];
+    total_duration: number;
+  };
 }
 
 function extractFlights(data: any): { best: FlightItinerary[]; other: FlightItinerary[] } {
   const normalise = (items: any[]): FlightItinerary[] => {
     if (!items || !Array.isArray(items)) return [];
-    return items.map((item) => ({
-      flights: (item.flights || []).map((f: any) => ({
-        departure_airport: f.departure_airport,
-        arrival_airport: f.arrival_airport,
-        duration: f.duration,
-        airline: f.airline,
-        airline_logo: f.airline_logo,
-        flight_number: f.flight_number,
-        travel_class: f.travel_class,
-        extensions: f.extensions,
-        airplane: f.airplane,
-        legroom: f.legroom,
-        often_delayed_by_over_30_min: f.often_delayed_by_over_30_min,
-        overnight: f.overnight,
-        ticket_also_sold_by: f.ticket_also_sold_by,
-      })),
-      layovers: item.layovers || [],
-      total_duration: item.total_duration,
-      price: item.price,
-      type: item.type,
-      airline_logo: item.airline_logo,
-      carbon_emissions: item.carbon_emissions,
-      departure_token: item.departure_token,
-    }));
+    return items.map((item) => {
+      const normaliseSegments = (segs: any[]) =>
+        (segs || []).map((f: any) => ({
+          departure_airport: f.departure_airport,
+          arrival_airport: f.arrival_airport,
+          duration: f.duration,
+          airline: f.airline,
+          airline_logo: f.airline_logo,
+          flight_number: f.flight_number,
+          travel_class: f.travel_class,
+          extensions: f.extensions,
+          airplane: f.airplane,
+          legroom: f.legroom,
+          often_delayed_by_over_30_min: f.often_delayed_by_over_30_min,
+          overnight: f.overnight,
+          ticket_also_sold_by: f.ticket_also_sold_by,
+        }));
+
+      const outboundFlights = normaliseSegments(item.flights);
+      const hasReturn = item.return_flights?.flights?.length > 0;
+
+      return {
+        flights: outboundFlights,
+        layovers: item.layovers || [],
+        total_duration: item.total_duration,
+        price: item.price,
+        type: item.type,
+        airline_logo: item.airline_logo,
+        carbon_emissions: item.carbon_emissions,
+        departure_token: item.departure_token,
+        ...(hasReturn
+          ? {
+              return_flights: {
+                flights: normaliseSegments(item.return_flights.flights),
+                layovers: item.return_flights.layovers || [],
+                total_duration: item.return_flights.total_duration,
+              },
+            }
+          : {}),
+      };
+    });
   };
 
   return {
