@@ -9,7 +9,6 @@ import {
   Star,
   Phone,
 } from "lucide-react";
-import GlobeWrapper from "./GlobeWrapper";
 
 export default function HeroSection() {
   return (
@@ -41,8 +40,35 @@ export default function HeroSection() {
       <div className="pointer-events-none absolute bottom-[10%] left-[8%] hidden h-48 w-48 rounded-full bg-white/5 blur-3xl lg:block" />
 
       <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-20 sm:px-6 sm:pb-28 sm:pt-28 lg:px-8">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* Left: Text + Search */}
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          {/* Left: Airplane Image */}
+          <div className="flex items-center justify-center max-lg:hidden lg:justify-start">
+            <div className="relative w-full max-w-[580px]">
+              <img
+                src="https://images.unsplash.com/photo-1436491865332-7a61a1096e6a?w=900&q=80"
+                alt="Commercial airplane flying above clouds"
+                className="h-auto w-full rounded-2xl object-cover shadow-2xl"
+                style={{ aspectRatio: "4/3" }}
+              />
+              {/* Decorative flight path line */}
+              <svg
+                className="pointer-events-none absolute -bottom-4 -right-4 -z-10 h-24 w-24 text-[#ff8912]/20 lg:-bottom-6 lg:-right-6 lg:h-32 lg:w-32"
+                viewBox="0 0 100 100"
+                fill="none"
+              >
+                <path
+                  d="M5 95 Q30 70 50 45 Q70 20 95 5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeDasharray="6 4"
+                  fill="none"
+                />
+                <circle cx="95" cy="5" r="4" fill="currentColor" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Right: Text + Search */}
           <div className="mx-auto max-w-xl text-center lg:mx-0 lg:text-left">
             {/* Badge */}
             <div className="mx-auto mb-6 inline-flex w-fit animate-slide-up items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm text-white/85 lg:mx-0">
@@ -163,13 +189,16 @@ export default function HeroSection() {
               </a>
             </div>
           </div>
+        </div>
 
-          {/* Right: Globe */}
-          <div className="max-lg:hidden flex items-center justify-center lg:justify-end">
-            <div className="h-[480px] w-[480px] sm:h-[560px] sm:w-[560px]">
-              <GlobeWrapper />
-            </div>
-          </div>
+        {/* Mobile: airplane image below content */}
+        <div className="mt-10 lg:hidden">
+          <img
+            src="https://images.unsplash.com/photo-1436491865332-7a61a1096e6a?w=600&q=80"
+            alt="Commercial airplane flying above clouds"
+            className="h-auto w-full rounded-xl object-cover shadow-lg"
+            style={{ aspectRatio: "16/9" }}
+          />
         </div>
       </div>
     </section>
