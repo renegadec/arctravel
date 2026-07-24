@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SITE_URL } from "@/lib/constants";
 import {
   Select,
   SelectContent,
@@ -410,7 +411,7 @@ export default function FlightPricingTool() {
               Staff Only
             </span>
             <a
-              href="/"
+              href={SITE_URL}
               className="inline-flex h-7 items-center justify-center gap-1 rounded-lg border border-white/20 bg-white/10 px-2.5 text-[0.8rem] font-medium whitespace-nowrap text-white/90 transition-all hover:bg-white/20"
             >
               Back to Site

@@ -116,15 +116,29 @@ export const services: Service[] = [
   },
 ];
 
-export const navLinks = [
+export interface NavLink {
+  label: string;
+  href: string;
+  children?: { label: string; href: string; description?: string }[];
+}
+
+export const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
-  { label: "Visas", href: "/services/visa-assistance" },
+  {
+    label: "Services",
+    href: "/services",
+    children: [
+      { label: "All Services", href: "/services" },
+      { label: "Visa Assistance", href: "/services/visa-assistance", description: "Search visa requirements for any destination" },
+    ],
+  },
   { label: "Destinations", href: "/destinations" },
   { label: "Packages", href: "/packages" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
+
+export const SITE_URL = "https://arctravel.co.zw";
 
 export const contactInfo = {
   phone: "078 657 7594",
