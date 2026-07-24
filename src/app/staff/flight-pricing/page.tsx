@@ -252,7 +252,7 @@ export default function FlightPricingTool() {
 
     // Fetch all legs in parallel
     const results = await Promise.all(
-      searches.map(async (search) => {
+      searches.map(async (search, i) => {
         const params = new URLSearchParams({
           departure_id: search.from,
           arrival_id: search.to,
@@ -267,10 +267,10 @@ export default function FlightPricingTool() {
           const res = await fetch(`/api/staff/flight-search?${params.toString()}`);
           const data = await res.json();
           if (!res.ok) {
-            return { ...initialLegs[0], loading: false, error: data.error || "Search failed" };
+            return { ...initialLegs[i], loading: false, error: data.error || "Search failed" };
           }
           return {
-            ...initialLegs[0],
+            ...initialLegs[i],
             loading: false,
             best: data.best_flights || [],
             other: data.other_flights || [],
@@ -278,7 +278,7 @@ export default function FlightPricingTool() {
             booking_token: data.booking_token || null,
           };
         } catch {
-          return { ...initialLegs[0], loading: false, error: "Network error — check your connection" };
+          return { ...initialLegs[i], loading: false, error: "Network error — check your connection" };
         }
       })
     );
@@ -478,7 +478,7 @@ export default function FlightPricingTool() {
             </div>
 
             {/* Dates row on mobile, inline on desktop */}
-            <div className="flex items-end gap-2 w-full lg:flex-1">
+            <div className="flex items-end gap-2 w-full md:flex-1">
               <div className="flex-1">
                 <label className="mb-1 block text-xs font-medium text-muted-foreground">
                   <Calendar className="mr-0.5 inline h-3 w-3" />
@@ -510,8 +510,8 @@ export default function FlightPricingTool() {
             </div>
 
             {/* Passengers + Search row */}
-            <div className="flex items-end gap-2 w-full lg:w-auto">
-              <div className="w-28 lg:w-24">
+            <div className="flex items-end gap-2 w-full md:w-auto">
+              <div className="w-24 md:w-20 lg:w-24">
                 <label className="mb-1 block text-xs font-medium text-muted-foreground">
                   <Users className="mr-0.5 inline h-3 w-3" />
                   Adults

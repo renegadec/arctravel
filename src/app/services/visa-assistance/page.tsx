@@ -9,12 +9,14 @@ import {
   ArrowRight,
   CheckCircle2,
   Sparkles,
+  BadgeCheck,
 } from "lucide-react";
+import VisaPageClient from "./VisaPageClient";
 
 export const metadata: Metadata = {
-  title: "Visa Assistance — ArcTravel",
+  title: "Visa Directory — ArcTravel",
   description:
-    "End-to-end visa application support including document review, appointment booking, and submission guidance.",
+    "Search our complete visa directory for Zimbabwean passport holders. Find visa requirements, fees, processing times, and required documents for over 90 countries.",
 };
 
 const services = [
@@ -56,32 +58,11 @@ const benefits = [
 export default function VisaAssistancePage() {
   return (
     <>
-      {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-br from-primary to-primary/90 py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15">
-              <FileText className="h-6 w-6 text-accent" />
-            </div>
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              Visa Assistance
-            </h1>
-            <p className="mt-4 text-lg text-white/75">
-              End-to-end visa application support including document review,
-              appointment booking, and submission guidance.
-            </p>
-            <Link href="/contact" className="mt-8 inline-block">
-              <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
-                Start Your Visa Application
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Visa Directory — searchable list */}
+      <VisaPageClient />
 
       {/* Services */}
-      <section className="py-16">
+      <section className="border-t border-border bg-muted/30 py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-center">
             How We Help
@@ -109,7 +90,7 @@ export default function VisaAssistancePage() {
       </section>
 
       {/* Benefits */}
-      <section className="bg-muted/50 py-16">
+      <section className="py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
@@ -131,22 +112,24 @@ export default function VisaAssistancePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16">
+      <section className="border-t border-border bg-muted/30 py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-xl border border-accent/20 bg-accent/[0.02] p-8 text-center sm:p-12">
-            <FileCheck className="mx-auto h-10 w-10 text-accent" />
+            <BadgeCheck className="mx-auto h-10 w-10 text-accent" />
             <h2 className="mt-4 text-2xl font-bold">
-              Need a Visa for Your Trip?
+              Ready to Start Your Visa Application?
             </h2>
             <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
-              Tell us your destination, nationality, and travel dates.
-              We&apos;ll tell you exactly what&apos;s needed.
+              Tell us your destination, passport details, and travel dates. We&apos;ll send a full checklist and quote within 24 hours.
             </p>
-            <Link href="/contact">
-              <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">
-                Get Visa Help
-              </Button>
-            </Link>
+            <div className="mt-6 flex items-center justify-center gap-3 flex-wrap">
+              <Link href="/contact">
+                <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
+                  Start Your Visa Application
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
