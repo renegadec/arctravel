@@ -10,7 +10,6 @@ import {
   ChevronDown,
   ChevronUp,
   BadgeCheck,
-  CheckCircle2,
   Clock,
   DollarSign,
   MapPin,
@@ -98,13 +97,12 @@ export default function VisaPageClient() {
 
           {/* Type pills */}
           <div className="mt-4 flex flex-wrap gap-2">
-            {(["all", "visa-free", "evisa", "eta", "visa-required"] as const).map((t) => {
+            {(["all", "evisa", "eta", "visa-required"] as const).map((t) => {
               const active = typeFilter === t;
               const label = t === "all" ? "All" : visaTypeLabels[t as VisaType].label;
               const count = t === "all" ? typeCounts.all : typeCounts[t];
               const colorMap: Record<string, string> = {
                 all: "bg-primary/10 text-primary border-primary/20 hover:bg-primary/15",
-                "visa-free": "bg-green-50 text-green-700 border-green-200 hover:bg-green-100",
                 evisa: "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100",
                 eta: "bg-cyan-50 text-cyan-700 border-cyan-200 hover:bg-cyan-100",
                 "visa-required": "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100",
@@ -119,7 +117,6 @@ export default function VisaPageClient() {
                       : "border-border/60 text-muted-foreground hover:text-foreground hover:border-border"
                   }`}
                 >
-                  {t === "visa-free" && <CheckCircle2 className="h-3 w-3" />}
                   {t === "evisa" && <FileText className="h-3 w-3" />}
                   {t === "eta" && <Globe className="h-3 w-3" />}
                   {t === "visa-required" && <FileText className="h-3 w-3" />}

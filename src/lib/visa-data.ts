@@ -1,4 +1,4 @@
-export type VisaType = "visa-free" | "evisa" | "eta" | "visa-required";
+export type VisaType = "evisa" | "eta" | "visa-required";
 
 export interface VisaCountry {
   name: string;
@@ -87,7 +87,6 @@ export const visaCountries: VisaCountry[] = [
 export const regions = ["All", "Africa", "Asia", "Europe", "Americas", "Oceania"] as const;
 
 export const visaTypeLabels: Record<VisaType, { label: string; badge: string }> = {
-  "visa-free": { label: "Visa Free", badge: "bg-green-100 text-green-700" },
   evisa: { label: "e-Visa", badge: "bg-blue-100 text-blue-700" },
   eta: { label: "ETA", badge: "bg-cyan-100 text-cyan-700" },
   "visa-required": { label: "Visa Required", badge: "bg-amber-100 text-amber-700" },
