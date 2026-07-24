@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
-  ArrowRight,
   MapPin,
   Calendar,
   Users,
@@ -39,37 +38,21 @@ export default function HeroSection() {
       <div className="pointer-events-none absolute right-[10%] top-[15%] hidden h-72 w-72 rounded-full bg-[#ff8912]/10 blur-3xl lg:block" />
       <div className="pointer-events-none absolute bottom-[10%] left-[8%] hidden h-48 w-48 rounded-full bg-white/5 blur-3xl lg:block" />
 
-      <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-20 sm:px-6 sm:pb-28 sm:pt-28 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-8 sm:px-6 sm:pb-28 sm:pt-16 lg:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          {/* Left: Airplane Image */}
-          <div className="flex items-center justify-center max-lg:hidden lg:justify-start">
-            <div className="relative w-full max-w-[580px]">
+          {/* Left: Airplane image */}
+          <div className="relative order-2 flex items-center justify-center lg:order-1 lg:justify-start">
+            <div className="relative h-[360px] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-[#003d82]/30 to-[#1a3a5c]/50 sm:h-[480px] lg:h-[520px]">
               <img
-                src="https://images.unsplash.com/photo-1436491865332-7a61a1096e6a?w=900&q=80"
-                alt="Commercial airplane flying above clouds"
-                className="h-auto w-full rounded-2xl object-cover shadow-2xl"
-                style={{ aspectRatio: "4/3" }}
+                src="/hero-airplane.jpg"
+                alt="Airplane flying above clouds"
+                className="h-full w-full object-cover"
               />
-              {/* Decorative flight path line */}
-              <svg
-                className="pointer-events-none absolute -bottom-4 -right-4 -z-10 h-24 w-24 text-[#ff8912]/20 lg:-bottom-6 lg:-right-6 lg:h-32 lg:w-32"
-                viewBox="0 0 100 100"
-                fill="none"
-              >
-                <path
-                  d="M5 95 Q30 70 50 45 Q70 20 95 5"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeDasharray="6 4"
-                  fill="none"
-                />
-                <circle cx="95" cy="5" r="4" fill="currentColor" />
-              </svg>
             </div>
           </div>
 
           {/* Right: Text + Search */}
-          <div className="mx-auto max-w-xl text-center lg:mx-0 lg:text-left">
+          <div className="order-1 mx-auto max-w-xl text-center lg:order-2 lg:mx-0 lg:text-left">
             {/* Badge */}
             <div className="mx-auto mb-6 inline-flex w-fit animate-slide-up items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm text-white/85 lg:mx-0">
               <span className="h-2 w-2 rounded-full bg-[#ff8912] animate-pulse-glow" />
@@ -91,18 +74,17 @@ export default function HeroSection() {
               className="mt-4 animate-slide-up text-base leading-relaxed text-white/70 sm:text-lg"
               style={{ animationDelay: "0.15s" }}
             >
-              Flights, hotels, visas, tours, car hire, B&amp;Bs — tell us where
+              Flights, hotels, visas, tours, car hire — tell us where
               you&apos;re going and we&apos;ll take care of the rest.
             </p>
 
-            {/* Search Panel — GearBox-inspired */}
+            {/* Search Panel */}
             <div
               className="mt-8 animate-slide-up"
               style={{ animationDelay: "0.2s" }}
             >
               <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md sm:p-5">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-                  {/* Destination */}
                   <div className="flex-1">
                     <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-white/60">
                       Destination
@@ -117,7 +99,6 @@ export default function HeroSection() {
                     </div>
                   </div>
 
-                  {/* Date */}
                   <div className="flex-1">
                     <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-white/60">
                       Travel Dates
@@ -132,7 +113,6 @@ export default function HeroSection() {
                     </div>
                   </div>
 
-                  {/* Travelers */}
                   <div className="w-full sm:w-32">
                     <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-white/60">
                       Travelers
@@ -147,7 +127,6 @@ export default function HeroSection() {
                     </div>
                   </div>
 
-                  {/* Search CTA */}
                   <Link href="/book?source=hero" className="w-full sm:w-auto">
                     <Button className="h-11 w-full rounded-xl bg-[#ff8912] px-6 text-sm font-semibold text-white shadow-lg shadow-[#ff8912]/30 hover:bg-[#e67a00] active:scale-[0.97] transition-all cursor-pointer">
                       <Search className="mr-2 h-4 w-4" />
@@ -189,16 +168,6 @@ export default function HeroSection() {
               </a>
             </div>
           </div>
-        </div>
-
-        {/* Mobile: airplane image below content */}
-        <div className="mt-10 lg:hidden">
-          <img
-            src="https://images.unsplash.com/photo-1436491865332-7a61a1096e6a?w=600&q=80"
-            alt="Commercial airplane flying above clouds"
-            className="h-auto w-full rounded-xl object-cover shadow-lg"
-            style={{ aspectRatio: "16/9" }}
-          />
         </div>
       </div>
     </section>
