@@ -1,13 +1,42 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
-  MapPin,
-  Calendar,
-  Users,
-  Search,
   Star,
   Phone,
+  MapPin,
+  Compass,
+  TreePine,
+  Building,
+  Palmtree,
+  ArrowRight,
 } from "lucide-react";
+
+const destinationPrompts = [
+  {
+    name: "Victoria Falls",
+    href: "/destinations/victoria-falls",
+    icon: Compass,
+    desc: "One of the 7 Natural Wonders",
+  },
+  {
+    name: "Hwange",
+    href: "/destinations/hwange-national-park",
+    icon: TreePine,
+    desc: "Zimbabwe's largest game reserve",
+  },
+  {
+    name: "Cape Town",
+    href: "/destinations/cape-town",
+    icon: Building,
+    desc: "Table Mountain & vibrant waterfront",
+  },
+  {
+    name: "Dubai",
+    href: "/destinations/dubai",
+    icon: Palmtree,
+    desc: "Desert safaris & world-class shopping",
+  },
+];
 
 export default function HeroSection() {
   return (
@@ -51,8 +80,8 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Right: Text + Search */}
-          <div className="order-1 mx-auto max-w-xl text-center lg:order-2 lg:mx-0 lg:text-left">
+          {/* Right: Text + Destination Prompts */}
+          <div className="order-1 mx-auto w-full max-w-xl text-center lg:order-2 lg:mx-0 lg:text-left">
             {/* Badge */}
             <div className="mx-auto mb-6 inline-flex w-fit animate-slide-up items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm text-white/85 lg:mx-0">
               <span className="h-2 w-2 rounded-full bg-[#ff8912] animate-pulse-glow" />
@@ -78,69 +107,63 @@ export default function HeroSection() {
               you&apos;re going and we&apos;ll take care of the rest.
             </p>
 
-            {/* Search Panel */}
+            {/* Destination Prompts */}
             <div
               className="mt-8 animate-slide-up"
               style={{ animationDelay: "0.2s" }}
             >
-              <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md sm:p-5">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-                  <div className="flex-1">
-                    <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-white/60">
-                      Destination
-                    </label>
-                    <div className="relative">
-                      <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
-                      <input
-                        type="text"
-                        placeholder="Where are you going?"
-                        className="h-11 w-full rounded-xl border border-white/20 bg-white/10 pl-10 pr-3 text-sm text-white placeholder:text-white/40 backdrop-blur-sm outline-none transition-all focus:border-[#ff8912]/60 focus:bg-white/[0.15] focus:ring-1 focus:ring-[#ff8912]/30"
-                      />
+              <p className="mb-3 text-left text-xs font-medium uppercase tracking-wider text-white/50">
+                Where to next?
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                {destinationPrompts.map((dest) => (
+                  <Link
+                    key={dest.name}
+                    href={dest.href}
+                    className="group flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 p-3.5 backdrop-blur-sm transition-all hover:border-[#ff8912]/50 hover:bg-white/[0.18] hover:shadow-lg hover:shadow-[#ff8912]/5 active:scale-[0.97]"
+                  >
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#ff8912]/15 text-[#ff8912] transition-colors group-hover:bg-[#ff8912]/25">
+                      <dest.icon className="h-4 w-4" />
                     </div>
-                  </div>
-
-                  <div className="flex-1">
-                    <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-white/60">
-                      Travel Dates
-                    </label>
-                    <div className="relative">
-                      <Calendar className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
-                      <input
-                        type="text"
-                        placeholder="Select dates"
-                        className="h-11 w-full rounded-xl border border-white/20 bg-white/10 pl-10 pr-3 text-sm text-white placeholder:text-white/40 backdrop-blur-sm outline-none transition-all focus:border-[#ff8912]/60 focus:bg-white/[0.15] focus:ring-1 focus:ring-[#ff8912]/30"
-                      />
+                    <div className="flex-1 text-left">
+                      <p className="text-sm font-semibold text-white transition-colors group-hover:text-[#ff8912]">
+                        {dest.name}
+                      </p>
+                      <p className="text-[11px] leading-tight text-white/50">
+                        {dest.desc}
+                      </p>
                     </div>
-                  </div>
-
-                  <div className="w-full sm:w-32">
-                    <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-white/60">
-                      Travelers
-                    </label>
-                    <div className="relative">
-                      <Users className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
-                      <input
-                        type="text"
-                        placeholder="2 Adults"
-                        className="h-11 w-full rounded-xl border border-white/20 bg-white/10 pl-10 pr-3 text-sm text-white placeholder:text-white/40 backdrop-blur-sm outline-none transition-all focus:border-[#ff8912]/60 focus:bg-white/[0.15] focus:ring-1 focus:ring-[#ff8912]/30"
-                      />
-                    </div>
-                  </div>
-
-                  <Link href="/book?source=hero" className="w-full sm:w-auto">
-                    <Button className="h-11 w-full rounded-xl bg-[#ff8912] px-6 text-sm font-semibold text-white shadow-lg shadow-[#ff8912]/30 hover:bg-[#e67a00] active:scale-[0.97] transition-all cursor-pointer">
-                      <Search className="mr-2 h-4 w-4" />
-                      Search
-                    </Button>
+                    <ArrowRight className="h-3.5 w-3.5 shrink-0 text-white/30 transition-all group-hover:translate-x-0.5 group-hover:text-[#ff8912]" />
                   </Link>
-                </div>
+                ))}
               </div>
+            </div>
+
+            {/* CTA row */}
+            <div
+              className="mt-5 flex animate-slide-up flex-col items-center gap-3 sm:flex-row sm:gap-4 lg:justify-start"
+              style={{ animationDelay: "0.25s" }}
+            >
+              <Link href="/book" className="w-full sm:w-auto">
+                <Button className="h-11 w-full rounded-xl bg-[#ff8912] px-6 text-sm font-semibold text-white shadow-lg shadow-[#ff8912]/30 hover:bg-[#e67a00] active:scale-[0.97] transition-all cursor-pointer sm:w-auto">
+                  Plan Your Trip
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="/destinations">
+                <Button
+                  variant="outline"
+                  className="h-11 w-full rounded-xl border-white/20 bg-white/5 px-6 text-sm font-medium text-white hover:bg-white/10 active:scale-[0.97] transition-all cursor-pointer sm:w-auto"
+                >
+                  Explore Destinations
+                </Button>
+              </Link>
             </div>
 
             {/* Social proof */}
             <div
-              className="mt-5 flex animate-slide-up items-center justify-center gap-2 text-sm text-white/60 lg:justify-start"
-              style={{ animationDelay: "0.25s" }}
+              className="mt-4 flex animate-slide-up items-center justify-center gap-2 text-sm text-white/60 lg:justify-start"
+              style={{ animationDelay: "0.3s" }}
             >
               <div className="flex -space-x-1">
                 {[...Array(5)].map((_, i) => (
@@ -155,8 +178,8 @@ export default function HeroSection() {
 
             {/* Quick contact */}
             <div
-              className="mt-3 flex animate-slide-up items-center justify-center gap-1.5 text-sm text-white/50 lg:justify-start"
-              style={{ animationDelay: "0.3s" }}
+              className="mt-2 flex animate-slide-up items-center justify-center gap-1.5 text-sm text-white/50 lg:justify-start"
+              style={{ animationDelay: "0.35s" }}
             >
               <Phone className="h-3.5 w-3.5" />
               <span>Or call us: </span>
