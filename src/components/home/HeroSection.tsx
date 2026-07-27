@@ -42,9 +42,9 @@ export default function HeroSection() {
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           {/* Left: Airplane image */}
           <div className="relative order-2 flex items-center justify-center lg:order-1 lg:justify-start">
-            <div className="relative h-[360px] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-[#003d82]/30 to-[#1a3a5c]/50 sm:h-[480px] lg:h-[520px]">
+            <div className="relative h-[360px] w-full overflow-hidden rounded-2xl sm:h-[480px] lg:h-[600px]">
               <img
-                src="/hero-airplane.jpg"
+                src="/hero_image.png"
                 alt="Airplane flying above clouds"
                 className="h-full w-full object-cover"
               />
