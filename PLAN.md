@@ -240,6 +240,13 @@ Each gets:
 ## Future Considerations (Post-MVP)
 
 - Real-time flight API integration (Amadeus, etc.)
+- **SerpAPI integration** — beyond flight search, useful for:
+  - **Google Hotels API** — hotel search, pricing comparison, property details, reviews
+  - **Google Travel Explore API** — destination discovery / "where to go" tool
+  - **Google Maps Local** — things to do, nearby attractions, local businesses per destination
+  - **Google Maps Reviews API** — scrape destination/venue reviews for guides
+  - **Knowledge Graph** — auto-generated destination info for guides
+  - *(Note: provides search/display data, not booking capability — paired with separate hotel GDS or affiliate for transactions)*
 - Online payment gateway (card + EcoCash)
 - Multi-language support
 - Admin dashboard with booking management
