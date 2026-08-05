@@ -96,15 +96,19 @@ export default function HeroSection() {
               style={{ animationDelay: "0.2s" }}
             >
               <Link href="/book" className="w-full sm:w-auto">
-                <Button className="h-12 w-full cursor-pointer rounded-xl bg-[#ff8912] px-7 text-sm font-semibold text-white shadow-lg shadow-[#ff8912]/30 transition-all hover:bg-[#e67a00] active:scale-[0.97] sm:w-auto">
+                <Button
+                  size="xl"
+                  className="w-full cursor-pointer rounded-xl bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30 transition-all hover:bg-[#e67a00] active:scale-[0.97] sm:w-auto"
+                >
                   Plan Your Trip
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
               <Link href="/destinations" className="w-full sm:w-auto">
                 <Button
+                  size="xl"
                   variant="outline"
-                  className="h-12 w-full cursor-pointer rounded-xl border-[#002a62]/20 bg-white px-7 text-sm font-semibold text-[#002a62] transition-all hover:bg-[#002a62]/5 active:scale-[0.97] sm:w-auto"
+                  className="w-full cursor-pointer rounded-xl border-[#002a62]/20 bg-white px-7 text-[#002a62] transition-all hover:bg-[#002a62]/5 active:scale-[0.97] sm:w-auto"
                 >
                   Explore Destinations
                 </Button>
