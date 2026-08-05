@@ -40,7 +40,7 @@ export default function CarRentalsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-br from-primary to-primary/90 py-16 sm:py-20">
+      <section className="border-b border-border bg-gradient-to-br from-[#001b42] via-[#002a62] to-[#0a2440] py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15">
@@ -54,7 +54,7 @@ export default function CarRentalsPage() {
               Flexible options for any itinerary.
             </p>
             <Link href="/contact" className="mt-8 inline-block">
-              <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
+              <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
                 Book a Car
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -109,7 +109,7 @@ export default function CarRentalsPage() {
       </section>
 
       {/* Features */}
-      <section className="bg-muted/50 py-16">
+      <section className="bg-[#faf9f6] py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl">
             <h2 className="text-2xl font-bold text-center">What&apos;s Included</h2>
@@ -135,7 +135,7 @@ export default function CarRentalsPage() {
             Tell us your dates and requirements — we&apos;ll find the right car.
           </p>
           <Link href="/contact">
-            <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">
+            <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">
               Request a Vehicle
             </Button>
           </Link>

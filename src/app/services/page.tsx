@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { services } from "@/lib/constants";
-import { Card, CardHeader, CardDescription } from "@/components/ui/card";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Sparkles, Send } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Our Services — ArcTravel",
@@ -13,6 +13,8 @@ export const metadata: Metadata = {
 const categories = [
   {
     label: "Travel & Transport",
+    description:
+      "Getting you there — and around — with flights, transfers, and transport for every kind of trip.",
     keys: [
       "flight-booking",
       "accommodation",
@@ -24,6 +26,8 @@ const categories = [
   },
   {
     label: "Experiences & Support",
+    description:
+      "The moments that make a trip — tours, packages, events, and cruises, planned to the detail.",
     keys: [
       "guided-tours",
       "day-trips",
@@ -34,6 +38,8 @@ const categories = [
   },
   {
     label: "Logistics & Planning",
+    description:
+      "The paperwork and protection that keep your trip on track — visas and insurance done right.",
     keys: ["travel-insurance", "visa-assistance"],
   },
 ];
@@ -42,7 +48,7 @@ export default function ServicesPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#002a62] via-[#002a62]/95 to-[#1a3a5c] py-20 sm:py-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#001b42] via-[#002a62] to-[#0a2440] py-20 sm:py-24">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.04]"
           style={{
@@ -51,6 +57,7 @@ export default function ServicesPage() {
             backgroundSize: "40px 40px",
           }}
         />
+        <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#ff8912]/10 blur-3xl" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm text-white/85">
@@ -68,55 +75,94 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Services */}
-      <section className="py-16 sm:py-20">
+      {/* Services by category */}
+      <section className="py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => (
-              <Link
-                key={service.href}
-                href={service.href}
-                className="group block"
-              >
-                <Card className="h-full transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg">
-                  <CardHeader>
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
-                      <service.icon className="h-5 w-5" />
-                    </div>
-                    <h2 className="font-semibold leading-tight transition-colors group-hover:text-accent">
-                      {service.title}
+          <div className="space-y-20">
+            {categories.map((category, ci) => (
+              <div key={category.label}>
+                {/* Category header */}
+                <div
+                  className={`flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end ${
+                    ci > 0 ? "border-t border-slate-100 pt-16" : ""
+                  }`}
+                >
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-widest text-[#ff8912]">
+                      {String(ci + 1).padStart(2, "0")}
+                    </p>
+                    <h2 className="mt-1.5 text-2xl font-bold tracking-tight text-[#002a62] sm:text-3xl">
+                      {category.label}
                     </h2>
-                    <CardDescription className="mt-1.5 text-sm leading-relaxed">
-                      {service.description}
-                    </CardDescription>
-                    <span className="mt-3 inline-flex items-center text-sm font-medium text-accent opacity-0 transition-all group-hover:opacity-100">
-                      Learn more{" "}
-                      <ArrowRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                    </span>
-                  </CardHeader>
-                </Card>
-              </Link>
+                    <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-500">
+                      {category.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Cards */}
+                <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {category.keys.map((key) => {
+                    const service = services.find(
+                      (s) => s.href === `/services/${key}`
+                    );
+                    if (!service) return null;
+                    return (
+                      <Link
+                        key={service.href}
+                        href={service.href}
+                        className="group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#ff8912]/30 hover:shadow-xl hover:shadow-[#002a62]/10"
+                      >
+                        {/* Hover accent bar */}
+                        <div className="absolute inset-x-0 top-0 h-1 bg-[#ff8912] opacity-0 transition-opacity group-hover:opacity-100" />
+                        <div className="mb-5 flex size-12 items-center justify-center rounded-xl bg-[#002a62] text-white shadow-md shadow-[#002a62]/20 transition-all duration-300 group-hover:bg-[#ff8912] group-hover:shadow-[#ff8912]/30">
+                          <service.icon className="size-5" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-[#002a62] transition-colors group-hover:text-[#ff8912]">
+                          {service.title}
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                          {service.description}
+                        </p>
+                        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#ff8912]">
+                          Learn more
+                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="border-t border-border bg-muted/30 py-16">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold">
-            Not sure what you need?
-          </h2>
-          <p className="mx-auto mt-2 max-w-md text-muted-foreground">
-            Tell us where you&apos;re going and we&apos;ll recommend the best
-            options for your trip.
-          </p>
-          <Link href="/contact">
-            <span className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#ff8912] px-6 py-3 text-sm font-medium text-white shadow-lg shadow-[#ff8912]/25 hover:bg-[#e67a00] active:scale-[0.97] transition-all">
-              Get a Free Quote
-              <ArrowRight className="h-4 w-4" />
-            </span>
-          </Link>
+      <section className="pb-16 sm:pb-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#001b42] via-[#002a62] to-[#0a2440] px-8 py-14 text-center sm:px-16 sm:py-16">
+            <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#ff8912]/15 blur-3xl" />
+            <div className="relative">
+              <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                Not sure what you need?
+              </h2>
+              <p className="mx-auto mt-3 max-w-md text-white/70">
+                Tell us where you&apos;re going and we&apos;ll recommend the
+                best options for your trip.
+              </p>
+              <Link href="/contact" className="mt-8 inline-block">
+                <Button
+                  size="xl"
+                  className="cursor-pointer rounded-xl bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30 transition-all hover:bg-[#e67a00] active:scale-[0.97]"
+                >
+                  <Send className="mr-2 h-4 w-4" />
+                  Get a Free Quote
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </>

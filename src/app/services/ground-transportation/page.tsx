@@ -58,7 +58,7 @@ export default function GroundTransportationPage() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-br from-primary to-primary/90 py-16 sm:py-20">
+      <section className="border-b border-border bg-gradient-to-br from-[#001b42] via-[#002a62] to-[#0a2440] py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15">
@@ -72,7 +72,7 @@ export default function GroundTransportationPage() {
               travel, and group movements.
             </p>
             <Link href="/contact" className="mt-8 inline-block">
-              <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
+              <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
                 Book Transport
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -92,9 +92,9 @@ export default function GroundTransportationPage() {
             {options.map((o) => (
               <div
                 key={o.title}
-                className="group rounded-xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-accent/30 hover:shadow-md"
+                className="group rounded-xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-[#ff8912]/30 hover:shadow-md"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#002a62] text-white transition-colors group-hover:bg-[#ff8912]">
                   <o.icon className="h-5 w-5" />
                 </div>
                 <h3 className="mt-4 font-semibold">{o.title}</h3>
@@ -108,7 +108,7 @@ export default function GroundTransportationPage() {
       </section>
 
       {/* Features */}
-      <section className="bg-muted/50 py-16">
+      <section className="bg-[#faf9f6] py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
@@ -139,7 +139,7 @@ export default function GroundTransportationPage() {
             Tell us your route and we&apos;ll arrange the smoothest ride.
           </p>
           <Link href="/contact">
-            <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">
+            <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">
               Arrange Transport
             </Button>
           </Link>

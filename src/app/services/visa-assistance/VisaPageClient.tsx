@@ -65,7 +65,7 @@ export default function VisaPageClient() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-br from-primary to-primary/90 py-16 sm:py-20">
+      <section className="border-b border-border bg-gradient-to-br from-[#001b42] via-[#002a62] to-[#0a2440] py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15">
