@@ -7,37 +7,39 @@ const stats = [
 
 export default function StatsBand() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#001b42] via-[#002a62] to-[#0a2440] py-16 sm:py-20">
-      {/* Glow accents */}
-      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#ff8912]/10 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-white/5 blur-3xl" />
+    <section className="bg-white py-16 sm:py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid items-center gap-10 lg:grid-cols-5 lg:gap-12">
+          {/* Heading */}
+          <div className="lg:col-span-2">
+            <p className="text-sm font-semibold uppercase tracking-widest text-[#ff8912]">
+              Proven results
+            </p>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-[#002a62] sm:text-3xl">
+              The Numbers Behind the Journeys
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-500">
+              Real trips planned, real travellers helped — every day.
+            </p>
+          </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            The Numbers Behind the
-            <span className="text-[#ff8912]"> Journeys</span>
-          </h2>
-          <p className="mt-3 text-white/60">
-            Real trips planned, real travellers helped — every day.
-          </p>
+          {/* Stats */}
+          <dl className="grid grid-cols-2 gap-y-10 sm:grid-cols-4 lg:col-span-3 lg:divide-x lg:divide-slate-100">
+            {stats.map((stat, i) => (
+              <div
+                key={stat.name}
+                className={`text-center sm:text-left lg:px-6 ${
+                  i === 0 ? "lg:pl-0" : ""
+                }`}
+              >
+                <dd className="text-4xl font-bold tracking-tight text-[#002a62]">
+                  {stat.value}
+                </dd>
+                <dt className="mt-2 text-sm text-slate-500">{stat.name}</dt>
+              </div>
+            ))}
+          </dl>
         </div>
-
-        <dl className="mt-12 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <div
-              key={stat.name}
-              className="flex flex-col bg-white/5 px-6 py-10 backdrop-blur-sm"
-            >
-              <dt className="order-last mt-2 text-sm font-medium text-white/50">
-                {stat.name}
-              </dt>
-              <dd className="order-first text-4xl font-bold tracking-tight text-[#ff8912]">
-                {stat.value}
-              </dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </section>
   );
