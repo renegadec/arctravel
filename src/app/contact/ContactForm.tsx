@@ -220,7 +220,7 @@ export default function ContactForm() {
         >
           <SelectTrigger
             id="service"
-            className={fieldClasses("service")}
+            className={`w-full ${fieldClasses("service")}`}
             aria-invalid={!!errors.service}
           >
             <SelectValue placeholder={PLACEHOLDERS.service} />
