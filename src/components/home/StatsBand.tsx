@@ -7,9 +7,9 @@ const stats = [
 
 export default function StatsBand() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#e8eef7] via-white to-[#fdf0e4] py-16 sm:py-20">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#d3e2f5] via-[#eef4fc] to-[#fbeedf] py-16 sm:py-20">
       {/* Soft decorative glows */}
-      <div className="pointer-events-none absolute -left-24 -top-24 h-64 w-64 rounded-full bg-[#002a62]/5 blur-3xl" />
+      <div className="pointer-events-none absolute -left-24 -top-24 h-64 w-64 rounded-full bg-[#002a62]/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full bg-[#ff8912]/10 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
