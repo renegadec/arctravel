@@ -79,81 +79,43 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Main: split with pattern */}
-      <section className="relative isolate bg-white">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-14 py-16 sm:py-20 lg:grid-cols-2 lg:gap-0 lg:py-24">
-          {/* Left: info + pattern */}
-          <div className="relative px-4 sm:px-6 lg:px-8">
-            {/* Pattern panel */}
-            <div className="absolute inset-y-0 left-0 -z-10 hidden w-1/2 overflow-hidden bg-[#faf9f6] ring-1 ring-slate-900/5 lg:block">
-              <svg
-                aria-hidden="true"
-                className="absolute inset-0 size-full stroke-slate-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
-              >
-                <defs>
-                  <pattern
-                    x="100%"
-                    y={-1}
-                    id="arctravel-contact-pattern"
-                    width={200}
-                    height={200}
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <path d="M130 200V.5M.5 .5H200" fill="none" />
-                  </pattern>
-                </defs>
-                <rect
-                  fill="white"
-                  width="100%"
-                  height="100%"
-                  strokeWidth={0}
-                />
-                <svg
-                  x="100%"
-                  y={-1}
-                  className="overflow-visible fill-[#faf9f6]"
-                >
-                  <path d="M-470.5 0h201v201h-201Z" strokeWidth={0} />
-                </svg>
-                <rect
-                  fill="url(#arctravel-contact-pattern)"
-                  width="100%"
-                  height="100%"
-                  strokeWidth={0}
-                />
-              </svg>
-            </div>
-
-            <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
-              <p className="text-sm font-semibold uppercase tracking-widest text-[#ff8912]">
-                Talk to a human
-              </p>
-              <h2 className="mt-2 text-3xl font-bold tracking-tight text-[#002a62] sm:text-4xl">
-                Let&apos;s Plan Your Trip
-              </h2>
-              <p className="mt-4 text-lg leading-relaxed text-slate-600">
-                Flights, hotels, visas, tours, car hire — one message and
-                we&apos;ll come back with a plan. No call centres, no
-                automated menus.
-              </p>
+      {/* Main */}
+      <section className="bg-[#faf9f6] py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-5 lg:gap-12">
+            {/* Left: contact info */}
+            <div className="space-y-6 lg:col-span-2">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-widest text-[#ff8912]">
+                  Talk to a human
+                </p>
+                <h2 className="mt-2 text-2xl font-bold tracking-tight text-[#002a62] sm:text-3xl">
+                  We&apos;re Ready When You Are
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  Flights, hotels, visas, tours — one message and we&apos;ll
+                  come back with a plan. No call centres, no automated menus.
+                </p>
+              </div>
 
               {/* Contact methods */}
-              <dl className="mt-10 space-y-6">
+              <div className="space-y-3">
                 {contactMethods.map((method) => (
-                  <div key={method.label} className="flex gap-x-4">
-                    <dt className="flex-none">
-                      <span className="flex size-11 items-center justify-center rounded-xl bg-[#002a62] text-white shadow-md shadow-[#002a62]/15">
-                        <method.icon className="size-5" />
-                      </span>
-                    </dt>
-                    <dd className="pt-0.5">
+                  <div
+                    key={method.label}
+                    className="flex items-start gap-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition-all hover:border-[#ff8912]/30 hover:shadow-md"
+                  >
+                    <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#002a62] text-white shadow-md shadow-[#002a62]/15">
+                      <method.icon className="size-5" />
+                    </div>
+                    <div className="min-w-0">
                       <p className="text-sm font-semibold text-[#002a62]">
                         {method.label}
                       </p>
                       {method.href ? (
                         <a
                           href={method.href}
-                          className="mt-0.5 block text-sm text-slate-600 transition-colors hover:text-[#ff8912]"
+                          className="mt-0.5 block truncate text-sm text-slate-600 transition-colors hover:text-[#ff8912]"
                         >
                           {method.value}
                         </a>
@@ -165,21 +127,23 @@ export default function ContactPage() {
                       <p className="mt-0.5 text-xs text-slate-400">
                         {method.desc}
                       </p>
-                    </dd>
+                    </div>
                   </div>
                 ))}
-              </dl>
+              </div>
 
               {/* WhatsApp */}
-              <div className="mt-10 rounded-2xl border border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent p-6">
+              <div className="rounded-2xl border border-green-500/20 bg-white p-5 shadow-sm">
                 <div className="flex items-center gap-3">
-                  <MessageCircle className="size-8 text-green-500" />
+                  <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-green-500 text-white shadow-md shadow-green-500/25">
+                    <MessageCircle className="size-5" />
+                  </div>
                   <div>
-                    <h3 className="font-semibold text-[#002a62]">
+                    <h3 className="text-sm font-semibold text-[#002a62]">
                       Chat on WhatsApp
                     </h3>
-                    <p className="text-sm text-slate-500">
-                      We respond fastest here — save our number and say hi.
+                    <p className="text-xs text-slate-500">
+                      We respond fastest here.
                     </p>
                   </div>
                 </div>
@@ -187,10 +151,11 @@ export default function ContactPage() {
                   href={socialLinks.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="mt-4 block"
                 >
                   <Button
                     size="xl"
-                    className="mt-5 w-full cursor-pointer rounded-xl bg-green-500 text-white shadow-lg shadow-green-500/25 transition-all hover:bg-green-600 active:scale-[0.97] sm:w-auto"
+                    className="w-full cursor-pointer rounded-xl bg-green-500 text-white shadow-lg shadow-green-500/25 transition-all hover:bg-green-600 active:scale-[0.97]"
                   >
                     <MessageCircle className="mr-2 h-4 w-4" />
                     Start WhatsApp Chat
@@ -199,14 +164,14 @@ export default function ContactPage() {
               </div>
 
               {/* Perks */}
-              <div className="mt-8">
+              <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
                 <div className="flex items-center gap-2">
                   <Clock className="size-4 text-[#ff8912]" />
                   <p className="text-sm font-semibold text-[#002a62]">
                     Why contact ArcTravel?
                   </p>
                 </div>
-                <ul className="mt-4 space-y-2.5">
+                <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
                   {perks.map((perk) => (
                     <li
                       key={perk}
@@ -219,12 +184,10 @@ export default function ContactPage() {
                 </ul>
               </div>
             </div>
-          </div>
 
-          {/* Right: form */}
-          <div className="px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
-              <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-xl shadow-[#002a62]/5 sm:p-8">
+            {/* Right: form */}
+            <div className="lg:col-span-3">
+              <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-xl shadow-[#002a62]/5 sm:p-10">
                 <h2 className="text-xl font-bold text-[#002a62]">
                   Send Us a Message
                 </h2>
@@ -232,7 +195,7 @@ export default function ContactPage() {
                   Fill in the form and we&apos;ll get back to you within 24
                   hours.
                 </p>
-                <div className="mt-6">
+                <div className="mt-8">
                   <ContactForm />
                 </div>
               </div>
