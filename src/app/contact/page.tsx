@@ -52,7 +52,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#002a62] via-[#002a62]/95 to-[#1a3a5c] py-20 sm:py-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#001b42] via-[#002a62] to-[#0a2440] py-20 sm:py-24">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.04]"
           style={{
@@ -61,6 +61,7 @@ export default function ContactPage() {
             backgroundSize: "40px 40px",
           }}
         />
+        <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#ff8912]/10 blur-3xl" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm text-white/85">
@@ -79,55 +80,83 @@ export default function ContactPage() {
       </section>
 
       {/* Main */}
-      <section className="py-16 sm:py-20">
+      <section className="bg-[#faf9f6] py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-5">
-            {/* Left: Contact info sidebar */}
-            <div className="space-y-8 lg:col-span-2">
+          <div className="grid gap-10 lg:grid-cols-5 lg:gap-12">
+            {/* Left: contact info */}
+            <div className="space-y-6 lg:col-span-2">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-widest text-[#ff8912]">
+                  Talk to a human
+                </p>
+                <h2 className="mt-2 text-2xl font-bold tracking-tight text-[#002a62] sm:text-3xl">
+                  We&apos;re Ready When You Are
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  Flights, hotels, visas, tours — one message and we&apos;ll
+                  come back with a plan. No call centres, no automated menus.
+                </p>
+              </div>
+
               {/* Contact methods */}
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+              <div className="space-y-3">
                 {contactMethods.map((method) => (
                   <div
                     key={method.label}
-                    className="group rounded-xl border border-border bg-card p-5 transition-all hover:border-accent/30 hover:shadow-sm"
+                    className="flex items-start gap-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition-all hover:border-[#ff8912]/30 hover:shadow-md"
                   >
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
-                      <method.icon className="h-5 w-5" />
+                    <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#002a62] text-white shadow-md shadow-[#002a62]/15">
+                      <method.icon className="size-5" />
                     </div>
-                    <p className="text-sm font-medium">{method.label}</p>
-                    {method.href ? (
-                      <a
-                        href={method.href}
-                        className="mt-0.5 block text-sm text-muted-foreground transition-colors hover:text-accent"
-                      >
-                        {method.value}
-                      </a>
-                    ) : (
-                      <p className="mt-0.5 text-sm text-muted-foreground">
-                        {method.value}
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-[#002a62]">
+                        {method.label}
                       </p>
-                    )}
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {method.desc}
-                    </p>
+                      {method.href ? (
+                        <a
+                          href={method.href}
+                          className="mt-0.5 block truncate text-sm text-slate-600 transition-colors hover:text-[#ff8912]"
+                        >
+                          {method.value}
+                        </a>
+                      ) : (
+                        <p className="mt-0.5 text-sm text-slate-600">
+                          {method.value}
+                        </p>
+                      )}
+                      <p className="mt-0.5 text-xs text-slate-400">
+                        {method.desc}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
 
-              {/* WhatsApp CTA */}
-              <div className="rounded-xl border border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent p-6">
-                <MessageCircle className="h-8 w-8 text-green-500" />
-                <h3 className="mt-3 font-semibold">Chat on WhatsApp</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  We respond faster on WhatsApp. Save our number and send a
-                  message anytime.
-                </p>
+              {/* WhatsApp */}
+              <div className="rounded-2xl border border-green-500/20 bg-white p-5 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-green-500 text-white shadow-md shadow-green-500/25">
+                    <MessageCircle className="size-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-[#002a62]">
+                      Chat on WhatsApp
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      We respond fastest here.
+                    </p>
+                  </div>
+                </div>
                 <a
                   href={socialLinks.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="mt-4 block"
                 >
-                  <Button className="mt-4 bg-green-500 text-white hover:bg-green-600 shadow-lg shadow-green-500/25 active:scale-[0.97] transition-all cursor-pointer">
+                  <Button
+                    size="xl"
+                    className="w-full cursor-pointer rounded-xl bg-green-500 text-white shadow-lg shadow-green-500/25 transition-all hover:bg-green-600 active:scale-[0.97]"
+                  >
                     <MessageCircle className="mr-2 h-4 w-4" />
                     Start WhatsApp Chat
                   </Button>
@@ -135,17 +164,20 @@ export default function ContactPage() {
               </div>
 
               {/* Perks */}
-              <div className="rounded-xl border border-border bg-muted/30 p-5">
+              <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
                 <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-accent" />
-                  <p className="text-sm font-medium">
+                  <Clock className="size-4 text-[#ff8912]" />
+                  <p className="text-sm font-semibold text-[#002a62]">
                     Why contact ArcTravel?
                   </p>
                 </div>
-                <ul className="mt-3 space-y-2">
+                <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
                   {perks.map((perk) => (
-                    <li key={perk} className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <CheckCircle className="h-3.5 w-3.5 shrink-0 text-accent" />
+                    <li
+                      key={perk}
+                      className="flex items-center gap-2 text-sm text-slate-600"
+                    >
+                      <CheckCircle className="size-4 shrink-0 text-[#ff8912]" />
                       {perk}
                     </li>
                   ))}
@@ -153,15 +185,17 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Right: Form */}
+            {/* Right: form */}
             <div className="lg:col-span-3">
-              <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
-                <h2 className="text-xl font-bold">Send Us a Message</h2>
-                <p className="mt-1 text-sm text-muted-foreground">
+              <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-xl shadow-[#002a62]/5 sm:p-10">
+                <h2 className="text-xl font-bold text-[#002a62]">
+                  Send Us a Message
+                </h2>
+                <p className="mt-1 text-sm text-slate-500">
                   Fill in the form and we&apos;ll get back to you within 24
                   hours.
                 </p>
-                <div className="mt-6">
+                <div className="mt-8">
                   <ContactForm />
                 </div>
               </div>

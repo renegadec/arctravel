@@ -62,7 +62,7 @@ export default function VisaAssistancePage() {
       <VisaPageClient />
 
       {/* Services */}
-      <section className="border-t border-border bg-muted/30 py-16">
+      <section className="border-t border-slate-100 bg-[#faf9f6] py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-center">
             How We Help
@@ -74,9 +74,9 @@ export default function VisaAssistancePage() {
             {services.map((s) => (
               <div
                 key={s.title}
-                className="group rounded-xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-accent/30 hover:shadow-md"
+                className="group rounded-xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-[#ff8912]/30 hover:shadow-md"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#002a62] text-white transition-colors group-hover:bg-[#ff8912]">
                   <s.icon className="h-5 w-5" />
                 </div>
                 <h3 className="mt-4 font-semibold">{s.title}</h3>
@@ -112,9 +112,9 @@ export default function VisaAssistancePage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-border bg-muted/30 py-16">
+      <section className="border-t border-slate-100 bg-[#faf9f6] py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-xl border border-accent/20 bg-accent/[0.02] p-8 text-center sm:p-12">
+          <div className="rounded-3xl border border-slate-100 bg-[#faf9f6] p-8 text-center sm:p-12">
             <BadgeCheck className="mx-auto h-10 w-10 text-accent" />
             <h2 className="mt-4 text-2xl font-bold">
               Ready to Start Your Visa Application?
@@ -124,7 +124,7 @@ export default function VisaAssistancePage() {
             </p>
             <div className="mt-6 flex items-center justify-center gap-3 flex-wrap">
               <Link href="/contact">
-                <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
+                <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
                   Start Your Visa Application
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

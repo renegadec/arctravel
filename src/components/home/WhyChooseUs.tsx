@@ -10,12 +10,6 @@ import { Reveal } from "@/components/ui/reveal";
 
 const reasons = [
   {
-    icon: Globe,
-    title: "Local Knowledge",
-    description:
-      "We know Zimbabwe and Southern Africa intimately. Hidden gems, best routes, trusted partners — we've got the ground truth.",
-  },
-  {
     icon: HeadphonesIcon,
     title: "24/7 Support",
     description:
@@ -37,31 +31,43 @@ const reasons = [
     icon: ShieldCheck,
     title: "Trusted Partners",
     description:
-      "We work only with vetted airlines, hotels, and tour operators — so you get quality and reliability every time.",
+      "We work only with vetted airlines, hotels, and tour operators — so you get quality every time.",
+  },
+];
+
+// 🔁 SWAP with real photos when available (3:4 portrait crops recommended).
+const tallCards = [
+  {
+    icon: Globe,
+    title: "Local Knowledge",
+    description:
+      "We know Zimbabwe and Southern Africa intimately. Hidden gems, best routes, trusted partners — we've got the ground truth.",
+    image:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
+    alt: "ArcTravel team planning a journey",
   },
   {
     icon: Map,
     title: "Zimbabwe-Based",
     description:
       "We're local. We understand the terrain, the routes, the seasons, and what works best for travellers in this region.",
+    image:
+      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80",
+    alt: "Road trip through Southern Africa",
   },
-];
-
-const highlights = [
-  { number: "500+", label: "Trips Planned" },
-  { number: "30+", label: "Destinations" },
-  { number: "98%", label: "Happy Clients" },
-  { number: "24/7", label: "Support" },
 ];
 
 export default function WhyChooseUs() {
   return (
-    <section className="relative bg-muted/50 py-20">
+    <section className="bg-white py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Why Choose <span className="text-accent">ArcTravel</span>
+            <p className="text-sm font-semibold uppercase tracking-widest text-[#ff8912]">
+              The ArcTravel difference
+            </p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-[#002a62] sm:text-4xl">
+              Why Choose <span className="text-[#ff8912]">ArcTravel</span>
             </h2>
             <p className="mt-4 text-muted-foreground">
               We&apos;re not a booking platform — we&apos;re your travel
@@ -70,34 +76,51 @@ export default function WhyChooseUs() {
           </div>
         </Reveal>
 
-        {/* Highlights strip */}
-        <Reveal delay={100}>
-          <div className="mt-10 grid grid-cols-2 gap-6 rounded-2xl border border-accent/10 bg-gradient-to-br from-accent/5 to-transparent p-8 sm:grid-cols-4">
-            {highlights.map((h) => (
-              <div key={h.label} className="text-center">
-                <p className="text-2xl font-bold text-accent sm:text-3xl">
-                  {h.number}
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">{h.label}</p>
-              </div>
-            ))}
-          </div>
-        </Reveal>
-
-        {/* Reasons grid */}
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {reasons.map((reason, i) => (
-            <Reveal key={reason.title} delay={i * 80}>
-              <div className="group rounded-xl border border-border/50 bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-md">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10 text-accent transition-all duration-300 group-hover:scale-110 group-hover:bg-accent group-hover:text-accent-foreground">
-                  <reason.icon className="h-5 w-5" />
+        <div className="mt-12 grid gap-4 sm:mt-16 lg:grid-cols-4 lg:grid-rows-2">
+          {/* Tall image cards */}
+          {tallCards.map((card) => (
+            <div
+              key={card.title}
+              className="group relative overflow-hidden rounded-3xl lg:row-span-2"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={card.image}
+                alt={card.alt}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#002a62]/95 via-[#002a62]/40 to-transparent" />
+              <div className="relative flex h-full min-h-[22rem] flex-col justify-end p-8">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30">
+                  <card.icon className="size-5" />
                 </div>
-                <h3 className="mt-4 font-semibold">{reason.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {reason.description}
+                <h3 className="mt-4 text-xl font-bold text-white">
+                  {card.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/80">
+                  {card.description}
                 </p>
               </div>
-            </Reveal>
+            </div>
+          ))}
+
+          {/* Standard reason cards */}
+          {reasons.map((reason) => (
+            <div
+              key={reason.title}
+              className="group rounded-3xl border border-slate-100 bg-[#faf9f6] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-[#ff8912]/30 hover:shadow-lg hover:shadow-[#002a62]/5"
+            >
+              <div className="flex size-11 items-center justify-center rounded-xl bg-[#002a62]/5 text-[#002a62] transition-all duration-300 group-hover:bg-[#ff8912] group-hover:text-white">
+                <reason.icon className="size-5" />
+              </div>
+              <h3 className="mt-4 text-base font-semibold text-[#002a62]">
+                {reason.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                {reason.description}
+              </p>
+            </div>
           ))}
         </div>
       </div>
