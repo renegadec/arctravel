@@ -3,18 +3,51 @@ import type { Metadata } from "next";
 import { destinations } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import {
-  MapPin,
   ArrowRight,
-  Sparkles,
   Globe,
   Mountain,
   Plane,
+  MapPin,
+  Sparkles,
 } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Destinations — ArcTravel",
   description:
     "Explore Zimbabwe, Southern Africa, and beyond — Victoria Falls, Hwange, Cape Town, Zanzibar, Dubai, and more.",
+};
+
+// ============================================================
+// DESTINATION CARD IMAGES
+// 🔁 SWAP THESE with your own destination photos.
+// Best crops: 3:4 portrait. Drop files in /public/images/
+// and use e.g. image: "/images/vic-falls.jpg"
+// ============================================================
+const destImages: Record<string, string> = {
+  "/destinations/victoria-falls":
+    "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80",
+  "/destinations/great-zimbabwe":
+    "https://images.unsplash.com/photo-1509233725247-49e657c54213?auto=format&fit=crop&w=800&q=80",
+  "/destinations/eastern-highlands":
+    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80",
+  "/destinations/hwange-national-park":
+    "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80",
+  "/destinations/cape-town":
+    "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=800&q=80",
+  "/destinations/okavango-delta":
+    "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80",
+  "/destinations/zanzibar":
+    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+  "/destinations/johannesburg-kruger":
+    "https://images.unsplash.com/photo-1536081784351-6a2f2ba35b57?auto=format&fit=crop&w=800&q=80",
+  "/destinations/dubai":
+    "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
+  "/destinations/london":
+    "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80",
+  "/destinations/bali":
+    "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+  "/destinations/nairobi-maasai-mara":
+    "https://images.unsplash.com/photo-1535941339077-2dd1c7963098?auto=format&fit=crop&w=800&q=80",
 };
 
 const regions = [
@@ -64,46 +97,60 @@ export default function DestinationsPage() {
             if (regionDests.length === 0) return null;
 
             return (
-              <div key={region.key} className="mb-14 last:mb-0">
-                <div className="mb-6 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10">
-                    <region.icon className="h-5 w-5 text-accent" />
+              <div key={region.key} className="mb-16 last:mb-0">
+                <div className="mb-8 flex items-end justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent/10">
+                      <region.icon className="h-5 w-5 text-accent" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold tracking-tight">
+                        {region.label}
+                      </h2>
+                      <p className="text-sm text-muted-foreground">
+                        {regionDests.length}{" "}
+                        {regionDests.length === 1 ? "destination" : "destinations"}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="text-xl font-bold">{region.label}</h2>
-                    <p className="text-sm text-muted-foreground">
-                      {regionDests.length}{" "}
-                      {regionDests.length === 1 ? "destination" : "destinations"}
-                    </p>
-                  </div>
+                  <div className="hidden h-px flex-1 bg-gradient-to-r from-border to-transparent sm:block" />
                 </div>
 
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
                   {regionDests.map((dest) => (
                     <Link
                       key={dest.name}
                       href={dest.href}
-                      className="group block"
+                      className="group relative aspect-3/4 overflow-hidden rounded-2xl bg-muted"
                     >
-                      <div className="overflow-hidden rounded-xl border border-border bg-card transition-all hover:-translate-y-1 hover:shadow-lg">
-                        <div className="flex h-36 items-center justify-center bg-gradient-to-br from-primary/20 to-accent/20">
-                          <MapPin className="h-10 w-10 text-accent/40" />
+                      {/* Background image */}
+                      <img
+                        alt={dest.name}
+                        src={destImages[dest.href]}
+                        className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                      />
+                      {/* Gradient overlay */}
+                      <div
+                        aria-hidden="true"
+                        className="absolute inset-0 bg-gradient-to-t from-[#002a62]/90 via-[#002a62]/20 to-transparent transition-opacity duration-300 group-hover:from-[#002a62]/95"
+                      />
+
+                      {/* Content */}
+                      <div className="absolute inset-x-0 bottom-0 p-5">
+                        <div className="mb-2 inline-flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+                          <MapPin className="h-3 w-3" />
+                          {dest.country}
                         </div>
-                        <div className="p-4">
-                          <h3 className="font-semibold group-hover:text-accent transition-colors">
-                            {dest.name}
-                          </h3>
-                          <p className="mt-0.5 text-xs text-muted-foreground">
-                            {dest.country}
-                          </p>
-                          <p className="mt-2 text-xs leading-relaxed text-muted-foreground line-clamp-2">
-                            {dest.description}
-                          </p>
-                          <span className="mt-3 inline-flex items-center text-xs font-medium text-accent opacity-0 transition-all group-hover:opacity-100">
-                            Explore{" "}
-                            <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-                          </span>
-                        </div>
+                        <h3 className="text-lg font-bold text-white">
+                          {dest.name}
+                        </h3>
+                        <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-white/75">
+                          {dest.description}
+                        </p>
+                        <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#ff8912]">
+                          Explore destination
+                          <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                        </span>
                       </div>
                     </Link>
                   ))}
@@ -117,13 +164,22 @@ export default function DestinationsPage() {
       {/* CTA */}
       <section className="border-t border-border bg-muted/30 py-16">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold">Don&apos;t See Your Destination?</h2>
+          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent">
+            <Sparkles className="h-3.5 w-3.5" />
+            Custom itineraries
+          </div>
+          <h2 className="mt-4 text-2xl font-bold">
+            Don&apos;t See Your Destination?
+          </h2>
           <p className="mx-auto mt-2 max-w-md text-muted-foreground">
             We arrange travel to destinations across Africa and beyond. Tell us
             where you want to go.
           </p>
           <Link href="/contact">
-            <Button size="lg" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">
+            <Button
+              size="lg"
+              className="mt-6 bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/25 transition-all hover:bg-[#e67a00] active:scale-[0.97] cursor-pointer"
+            >
               Ask About a Destination
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>

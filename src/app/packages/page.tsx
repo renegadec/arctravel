@@ -7,7 +7,6 @@ import {
   Clock,
   MapPin,
   ArrowRight,
-  CheckCircle2,
   Sparkles,
   Star,
 } from "lucide-react";
@@ -16,6 +15,27 @@ export const metadata: Metadata = {
   title: "Travel Packages — ArcTravel",
   description:
     "Curated travel packages across Zimbabwe, Southern Africa, and beyond. All-inclusive weekends, safaris, and holidays at great prices.",
+};
+
+// ============================================================
+// PACKAGE CARD IMAGES
+// 🔁 SWAP THESE with your own destination photos.
+// Best crops: 4:3 landscape. Drop files in /public/images/
+// and use e.g. image: "/images/vic-falls.jpg"
+// ============================================================
+const packageImages: Record<string, string> = {
+  "/packages/vic-falls-weekend":
+    "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80",
+  "/packages/hwange-safari":
+    "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80",
+  "/packages/eastern-highlands-getaway":
+    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80",
+  "/packages/cape-town-explorer":
+    "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=800&q=80",
+  "/packages/zanzibar-beach":
+    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+  "/packages/dubai-stopover":
+    "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
 };
 
 export default function PackagesPage() {
@@ -69,50 +89,57 @@ export default function PackagesPage() {
               <Star className="h-5 w-5 text-yellow-500" />
               <h2 className="text-2xl font-bold">Popular Packages</h2>
             </div>
-            <div className="grid gap-6 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-3 xl:gap-x-8">
               {popular.map((pkg) => (
-                <Link key={pkg.href} href={pkg.href} className="group block">
-                  <div className="relative overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:shadow-lg">
+                <div key={pkg.href} className="group relative">
+                  {/* Image */}
+                  <div className="relative">
+                    <img
+                      alt={pkg.title}
+                      src={packageImages[pkg.href]}
+                      className="aspect-4/3 w-full rounded-2xl bg-muted object-cover transition-opacity duration-300 group-hover:opacity-90"
+                    />
                     {/* Popular badge */}
-                    <div className="absolute right-3 top-3 rounded-full bg-yellow-500/10 px-3 py-1 text-xs font-medium text-yellow-600 backdrop-blur">
-                      ⭐ Popular
+                    <div className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-yellow-400 px-3 py-1 text-xs font-bold text-[#002a62] shadow-md">
+                      <Star className="h-3 w-3 fill-[#002a62]" />
+                      Popular
                     </div>
-
-                    <div className="flex h-44 items-center justify-center bg-gradient-to-br from-accent/15 to-primary/15">
-                      <Package className="h-14 w-14 text-accent/30" />
-                    </div>
-
-                    <div className="p-6">
-                      <h3 className="text-lg font-bold group-hover:text-accent transition-colors">
-                        {pkg.title}
-                      </h3>
-                      <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2">
-                        {pkg.description}
-                      </p>
-
-                      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
-                        <span className="inline-flex items-center gap-1">
-                          <Clock className="h-3.5 w-3.5" />
-                          {pkg.duration}
-                        </span>
-                        <span className="inline-flex items-center gap-1">
-                          <MapPin className="h-3.5 w-3.5" />
-                          {pkg.location}
-                        </span>
-                      </div>
-
-                      <div className="mt-3 flex items-center justify-between">
-                        <span className="text-lg font-bold text-accent">
-                          {pkg.price}
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-sm font-medium text-accent">
-                          View details
-                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                        </span>
+                    {/* Hover overlay */}
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 flex items-end rounded-2xl p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    >
+                      <div className="w-full rounded-xl bg-[#002a62]/85 px-4 py-2.5 text-center text-sm font-semibold text-white backdrop-blur-sm">
+                        View package details
                       </div>
                     </div>
                   </div>
-                </Link>
+
+                  {/* Details */}
+                  <div className="mt-4 flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <h3 className="text-base font-bold text-foreground">
+                        <Link href={pkg.href}>
+                          <span aria-hidden="true" className="absolute inset-0" />
+                          {pkg.title}
+                        </Link>
+                      </h3>
+                      <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {pkg.duration}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          {pkg.location}
+                        </span>
+                      </div>
+                    </div>
+                    <p className="shrink-0 text-sm font-bold text-accent">
+                      {pkg.price}
+                    </p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
@@ -124,34 +151,52 @@ export default function PackagesPage() {
         <section className="bg-muted/30 py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="mb-8 text-2xl font-bold">More Packages</h2>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-3 xl:gap-x-8">
               {standard.map((pkg) => (
-                <Link key={pkg.href} href={pkg.href} className="group block">
-                  <div className="overflow-hidden rounded-xl border border-border bg-card transition-all hover:-translate-y-1 hover:shadow-md">
-                    <div className="flex h-36 items-center justify-center bg-gradient-to-br from-accent/10 to-primary/10">
-                      <Package className="h-10 w-10 text-accent/25" />
-                    </div>
-                    <div className="p-5">
-                      <h3 className="font-semibold group-hover:text-accent transition-colors">
-                        {pkg.title}
-                      </h3>
-                      <p className="mt-1.5 text-xs text-muted-foreground line-clamp-2">
-                        {pkg.description}
-                      </p>
-                      <div className="mt-3 flex items-center justify-between">
-                        <div className="text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            {pkg.duration}
-                          </span>
-                        </div>
-                        <span className="font-semibold text-accent text-sm">
-                          {pkg.price}
-                        </span>
+                <div key={pkg.href} className="group relative">
+                  {/* Image */}
+                  <div className="relative">
+                    <img
+                      alt={pkg.title}
+                      src={packageImages[pkg.href]}
+                      className="aspect-4/3 w-full rounded-2xl bg-muted object-cover transition-opacity duration-300 group-hover:opacity-90"
+                    />
+                    {/* Hover overlay */}
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 flex items-end rounded-2xl p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    >
+                      <div className="w-full rounded-xl bg-[#002a62]/85 px-4 py-2.5 text-center text-sm font-semibold text-white backdrop-blur-sm">
+                        View package details
                       </div>
                     </div>
                   </div>
-                </Link>
+
+                  {/* Details */}
+                  <div className="mt-4 flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <h3 className="text-base font-bold text-foreground">
+                        <Link href={pkg.href}>
+                          <span aria-hidden="true" className="absolute inset-0" />
+                          {pkg.title}
+                        </Link>
+                      </h3>
+                      <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {pkg.duration}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          {pkg.location}
+                        </span>
+                      </div>
+                    </div>
+                    <p className="shrink-0 text-sm font-bold text-accent">
+                      {pkg.price}
+                    </p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
@@ -162,7 +207,11 @@ export default function PackagesPage() {
       <section className="py-16">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <div className="mx-auto max-w-lg">
-            <h2 className="text-2xl font-bold">
+            <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent">
+              <Package className="h-3.5 w-3.5" />
+              Made to measure
+            </div>
+            <h2 className="mt-4 text-2xl font-bold">
               Don&apos;t See What You&apos;re Looking For?
             </h2>
             <p className="mt-2 text-muted-foreground">
@@ -170,7 +219,10 @@ export default function PackagesPage() {
               Tell us what you want and we&apos;ll create it.
             </p>
             <Link href="/book">
-              <Button size="lg" className="mt-6 bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
+              <Button
+                size="lg"
+                className="mt-6 bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/25 transition-all hover:bg-[#e67a00] active:scale-[0.97] cursor-pointer"
+              >
                 Build a Custom Package
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
