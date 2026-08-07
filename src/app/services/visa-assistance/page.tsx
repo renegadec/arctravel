@@ -124,7 +124,7 @@ export default function VisaAssistancePage() {
             </p>
             <div className="mt-6 flex items-center justify-center gap-3 flex-wrap">
               <Link href="/contact">
-                <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
+                <Button size="xl" variant="accent">
                   Start Your Visa Application
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

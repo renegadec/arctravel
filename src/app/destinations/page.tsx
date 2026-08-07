@@ -178,7 +178,7 @@ export default function DestinationsPage() {
           <Link href="/contact">
             <Button
               size="lg"
-              className="mt-6 bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/25 transition-all hover:bg-[#e67a00] active:scale-[0.97] cursor-pointer"
+              variant="accent" className="mt-6"
             >
               Ask About a Destination
               <ArrowRight className="ml-2 h-4 w-4" />

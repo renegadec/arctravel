@@ -140,7 +140,7 @@ export default function ContactForm() {
             <ArrowLeft className="mr-2 h-4 w-4" />
             Send Another
           </Button>
-          <Button className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
+          <Button variant="accent">
             <Sparkles className="mr-2 h-4 w-4" />
             Explore Services
           </Button>
@@ -269,7 +269,7 @@ export default function ContactForm() {
       <Button
         type="submit"
         size="lg"
-        className="w-full bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer sm:w-auto"
+        variant="accent" className="w-full sm:w-auto"
       >
         <Send className="mr-2 h-4 w-4" />
         Send Inquiry

@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { CalendarDays, Clock, ArrowLeft, ArrowRight, User } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import { SITE_URL } from "@/lib/constants";
 
@@ -127,7 +129,10 @@ export default async function BlogPostPage({ params }: Props) {
           </p>
           <Link
             href="/book"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#ff8912] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#ff8912]/30 transition-all hover:bg-[#e67a00]"
+            className={cn(
+              buttonVariants({ variant: "accent", size: "xl" }),
+              "mt-6"
+            )}
           >
             Start Planning
             <ArrowRight className="h-4 w-4" />

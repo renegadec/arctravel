@@ -98,7 +98,7 @@ export default function HeroSection() {
               <Link href="/book" className="w-full sm:w-auto">
                 <Button
                   size="xl"
-                  className="w-full cursor-pointer rounded-xl bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30 transition-all hover:bg-[#e67a00] active:scale-[0.97] sm:w-auto"
+                  variant="accent" className="w-full sm:w-auto"
                 >
                   Plan Your Trip
                   <ArrowRight className="ml-2 h-4 w-4" />

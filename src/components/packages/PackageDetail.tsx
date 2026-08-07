@@ -65,7 +65,7 @@ export default function PackageDetail({
               <Link href={content.bookUrl}>
                 <Button
                   size="xl"
-                  className="bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30 hover:bg-[#e67a00] active:scale-[0.97]"
+                  variant="accent"
                 >
                   Book This Package
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -74,8 +74,7 @@ export default function PackageDetail({
               <Link href="/packages">
                 <Button
                   size="xl"
-                  variant="outline"
-                  className="border-white/30 bg-white/10 text-white backdrop-blur hover:bg-white/20 hover:text-white"
+                  variant="glass"
                 >
                   View All Packages
                 </Button>
@@ -192,7 +191,7 @@ export default function PackageDetail({
               <Link href={content.bookUrl} className="mt-8 inline-block">
                 <Button
                   size="xl"
-                  className="bg-[#002a62] text-white shadow-lg shadow-[#002a62]/20 hover:bg-[#001b42] active:scale-[0.97]"
+                  variant="default"
                 >
                   Customise This Trip
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -334,7 +333,7 @@ export default function PackageDetail({
                 <Link href={content.bookUrl}>
                   <Button
                     size="xl"
-                    className="bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30 hover:bg-[#e67a00] active:scale-[0.97]"
+                    variant="accent"
                   >
                     Book Now
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -343,8 +342,7 @@ export default function PackageDetail({
                 <Link href="/packages">
                   <Button
                     size="xl"
-                    variant="outline"
-                    className="border-white/30 bg-white/10 text-white backdrop-blur hover:bg-white/20 hover:text-white"
+                    variant="glass"
                   >
                     View All Packages
                   </Button>

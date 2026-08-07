@@ -75,7 +75,7 @@ export default function AccommodationPage() {
               perfect place for your budget and style.
             </p>
             <Link href="/contact" className="mt-8 inline-block">
-              <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
+              <Button size="xl" variant="accent">
                 Find Accommodation
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -145,7 +145,7 @@ export default function AccommodationPage() {
               — affordable, welcoming, and full of local character.
             </p>
             <Link href="/contact">
-              <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">
+              <Button size="xl" variant="accent" className="mt-6">
                 Browse B&amp;Bs
               </Button>
             </Link>

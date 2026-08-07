@@ -155,7 +155,7 @@ export default function ContactPage() {
                 >
                   <Button
                     size="xl"
-                    className="w-full cursor-pointer rounded-xl bg-green-500 text-white shadow-lg shadow-green-500/25 transition-all hover:bg-green-600 active:scale-[0.97]"
+                    variant="accent" className="w-full"
                   >
                     <MessageCircle className="mr-2 h-4 w-4" />
                     Start WhatsApp Chat

@@ -42,7 +42,7 @@ export default function CTASection() {
             <Link href="/contact" className="w-full sm:w-auto">
               <Button
                 size="xl"
-                className="w-full cursor-pointer rounded-xl bg-[#ff8912] shadow-lg shadow-[#ff8912]/40 transition-all hover:bg-[#e67a00] active:scale-[0.97] sm:w-auto"
+                variant="accent" className="w-full sm:w-auto"
               >
                 <Send className="mr-2 h-4 w-4" />
                 Get a Free Quote
@@ -52,8 +52,7 @@ export default function CTASection() {
             <Link href="/about" className="w-full sm:w-auto">
               <Button
                 size="xl"
-                variant="outline"
-                className="w-full cursor-pointer rounded-xl border-2 border-white/30 bg-white/10 text-white backdrop-blur-sm transition-all hover:border-white/50 hover:bg-white/20 active:scale-[0.97] sm:w-auto"
+                variant="glass" className="w-full sm:w-auto"
               >
                 Learn More About Us
               </Button>

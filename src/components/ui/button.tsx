@@ -8,9 +8,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/80",
+        default:
+          "bg-primary text-primary-foreground shadow-lg shadow-[#002a62]/20 hover:bg-primary/90",
         accent:
-          "bg-accent text-accent-foreground hover:bg-accent/80",
+          "bg-accent text-accent-foreground shadow-lg shadow-[#ff8912]/25 hover:bg-[#e67a00]",
+        glass:
+          "border border-white/30 bg-white/10 text-white backdrop-blur hover:bg-white/20 hover:text-white",
+        whatsapp:
+          "bg-[#25D366] text-white shadow-lg shadow-[#25D366]/25 hover:bg-[#1fb959]",
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
         secondary:

@@ -51,7 +51,7 @@ export default function DestinationDetail({ data }: { data: DestinationContent }
               <Link href={data.bookUrl}>
                 <Button
                   size="xl"
-                  className="bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30 hover:bg-[#e67a00] active:scale-[0.97]"
+                  variant="accent"
                 >
                   Plan Your Visit
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -60,8 +60,7 @@ export default function DestinationDetail({ data }: { data: DestinationContent }
               <Link href="/packages">
                 <Button
                   size="xl"
-                  variant="outline"
-                  className="border-white/30 bg-white/10 text-white backdrop-blur hover:bg-white/20 hover:text-white"
+                  variant="glass"
                 >
                   Browse Packages
                 </Button>
@@ -194,7 +193,7 @@ export default function DestinationDetail({ data }: { data: DestinationContent }
               <Link href={data.bookUrl} className="mt-8 inline-block">
                 <Button
                   size="xl"
-                  className="bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/25 hover:bg-[#e67a00] active:scale-[0.97]"
+                  variant="accent"
                 >
                   Get a Custom Itinerary
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -295,7 +294,7 @@ export default function DestinationDetail({ data }: { data: DestinationContent }
               <Link href={data.bookUrl} className="mt-8 inline-block">
                 <Button
                   size="xl"
-                  className="bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30 hover:bg-[#e67a00] active:scale-[0.97]"
+                  variant="accent"
                 >
                   {data.ctaButton}
                   <ArrowRight className="ml-2 h-4 w-4" />

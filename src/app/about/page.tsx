@@ -317,7 +317,7 @@ export default function AboutPage() {
               <Link href="/contact">
                 <Button
                   size="xl"
-                  className="cursor-pointer rounded-xl bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/25 transition-all hover:bg-[#e67a00] active:scale-[0.97]"
+                  variant="accent"
                 >
                   Get a Free Quote
                   <ArrowRight className="ml-2 h-4 w-4" />

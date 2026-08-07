@@ -154,7 +154,7 @@ export default function ServicesPage() {
               <Link href="/contact" className="mt-8 inline-block">
                 <Button
                   size="xl"
-                  className="cursor-pointer rounded-xl bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30 transition-all hover:bg-[#e67a00] active:scale-[0.97]"
+                  variant="accent"
                 >
                   <Send className="mr-2 h-4 w-4" />
                   Get a Free Quote

@@ -71,7 +71,7 @@ export default function GroupToursPage() {
               organisations — we handle everything.
             </p>
             <Link href="/contact" className="mt-8 inline-block">
-              <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
+              <Button size="xl" variant="accent">
                 Plan a Group Tour
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -141,7 +141,7 @@ export default function GroupToursPage() {
               dates. We&apos;ll build a proposal around your group.
             </p>
             <Link href="/contact">
-              <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">
+              <Button size="xl" variant="accent" className="mt-6">
                 Get a Group Quote
               </Button>
             </Link>

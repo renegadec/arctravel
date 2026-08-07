@@ -72,7 +72,7 @@ export default function GroundTransportationPage() {
               travel, and group movements.
             </p>
             <Link href="/contact" className="mt-8 inline-block">
-              <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
+              <Button size="xl" variant="accent">
                 Book Transport
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -139,7 +139,7 @@ export default function GroundTransportationPage() {
             Tell us your route and we&apos;ll arrange the smoothest ride.
           </p>
           <Link href="/contact">
-            <Button size="xl" className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer mt-6">
+            <Button size="xl" variant="accent" className="mt-6">
               Arrange Transport
             </Button>
           </Link>
