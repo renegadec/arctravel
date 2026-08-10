@@ -204,6 +204,15 @@ function googleFlightsUrl(itinerary: FlightItinerary): string {
   return `https://www.google.com/travel/flights?hl=en&q=${q}`;
 }
 
+// ─── Tiered markup ───────────────────────────────────
+// Higher fares carry thinner margin, so the rate steps down as price goes up.
+function getMarkupRate(basePrice: number): number {
+  if (basePrice < 1000) return 20;
+  if (basePrice < 2500) return 15;
+  if (basePrice < 4000) return 10;
+  return 6.5;
+}
+
 // ─── Main Component ──────────────────────────────────────
 
 export default function FlightPricingTool() {
@@ -230,10 +239,6 @@ export default function FlightPricingTool() {
   const [returnLoading, setReturnLoading] = useState(false);
   const [returnError, setReturnError] = useState<string | null>(null);
   const [selectedReturn, setSelectedReturn] = useState<FlightItinerary | null>(null);
-
-  // Premium state
-  const premiumType = "percent" as const;
-  const [premiumValue, setPremiumValue] = useState("20");
 
   // Expanded cards
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
@@ -334,16 +339,12 @@ export default function FlightPricingTool() {
   // ─── Premium calc ────────────────────────────────────
 
   const calcFinalPrice = useCallback(
-    (basePrice: number): { premium: number; total: number } => {
-      const val = parseFloat(premiumValue) || 0;
-      if (premiumType === "percent") {
-        const premium = (basePrice * val) / 100;
-        return { premium, total: basePrice + premium };
-      } else {
-        return { premium: val, total: basePrice + val };
-      }
+    (basePrice: number): { premium: number; total: number; rate: number } => {
+      const rate = getMarkupRate(basePrice);
+      const premium = (basePrice * rate) / 100;
+      return { premium, total: basePrice + premium, rate };
     },
-    [premiumType, premiumValue]
+    []
   );
 
   // Round trip: the return option's price is the full combined fare for that
@@ -692,22 +693,17 @@ export default function FlightPricingTool() {
             <span className="text-xs font-medium text-gray-700 sm:text-sm">Markup</span>
           </div>
 
-          <div className="relative w-20 sm:w-28">
-            <div className="relative">
-              <Input
-                type="number"
-                value={premiumValue}
-                onChange={(e) => setPremiumValue(e.target.value)}
-                className="h-7 rounded-lg border-border/70 pr-5 text-xs sm:h-8 sm:pr-6 sm:text-sm"
-                placeholder="20"
-                min={0}
-                max={100}
-              />
-              <span className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground sm:right-2.5 sm:text-xs">
-                %
-              </span>
-            </div>
-          </div>
+          {/* Tiered markup — rate for the selected fare; hover for the tier legend */}
+          <span
+            className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-200"
+            title="Under $1,000: 20% · $1,000-2,499: 15% · $2,500-3,999: 10% · $4,000+: 6.5%"
+          >
+            {selectedOutbound ? (
+              <span className="font-semibold text-accent">{combinedFinal.rate}%</span>
+            ) : (
+              <span>Markup by fare</span>
+            )}
+          </span>
 
           {/* Selected summary */}
           {selectedOutbound && (
@@ -716,7 +712,7 @@ export default function FlightPricingTool() {
               <span className="mx-1.5 text-border">|</span>
               Base: <span className="font-medium text-foreground">US${selectedBasePrice.toFixed(0)}</span>
               <span className="mx-1.5 text-border">|</span>
-              <span className="text-accent">+{premiumValue}%</span>
+              <span className="text-accent">+{combinedFinal.rate}%</span>
             </span>
           )}
         </div>
@@ -900,8 +896,6 @@ export default function FlightPricingTool() {
                             expanded={expandedCards.has(key)}
                             onToggle={() => toggleExpand(key)}
                             calcFinalPrice={calcFinalPrice}
-                            premiumType={premiumType}
-                            premiumValue={premiumValue}
                             selected={selected}
                             onSelect={() => selectOutbound(itinerary)}
                             tripType={tripType}
@@ -932,8 +926,6 @@ export default function FlightPricingTool() {
                             expanded={expandedCards.has(key)}
                             onToggle={() => toggleExpand(key)}
                             calcFinalPrice={calcFinalPrice}
-                            premiumType={premiumType}
-                            premiumValue={premiumValue}
                             selected={selected}
                             onSelect={() => selectOutbound(itinerary)}
                             tripType={tripType}
@@ -1011,8 +1003,6 @@ export default function FlightPricingTool() {
                       expanded={expandedCards.has(key)}
                       onToggle={() => toggleExpand(key)}
                       calcFinalPrice={calcFinalPrice}
-                      premiumType={premiumType}
-                      premiumValue={premiumValue}
                       selected={selected}
                       onSelect={() => setSelectedReturn(itinerary)}
                       tripType="round"
@@ -1053,7 +1043,7 @@ export default function FlightPricingTool() {
                     US${selectedBasePrice.toFixed(2)}
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-accent/10 px-1.5 py-0.5 text-[10px] font-medium text-accent sm:px-2.5 sm:py-0.5 sm:text-xs">
-                    +{premiumValue}%
+                    +{combinedFinal.rate}%
                   </span>
                 </div>
                 {tripType === "round" && (
@@ -1183,8 +1173,6 @@ function FlightCard({
   expanded,
   onToggle,
   calcFinalPrice,
-  premiumType,
-  premiumValue,
   selected,
   onSelect,
   tripType,
@@ -1194,9 +1182,7 @@ function FlightCard({
   itinerary: FlightItinerary;
   expanded: boolean;
   onToggle: () => void;
-  calcFinalPrice: (base: number) => { premium: number; total: number };
-  premiumType: string;
-  premiumValue: string;
+  calcFinalPrice: (base: number) => { premium: number; total: number; rate: number };
   selected: boolean;
   onSelect: () => void;
   tripType?: "round" | "oneway";
@@ -1303,7 +1289,7 @@ function FlightCard({
                 <p className="text-xs text-gray-400 line-through">US${basePrice.toFixed(2)}</p>
                 <p className="text-xl font-bold tracking-tight text-primary sm:text-2xl">US${final.total.toFixed(0)}</p>
                 <p className="text-xs text-gray-500">
-                  <span className="font-medium text-accent">+US${final.premium.toFixed(2)}</span> <span className="hidden sm:inline">{premiumType === "percent" ? `(${premiumValue}%)` : "markup"}</span>
+                  <span className="font-medium text-accent">+US${final.premium.toFixed(2)}</span> <span className="hidden sm:inline">{final.rate}%</span>
                 </p>
               </div>
               <Button
