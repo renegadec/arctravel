@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import type { GlobeInstance } from "globe.gl";
 
 const cities = [
   { lat: -17.825, lng: 31.033, label: "Harare" },
@@ -38,12 +39,12 @@ const OPACITY = 0.3;
 
 export default function Globe() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const globeRef = useRef<any>(null);
+  const globeRef = useRef<GlobeInstance | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    let globeInstance: any = null;
+    let globeInstance: GlobeInstance | null = null;
 
     async function init() {
       const Globe = (await import("globe.gl")).default;

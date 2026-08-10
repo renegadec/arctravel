@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/select";
 import { services } from "@/lib/constants";
 import {
-  Plane,
   CheckCircle,
   Check,
   ArrowRight,
@@ -323,7 +322,7 @@ export default function BookingForm() {
             <Button variant="outline">Back to Home</Button>
           </Link>
           <Link href="/services">
-            <Button className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer">
+            <Button variant="accent">
               <Sparkles className="mr-2 h-4 w-4" />
               Explore Services
             </Button>
@@ -343,9 +342,9 @@ export default function BookingForm() {
               <div
                 className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium transition-colors ${
                   i < step
-                    ? "bg-green-500 text-white"
+                    ? "bg-[#002a62] text-white"
                     : i === step
-                      ? "border-2 border-green-400 bg-green-50 text-green-600"
+                      ? "border-2 border-[#ff8912] bg-[#ff8912]/10 text-[#e67a00]"
                       : "border border-border bg-muted text-muted-foreground"
                 }`}
               >
@@ -365,7 +364,7 @@ export default function BookingForm() {
               {i < steps.length - 1 && (
                 <div
                   className={`mx-3 hidden h-px w-12 sm:block ${
-                    i < step ? "bg-green-400" : "bg-border"
+                    i < step ? "bg-[#ff8912]" : "bg-border"
                   }`}
                 />
               )}
@@ -393,8 +392,8 @@ export default function BookingForm() {
                   onClick={() => setValue("service", service.title)}
                   className={`flex items-center gap-3 rounded-xl border px-4 py-3.5 text-left transition-all ${
                     watchService === service.title
-                      ? "border-green-400 bg-green-50 shadow-sm"
-                      : "border-border bg-card hover:border-green-300 hover:shadow-sm"
+                      ? "border-[#002a62] bg-[#002a62]/5 shadow-sm"
+                      : "border-border bg-card hover:border-[#ff8912]/40 hover:shadow-sm"
                   }`}
                 >
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#002a62]/10 text-[#002a62]">
@@ -402,7 +401,7 @@ export default function BookingForm() {
                   </div>
                   <span className="flex-1 text-sm font-medium leading-tight">{service.title}</span>
                   {watchService === service.title && (
-                    <Check className="h-4 w-4 shrink-0 text-green-600" />
+                    <Check className="h-4 w-4 shrink-0 text-[#ff8912]" />
                   )}
                 </button>
               ))}
@@ -411,8 +410,8 @@ export default function BookingForm() {
                 onClick={() => setValue("service", "Multiple / Not Sure")}
                 className={`flex items-center gap-3 rounded-xl border px-4 py-3.5 text-left transition-all ${
                   watchService === "Multiple / Not Sure"
-                    ? "border-green-400 bg-green-50 shadow-sm"
-                    : "border-border bg-card hover:border-green-300 hover:shadow-sm"
+                    ? "border-[#002a62] bg-[#002a62]/5 shadow-sm"
+                    : "border-border bg-card hover:border-[#ff8912]/40 hover:shadow-sm"
                 }`}
               >
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-200 text-gray-500">
@@ -420,7 +419,7 @@ export default function BookingForm() {
                 </div>
                 <span className="flex-1 text-sm font-medium leading-tight">Not sure</span>
                 {watchService === "Multiple / Not Sure" && (
-                  <Check className="h-4 w-4 shrink-0 text-green-600" />
+                  <Check className="h-4 w-4 shrink-0 text-[#ff8912]" />
                 )}
               </button>
             </div>
@@ -546,16 +545,16 @@ export default function BookingForm() {
                     onClick={() => setValue("budget", b)}
                     className={`flex items-center justify-between rounded-xl border px-4 py-3 text-left transition-all ${
                       watchBudget === b
-                        ? "border-green-400 bg-green-50 shadow-sm"
-                        : "border-border bg-card hover:border-green-300"
+                        ? "border-[#002a62] bg-[#002a62]/5 shadow-sm"
+                        : "border-border bg-card hover:border-[#ff8912]/40"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <DollarSign className={`h-5 w-5 ${watchBudget === b ? "text-green-600" : "text-muted-foreground"}`} />
+                      <DollarSign className={`h-5 w-5 ${watchBudget === b ? "text-[#e67a00]" : "text-muted-foreground"}`} />
                       <span className="text-sm font-medium">{b}</span>
                     </div>
                     {watchBudget === b && (
-                      <Check className="h-5 w-5 shrink-0 text-green-600" />
+                      <Check className="h-5 w-5 shrink-0 text-[#ff8912]" />
                     )}
                   </button>
                 ))}
@@ -678,7 +677,7 @@ export default function BookingForm() {
             <Button
               type="button"
               onClick={nextStep}
-              className="bg-[#ff8912] text-white hover:bg-[#e67a00] shadow-lg shadow-[#ff8912]/25 active:scale-[0.97] transition-all cursor-pointer"
+              variant="accent"
             >
               Continue
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -686,7 +685,7 @@ export default function BookingForm() {
           ) : (
             <Button
               type="submit"
-              className="bg-green-600 text-white hover:bg-green-700 shadow-lg shadow-green-600/25 active:scale-[0.97] transition-all cursor-pointer"
+              variant="accent"
             >
               <Send className="mr-2 h-4 w-4" />
               Submit Booking Request

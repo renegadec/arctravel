@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import Image from "next/image";
 import {
   Plane,
   Search,
@@ -86,6 +87,25 @@ interface FlightItinerary {
     layovers: Layover[];
     total_duration: number;
   };
+}
+
+interface BookingOption {
+  book_with: string;
+  price?: number;
+  option_title: string;
+  extensions: string[];
+  baggage_prices: string[];
+  booking_url: string | null;
+  post_data: string | null;
+  airline?: unknown;
+  airline_logos: string[];
+}
+
+interface SelectedFlightLeg {
+  departure_id: string;
+  arrival_id: string;
+  flight_number: string;
+  date: string;
 }
 
 interface LegResults {
@@ -362,7 +382,6 @@ export default function FlightPricingTool() {
     selectedReturn,
     combinedFinal,
     calcFinalPrice,
-    premiumValue,
     departureCode,
     arrivalCode,
     outboundDate,
@@ -370,9 +389,6 @@ export default function FlightPricingTool() {
     adults,
     tripType,
   ]);
-
-  // ─── Search params label ──────────────────────────────────
-  const searchParamsLabel = `${departureCode.toUpperCase()} → ${arrivalCode.toUpperCase()} · ${outboundDate}${tripType === "round" ? ` → ${returnDate}` : ""} · ${adults} ${adults === "1" ? "adult" : "adults"}`;
 
   // ─── Has results? ────────────────────────────────────────
   const hasResults = legs.some((leg) => leg.best.length > 0 || leg.other.length > 0);
@@ -395,7 +411,7 @@ export default function FlightPricingTool() {
   return (
     <div className="min-h-screen bg-[#f5f6fa]">
       {/* Header */}
-      <div className="sticky top-16 z-40 border-b border-primary/10 bg-gradient-to-r from-primary to-[#003d7a] shadow-md">
+      <div className="sticky top-20 z-40 border-b border-primary/10 bg-gradient-to-r from-primary to-[#003d7a] shadow-md md:top-[116px] lg:top-[132px]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-2 sm:px-6 sm:py-3 lg:px-8">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-xs font-bold text-white shadow-sm backdrop-blur-sm ring-1 ring-white/20">
@@ -1008,12 +1024,14 @@ function FlightCard({
           {/* Route summary */}
           <div className="flex items-center gap-3 min-w-0 flex-1">
             {/* Airline logo */}
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-muted to-muted/70 p-1.5 shadow-sm">
+            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-muted to-muted/70 p-1.5 shadow-sm">
               {itinerary.flights[0]?.airline_logo ? (
-                <img
+                <Image
                   src={itinerary.flights[0].airline_logo}
                   alt={itinerary.flights[0].airline}
-                  className="h-full w-full object-contain"
+                  fill
+                  sizes="48px"
+                  className="object-contain"
                 />
               ) : (
                 <Plane className="h-6 w-6 text-muted-foreground" />
@@ -1299,7 +1317,7 @@ function FlightCard({
 // ─── Booking Options Section ────────────────────────────
 
 function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItinerary; tripType?: "round" | "oneway" }) {
-  const [options, setOptions] = useState<any[] | null>(null);
+  const [options, setOptions] = useState<BookingOption[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [show, setShow] = useState(false);
@@ -1322,14 +1340,12 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
     const to = lastFlight?.arrival_airport.id || "";
     const outDate = firstFlight?.departure_airport.time?.split(" ")[0] || "";
 
-    let type: string;
-    let selectedFlights: any;
+    let selectedFlights: { outbound: SelectedFlightLeg[] };
     let params: URLSearchParams;
 
     if (isRoundTrip) {
       // SerpAPI's type=1 doesn't return return flight data — only the combined price.
       // Fall back to one-way booking options for the outbound flight.
-      type = "2";
       selectedFlights = {
         outbound: segs.map((f) => ({
           departure_id: f.departure_airport.id,
@@ -1349,7 +1365,6 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
         selected_flights_json: JSON.stringify(selectedFlights),
       });
     } else {
-      type = "2";
       selectedFlights = {
         outbound: segs.map((f) => ({
           departure_id: f.departure_airport.id,
@@ -1388,7 +1403,7 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
     } finally {
       setLoading(false);
     }
-  }, [itinerary, firstFlight, lastFlight, options, show]);
+  }, [itinerary, firstFlight, lastFlight, isRoundTrip, options, show]);
 
   return (
     <div className="mt-3">
@@ -1427,11 +1442,13 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     {opt.airline_logos?.[0] && (
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted p-1">
-                        <img
+                      <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted p-1">
+                        <Image
                           src={opt.airline_logos[0]}
                           alt={opt.book_with}
-                          className="h-full w-full object-contain"
+                          fill
+                          sizes="32px"
+                          className="object-contain"
                         />
                       </div>
                     )}
@@ -1469,7 +1486,7 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
           {options?.some((o) => o.baggage_prices?.length > 0) && (
             <div className="mt-1.5 rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-blue-50/50 px-3 py-2">
               <p className="text-[10px] text-blue-700 font-medium">
-                💼 Baggage: {options.find((o) => o.baggage_prices?.length > 0).baggage_prices.join(" · ")}
+                💼 Baggage: {options.find((o) => o.baggage_prices?.length > 0)?.baggage_prices.join(" · ")}
               </p>
             </div>
           )}
@@ -1482,7 +1499,7 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
 // ─── Combined Booking Options (round trip) ────────────────
 
 function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightItinerary; returnFlight: FlightItinerary }) {
-  const [options, setOptions] = useState<any[] | null>(null);
+  const [options, setOptions] = useState<BookingOption[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [show, setShow] = useState(false);
@@ -1580,11 +1597,13 @@ function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightIt
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     {opt.airline_logos?.[0] && (
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted p-1">
-                        <img
+                      <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted p-1">
+                        <Image
                           src={opt.airline_logos[0]}
                           alt={opt.book_with}
-                          className="h-full w-full object-contain"
+                          fill
+                          sizes="32px"
+                          className="object-contain"
                         />
                       </div>
                     )}
@@ -1615,7 +1634,7 @@ function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightIt
           {options?.some((o) => o.baggage_prices?.length > 0) && (
             <div className="mt-1.5 rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-blue-50/50 px-3 py-2">
               <p className="text-[10px] text-blue-700 font-medium">
-                💼 Baggage: {options.find((o) => o.baggage_prices?.length > 0).baggage_prices.join(" · ")}
+                💼 Baggage: {options.find((o) => o.baggage_prices?.length > 0)?.baggage_prices.join(" · ")}
               </p>
             </div>
           )}

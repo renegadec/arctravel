@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Star, Phone, ArrowRight } from "lucide-react";
 
@@ -12,38 +13,32 @@ const heroTiles = [
   {
     name: "Victoria Falls",
     href: "/destinations/victoria-falls",
-    image:
-      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=600&q=80",
+    image: "/images/hero/victoria-falls.jpg",
   },
   {
     name: "Hwange Safari",
     href: "/destinations/hwange-national-park",
-    image:
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=600&q=80",
+    image: "/images/hero/hwange.jpg",
   },
   {
-    name: "Zanzibar",
-    href: "/destinations/zanzibar",
-    image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
+    name: "Diani Beach",
+    href: "/destinations/diani-beach",
+    image: "/images/hero/diani-beach.jpg",
   },
   {
     name: "Cape Town",
     href: "/destinations/cape-town",
-    image:
-      "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=600&q=80",
+    image: "/images/hero/cape-town.jpg",
   },
   {
     name: "Dubai",
     href: "/destinations/dubai",
-    image:
-      "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+    image: "/images/hero/dubai.jpg",
   },
   {
     name: "Eastern Highlands",
     href: "/destinations/eastern-highlands",
-    image:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80",
+    image: "/images/hero/eastern-highlands.jpg",
   },
 ];
 
@@ -98,7 +93,7 @@ export default function HeroSection() {
               <Link href="/book" className="w-full sm:w-auto">
                 <Button
                   size="xl"
-                  className="w-full cursor-pointer rounded-xl bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30 transition-all hover:bg-[#e67a00] active:scale-[0.97] sm:w-auto"
+                  variant="accent" className="w-full sm:w-auto"
                 >
                   Plan Your Trip
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -160,13 +155,13 @@ export default function HeroSection() {
                         href={tile.href}
                         className="group relative block overflow-hidden rounded-2xl shadow-lg shadow-[#002a62]/10 ring-1 ring-black/5 transition-shadow hover:shadow-2xl hover:shadow-[#002a62]/20"
                       >
-                        <div className="aspect-[3/4] w-full">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
+                        <div className="relative aspect-[3/4] w-full">
+                          <Image
                             src={tile.image}
                             alt={`${tile.name} — plan your trip with ArcTravel`}
-                            loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            fill
+                            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
                           />
                         </div>
                         {/* Hover overlay label */}

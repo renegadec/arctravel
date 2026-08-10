@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import {
@@ -158,12 +159,13 @@ export default function AboutPage() {
             {/* Image */}
             <div className="relative">
               <div className="absolute -left-4 -top-4 h-28 w-28 rounded-3xl bg-[#ff8912]/10" />
-              <div className="relative overflow-hidden rounded-3xl shadow-xl shadow-[#002a62]/10">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-xl shadow-[#002a62]/10">
+                <Image
                   src={storyImage}
                   alt="The ArcTravel team planning a journey"
-                  className="aspect-[4/3] w-full object-cover"
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover"
                 />
               </div>
             </div>
@@ -317,7 +319,7 @@ export default function AboutPage() {
               <Link href="/contact">
                 <Button
                   size="xl"
-                  className="cursor-pointer rounded-xl bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/25 transition-all hover:bg-[#e67a00] active:scale-[0.97]"
+                  variant="accent"
                 >
                   Get a Free Quote
                   <ArrowRight className="ml-2 h-4 w-4" />

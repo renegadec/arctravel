@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { destinations } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
@@ -48,6 +49,7 @@ const destImages: Record<string, string> = {
     "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
   "/destinations/nairobi-maasai-mara":
     "https://images.unsplash.com/photo-1535941339077-2dd1c7963098?auto=format&fit=crop&w=800&q=80",
+  "/destinations/diani-beach": "/images/hero/diani-beach.jpg",
 };
 
 const regions = [
@@ -124,10 +126,12 @@ export default function DestinationsPage() {
                       className="group relative aspect-3/4 overflow-hidden rounded-2xl bg-muted"
                     >
                       {/* Background image */}
-                      <img
+                      <Image
                         alt={dest.name}
                         src={destImages[dest.href]}
-                        className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                        fill
+                        sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 100vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                       />
                       {/* Gradient overlay */}
                       <div
@@ -178,7 +182,7 @@ export default function DestinationsPage() {
           <Link href="/contact">
             <Button
               size="lg"
-              className="mt-6 bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/25 transition-all hover:bg-[#e67a00] active:scale-[0.97] cursor-pointer"
+              variant="accent" className="mt-6"
             >
               Ask About a Destination
               <ArrowRight className="ml-2 h-4 w-4" />

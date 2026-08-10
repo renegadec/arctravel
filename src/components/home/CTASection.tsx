@@ -1,23 +1,24 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { Send, ArrowRight, MessageCircle, Phone } from "lucide-react";
 import { contactInfo, socialLinks } from "@/lib/constants";
 
-// 🔁 SWAP with a real ArcTravel photo (wide, 16:9-ish landscape crop).
-const ctaImage =
-  "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=2000&q=80";
+// 🔁 Real ArcTravel photo (wide, 16:9-ish landscape crop).
+const ctaImage = "/images/cta-background.jpg";
 
 export default function CTASection() {
   return (
     <section className="relative isolate overflow-hidden">
       {/* Background photo */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={ctaImage}
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 -z-20 h-full w-full object-cover"
+        fill
+        sizes="100vw"
+        className="absolute inset-0 -z-20 object-cover"
       />
       {/* Navy gradient overlay for depth + readability */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#001b42]/95 via-[#002a62]/90 to-[#0a2440]/75" />
@@ -42,7 +43,7 @@ export default function CTASection() {
             <Link href="/contact" className="w-full sm:w-auto">
               <Button
                 size="xl"
-                className="w-full cursor-pointer rounded-xl bg-[#ff8912] shadow-lg shadow-[#ff8912]/40 transition-all hover:bg-[#e67a00] active:scale-[0.97] sm:w-auto"
+                variant="accent" className="w-full sm:w-auto"
               >
                 <Send className="mr-2 h-4 w-4" />
                 Get a Free Quote
@@ -52,8 +53,7 @@ export default function CTASection() {
             <Link href="/about" className="w-full sm:w-auto">
               <Button
                 size="xl"
-                variant="outline"
-                className="w-full cursor-pointer rounded-xl border-2 border-white/30 bg-white/10 text-white backdrop-blur-sm transition-all hover:border-white/50 hover:bg-white/20 active:scale-[0.97] sm:w-auto"
+                variant="glass" className="w-full sm:w-auto"
               >
                 Learn More About Us
               </Button>

@@ -1,19 +1,15 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, MapPin } from "lucide-react";
 
 // 🔁 SWAP THESE IMAGES with your own destination photos (3:4 or 4:3 crops work).
 // Drop files in /public/images/ and use e.g. image: "/images/vic-falls.jpg"
 const tileImages: Record<string, string> = {
-  "Victoria Falls":
-    "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=900&q=80",
-  "Hwange National Park":
-    "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=900&q=80",
-  "Cape Town":
-    "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=900&q=80",
-  Zanzibar:
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
-  Dubai:
-    "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80",
+  "Victoria Falls": "/images/featured/victoria-falls.jpg",
+  "Hwange National Park": "/images/featured/hwange.jpg",
+  "Cape Town": "/images/featured/capetown.jpg",
+  "Diani Beach": "/images/featured/diani-beach.jpg",
+  Dubai: "/images/featured/dubai.jpg",
 };
 
 const tiles = [
@@ -45,11 +41,11 @@ const tiles = [
     imageHeight: "h-56 sm:h-64",
   },
   {
-    name: "Zanzibar",
-    country: "Tanzania",
-    href: "/destinations/zanzibar",
+    name: "Diani Beach",
+    country: "Kenya",
+    href: "/destinations/diani-beach",
     description:
-      "White-sand beaches, turquoise water, and Stone Town's winding alleys.",
+      "White-sand beaches, coral reefs, and easy-going Indian Ocean life.",
     size: "lg:col-span-2",
     imageHeight: "h-56 sm:h-64",
   },
@@ -100,12 +96,12 @@ export default function FeaturedDestinations() {
               className={`group relative overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#002a62]/10 ${tile.size}`}
             >
               <div className={`relative overflow-hidden ${tile.imageHeight}`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={tileImages[tile.name]}
                   alt={`${tile.name} — plan your trip with ArcTravel`}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 {/* Country badge */}

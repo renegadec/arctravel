@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Globe,
   HeadphonesIcon,
@@ -35,24 +36,22 @@ const reasons = [
   },
 ];
 
-// 🔁 SWAP with real photos when available (3:4 portrait crops recommended).
+// Real photos (3:4 portrait).
 const tallCards = [
   {
     icon: Globe,
-    title: "Local Knowledge",
+    title: "Deep Industry Know-How",
     description:
-      "We know Zimbabwe and Southern Africa intimately. Hidden gems, best routes, trusted partners — we've got the ground truth.",
-    image:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
+      "Years of working with airlines, lodges, and ground operators mean we know who delivers — and who to avoid. If we wouldn't book it for ourselves, we won't book it for you.",
+    image: "/images/why-us/business.jpg",
     alt: "ArcTravel team planning a journey",
   },
   {
     icon: Map,
-    title: "Zimbabwe-Based",
+    title: "Passion, Not Just Business",
     description:
-      "We're local. We understand the terrain, the routes, the seasons, and what works best for travellers in this region.",
-    image:
-      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80",
+      "We're in this because we love travel — and we plan every trip like it's our own. The long hours, the last-minute fixes, the extra care: that's not a service tier, it's just how we work.",
+    image: "/images/why-us/passion.jpg",
     alt: "Road trip through Southern Africa",
   },
 ];
@@ -83,12 +82,12 @@ export default function WhyChooseUs() {
               key={card.title}
               className="group relative overflow-hidden rounded-3xl lg:row-span-2"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={card.image}
                 alt={card.alt}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                fill
+                sizes="(min-width: 1024px) 25vw, 100vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#002a62]/95 via-[#002a62]/40 to-transparent" />
               <div className="relative flex h-full min-h-[22rem] flex-col justify-end p-8">

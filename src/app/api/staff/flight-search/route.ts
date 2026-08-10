@@ -135,19 +135,65 @@ interface FlightItinerary {
   };
 }
 
-function extractFlights(data: any): { best: FlightItinerary[]; other: FlightItinerary[] } {
-  const normalise = (items: any[]): FlightItinerary[] => {
+interface SerpAirport {
+  name?: string;
+  id?: string;
+  time?: string;
+}
+
+interface SerpFlightSegment {
+  departure_airport?: SerpAirport;
+  arrival_airport?: SerpAirport;
+  duration?: number;
+  airline?: string;
+  airline_logo?: string;
+  flight_number?: string;
+  travel_class?: string;
+  extensions?: string[];
+  airplane?: string;
+  legroom?: string;
+  often_delayed_by_over_30_min?: boolean;
+  overnight?: boolean;
+  ticket_also_sold_by?: string[];
+}
+
+interface SerpFlightItinerary {
+  flights?: SerpFlightSegment[];
+  layovers?: Layover[];
+  total_duration?: number;
+  price?: number;
+  type?: string;
+  airline_logo?: string;
+  carbon_emissions?: FlightItinerary["carbon_emissions"];
+  departure_token?: string;
+  return_flights?: {
+    flights?: SerpFlightSegment[];
+    layovers?: Layover[];
+    total_duration?: number;
+  };
+}
+
+function extractFlights(data: {
+  best_flights?: SerpFlightItinerary[];
+  other_flights?: SerpFlightItinerary[];
+}): { best: FlightItinerary[]; other: FlightItinerary[] } {
+  const normalise = (items: SerpFlightItinerary[] | undefined): FlightItinerary[] => {
     if (!items || !Array.isArray(items)) return [];
     return items.map((item) => {
-      const normaliseSegments = (segs: any[]) =>
-        (segs || []).map((f: any) => ({
-          departure_airport: f.departure_airport,
-          arrival_airport: f.arrival_airport,
-          duration: f.duration,
-          airline: f.airline,
-          airline_logo: f.airline_logo,
-          flight_number: f.flight_number,
-          travel_class: f.travel_class,
+      const airport = (a: SerpAirport | undefined) => ({
+        name: a?.name ?? "",
+        id: a?.id ?? "",
+        time: a?.time ?? "",
+      });
+      const normaliseSegments = (segs: SerpFlightSegment[] | undefined) =>
+        (segs || []).map((f) => ({
+          departure_airport: airport(f.departure_airport),
+          arrival_airport: airport(f.arrival_airport),
+          duration: f.duration ?? 0,
+          airline: f.airline ?? "",
+          airline_logo: f.airline_logo ?? "",
+          flight_number: f.flight_number ?? "",
+          travel_class: f.travel_class ?? "",
           extensions: f.extensions,
           airplane: f.airplane,
           legroom: f.legroom,
@@ -157,23 +203,23 @@ function extractFlights(data: any): { best: FlightItinerary[]; other: FlightItin
         }));
 
       const outboundFlights = normaliseSegments(item.flights);
-      const hasReturn = item.return_flights?.flights?.length > 0;
+      const hasReturn = (item.return_flights?.flights?.length ?? 0) > 0;
 
       return {
         flights: outboundFlights,
         layovers: item.layovers || [],
-        total_duration: item.total_duration,
-        price: item.price,
-        type: item.type,
-        airline_logo: item.airline_logo,
+        total_duration: item.total_duration ?? 0,
+        price: item.price ?? 0,
+        type: item.type ?? "",
+        airline_logo: item.airline_logo ?? "",
         carbon_emissions: item.carbon_emissions,
-        departure_token: item.departure_token,
+        departure_token: item.departure_token ?? "",
         ...(hasReturn
           ? {
               return_flights: {
-                flights: normaliseSegments(item.return_flights.flights),
-                layovers: item.return_flights.layovers || [],
-                total_duration: item.return_flights.total_duration,
+                flights: normaliseSegments(item.return_flights?.flights),
+                layovers: item.return_flights?.layovers || [],
+                total_duration: item.return_flights?.total_duration ?? 0,
               },
             }
           : {}),

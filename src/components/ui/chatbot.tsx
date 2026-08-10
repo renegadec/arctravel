@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, ChevronRight, User, Mail, Phone, Tag, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 interface Message {
   role: "bot" | "user";
@@ -148,7 +149,7 @@ function LeadForm({ onSubmit }: { onSubmit: (data: { name: string; email: string
       </div>
       {errors.service && <p className="text-xs text-red-500">{errors.service}</p>}
       <textarea placeholder="Any details? (optional)" value={message} onChange={(e) => setMessage(e.target.value)} rows={2} className="w-full rounded-lg border border-gray-200 bg-gray-50 p-2.5 text-xs outline-none focus:border-[#ff8912]/40 resize-none" />
-      <button type="submit" className="w-full rounded-lg bg-[#ff8912] py-2 text-xs font-medium text-white hover:bg-[#e67a00] transition-colors">
+      <button type="submit" className={cn(buttonVariants({ variant: "accent", size: "sm" }), "w-full")}>
         Send Inquiry
       </button>
     </form>
@@ -164,7 +165,6 @@ export default function ChatBot() {
   const [showLeadForm, setShowLeadForm] = useState(false);
   const [showNameInput, setShowNameInput] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
-  const [started, setStarted] = useState(false);
   const [conversationDone, setConversationDone] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -181,10 +181,11 @@ export default function ChatBot() {
     }
   }, [loading, showLeadForm, showNameInput, messages, open]);
 
-  // Initial greeting
+  // Initial greeting — runs once, tracked via ref to avoid setState-in-effect
+  const startedRef = useRef(false);
   useEffect(() => {
-    if (open && !started) {
-      setStarted(true);
+    if (open && !startedRef.current) {
+      startedRef.current = true;
       setTimeout(() => {
         setMessages([
           {
@@ -195,7 +196,7 @@ export default function ChatBot() {
         setShowNameInput(true);
       }, 300);
     }
-  }, [open, started]);
+  }, [open]);
 
   function handleNameSubmit(name: string) {
     setUserName(name);

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import type { Package } from "@/lib/constants";
 import type { PackageContent } from "@/lib/package-content";
@@ -26,10 +27,13 @@ export default function PackageDetail({
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img
+          <Image
             src={content.heroImage}
             alt={pkg.title}
-            className="h-full w-full object-cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#001b42]/90 via-[#002a62]/75 to-[#002a62]/95" />
         </div>
@@ -65,7 +69,7 @@ export default function PackageDetail({
               <Link href={content.bookUrl}>
                 <Button
                   size="xl"
-                  className="bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30 hover:bg-[#e67a00] active:scale-[0.97]"
+                  variant="accent"
                 >
                   Book This Package
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -74,8 +78,7 @@ export default function PackageDetail({
               <Link href="/packages">
                 <Button
                   size="xl"
-                  variant="outline"
-                  className="border-white/30 bg-white/10 text-white backdrop-blur hover:bg-white/20 hover:text-white"
+                  variant="glass"
                 >
                   View All Packages
                 </Button>
@@ -192,7 +195,7 @@ export default function PackageDetail({
               <Link href={content.bookUrl} className="mt-8 inline-block">
                 <Button
                   size="xl"
-                  className="bg-[#002a62] text-white shadow-lg shadow-[#002a62]/20 hover:bg-[#001b42] active:scale-[0.97]"
+                  variant="default"
                 >
                   Customise This Trip
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -260,15 +263,15 @@ export default function PackageDetail({
                   <div
                     key={i}
                     className={`group relative overflow-hidden rounded-2xl ${
-                      i === 0 ? "sm:col-span-2" : ""
+                      i === 0 ? "aspect-[16/9] sm:col-span-2" : "aspect-[4/3]"
                     }`}
                   >
-                    <img
+                    <Image
                       src={img}
                       alt={`${pkg.title} gallery ${i + 1}`}
-                      className={`w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
-                        i === 0 ? "aspect-[16/9]" : "aspect-[4/3]"
-                      }`}
+                      fill
+                      sizes="(min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
                 ))}
@@ -284,12 +287,14 @@ export default function PackageDetail({
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <Link
               href={content.relatedDestination}
-              className="group relative block overflow-hidden rounded-3xl"
+              className="group relative block h-64 overflow-hidden rounded-3xl sm:h-80"
             >
-              <img
+              <Image
                 src={content.heroImage}
                 alt="Explore the destination"
-                className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:h-80"
+                fill
+                sizes="100vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-[#001b42]/95 via-[#002a62]/80 to-transparent" />
               <div className="absolute inset-0 flex items-center">
@@ -334,7 +339,7 @@ export default function PackageDetail({
                 <Link href={content.bookUrl}>
                   <Button
                     size="xl"
-                    className="bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/30 hover:bg-[#e67a00] active:scale-[0.97]"
+                    variant="accent"
                   >
                     Book Now
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -343,8 +348,7 @@ export default function PackageDetail({
                 <Link href="/packages">
                   <Button
                     size="xl"
-                    variant="outline"
-                    className="border-white/30 bg-white/10 text-white backdrop-blur hover:bg-white/20 hover:text-white"
+                    variant="glass"
                   >
                     View All Packages
                   </Button>

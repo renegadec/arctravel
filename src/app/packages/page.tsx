@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { packages } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
@@ -93,11 +94,13 @@ export default function PackagesPage() {
               {popular.map((pkg) => (
                 <div key={pkg.href} className="group relative">
                   {/* Image */}
-                  <div className="relative">
-                    <img
+                  <div className="relative aspect-4/3 w-full">
+                    <Image
                       alt={pkg.title}
                       src={packageImages[pkg.href]}
-                      className="aspect-4/3 w-full rounded-2xl bg-muted object-cover transition-opacity duration-300 group-hover:opacity-90"
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      className="rounded-2xl bg-muted object-cover transition-opacity duration-300 group-hover:opacity-90"
                     />
                     {/* Popular badge */}
                     <div className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-yellow-400 px-3 py-1 text-xs font-bold text-[#002a62] shadow-md">
@@ -155,11 +158,13 @@ export default function PackagesPage() {
               {standard.map((pkg) => (
                 <div key={pkg.href} className="group relative">
                   {/* Image */}
-                  <div className="relative">
-                    <img
+                  <div className="relative aspect-4/3 w-full">
+                    <Image
                       alt={pkg.title}
                       src={packageImages[pkg.href]}
-                      className="aspect-4/3 w-full rounded-2xl bg-muted object-cover transition-opacity duration-300 group-hover:opacity-90"
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      className="rounded-2xl bg-muted object-cover transition-opacity duration-300 group-hover:opacity-90"
                     />
                     {/* Hover overlay */}
                     <div
@@ -221,7 +226,7 @@ export default function PackagesPage() {
             <Link href="/book">
               <Button
                 size="lg"
-                className="mt-6 bg-[#ff8912] text-white shadow-lg shadow-[#ff8912]/25 transition-all hover:bg-[#e67a00] active:scale-[0.97] cursor-pointer"
+                variant="accent" className="mt-6"
               >
                 Build a Custom Package
                 <ArrowRight className="ml-2 h-4 w-4" />

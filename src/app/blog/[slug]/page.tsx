@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { CalendarDays, Clock, ArrowLeft, ArrowRight, User } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
 import { SITE_URL } from "@/lib/constants";
 
@@ -60,11 +63,13 @@ export default async function BlogPostPage({ params }: Props) {
       {/* Hero image */}
       <section className="relative">
         <div className="relative h-[320px] w-full overflow-hidden sm:h-[420px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={post.image}
             alt={post.title}
-            className="h-full w-full object-cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#002a62]/90 via-[#002a62]/40 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 mx-auto max-w-4xl px-4 pb-8 sm:px-6 sm:pb-12">
@@ -127,7 +132,10 @@ export default async function BlogPostPage({ params }: Props) {
           </p>
           <Link
             href="/book"
-            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#ff8912] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#ff8912]/30 transition-all hover:bg-[#e67a00]"
+            className={cn(
+              buttonVariants({ variant: "accent", size: "xl" }),
+              "mt-6"
+            )}
           >
             Start Planning
             <ArrowRight className="h-4 w-4" />
