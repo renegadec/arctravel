@@ -40,7 +40,7 @@ const reasons = [
 const tallCards = [
   {
     icon: Globe,
-    title: "10+ Years in the Industry",
+    title: "Deep Industry Know-How",
     description:
       "We've personally travelled the routes we sell — the lodges that deliver, the border posts that move fast, and the operators with the best track records. If we wouldn't book it for ourselves, we won't book it for you.",
     image:
@@ -49,7 +49,7 @@ const tallCards = [
   },
   {
     icon: Map,
-    title: "Travel Is Our Passion, Not Just Business",
+    title: "Passion, Not Just Business",
     description:
       "We're in this because we love travel — and we plan every trip like it's our own. The long hours, the last-minute fixes, the extra care: that's not a service tier, it's just how we work.",
     image:
