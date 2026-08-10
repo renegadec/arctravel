@@ -222,6 +222,11 @@ export default function FlightPricingTool() {
 
   // Selected itineraries
   const [selectedOutbound, setSelectedOutbound] = useState<FlightItinerary | null>(null);
+
+  // Return flights for the selected outbound (fetched via its departure_token)
+  const [returnResults, setReturnResults] = useState<FlightItinerary[] | null>(null);
+  const [returnLoading, setReturnLoading] = useState(false);
+  const [returnError, setReturnError] = useState<string | null>(null);
   const [selectedReturn, setSelectedReturn] = useState<FlightItinerary | null>(null);
 
   // Premium state
@@ -240,24 +245,32 @@ export default function FlightPricingTool() {
 
     setTotalLoading(true);
     setSelectedOutbound(null);
+    setReturnResults(null);
     setSelectedReturn(null);
     setCopiedQuote(false);
 
     const from = departureCode.trim().toUpperCase();
     const to = arrivalCode.trim().toUpperCase();
 
-    // Build searches: outbound + (return if round trip)
-    const searches: { label: string; from: string; to: string; date: string }[] = [
-      { label: `${from} → ${to}`, from, to, date: outboundDate },
+    // Round trip = ONE combined search (type=1): SerpAPI returns each
+    // itinerary with outbound + return legs and a combined fare. This is
+    // half the API cost of two one-way searches, and Google only offers
+    // combined round-trip fares from a single round-trip query.
+    const searches: {
+      label: string;
+      from: string;
+      to: string;
+      date: string;
+      returnDate?: string;
+    }[] = [
+      {
+        label: `${from} → ${to}`,
+        from,
+        to,
+        date: outboundDate,
+        returnDate: tripType === "round" ? returnDate : undefined,
+      },
     ];
-    if (tripType === "round") {
-      searches.push({
-        label: `${to} → ${from}`,
-        from: to,
-        to: from,
-        date: returnDate,
-      });
-    }
 
     const initialLegs: LegResults[] = searches.map((s) => ({
       label: s.label,
@@ -271,18 +284,21 @@ export default function FlightPricingTool() {
     }));
     setLegs(initialLegs);
 
-    // Fetch all legs in parallel
+    // Fetch all legs in parallel (single combined search for round trips)
     const results = await Promise.all(
       searches.map(async (search, i) => {
         const params = new URLSearchParams({
           departure_id: search.from,
           arrival_id: search.to,
           outbound_date: search.date,
-          type: "2",
+          type: tripType === "round" ? "1" : "2",
           currency: "USD",
           hl: "en",
           adults,
         });
+        if (search.returnDate) {
+          params.set("return_date", search.returnDate);
+        }
 
         try {
           const res = await fetch(`/api/staff/flight-search?${params.toString()}`);
@@ -325,9 +341,59 @@ export default function FlightPricingTool() {
     [premiumType, premiumValue]
   );
 
+  // Round trip: the return option's price is the full combined fare for that
+  // outbound + return pairing. Before a return is picked, show the outbound's
+  // combined fare as the estimate.
   const selectedBasePrice =
-    (selectedOutbound?.price ?? 0) + (selectedReturn?.price ?? 0);
+    tripType === "round"
+      ? (selectedReturn?.price ?? selectedOutbound?.price ?? 0)
+      : (selectedOutbound?.price ?? 0);
   const combinedFinal = calcFinalPrice(selectedBasePrice);
+
+  // ─── Select outbound (round trip: also fetch matching return flights) ──
+
+  const selectOutbound = useCallback(
+    async (itinerary: FlightItinerary) => {
+      setSelectedOutbound(itinerary);
+      setSelectedReturn(null);
+      setReturnResults(null);
+      setReturnError(null);
+
+      if (tripType !== "round" || !itinerary.departure_token) return;
+
+      setReturnLoading(true);
+      try {
+        const params = new URLSearchParams({
+          departure_id: itinerary.flights[0]?.departure_airport.id || "",
+          arrival_id:
+            itinerary.flights[itinerary.flights.length - 1]?.arrival_airport.id || "",
+          outbound_date:
+            itinerary.flights[0]?.departure_airport.time?.split(" ")[0] || "",
+          type: "1",
+          currency: "USD",
+          hl: "en",
+          adults,
+        });
+        if (returnDate) params.set("return_date", returnDate);
+        params.set("departure_token", itinerary.departure_token);
+
+        const res = await fetch(`/api/staff/flight-search?${params.toString()}`);
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to load return flights");
+        }
+        setReturnResults([
+          ...(data.best_flights || []),
+          ...(data.other_flights || []),
+        ]);
+      } catch (e) {
+        setReturnError(e instanceof Error ? e.message : "Failed to load return flights");
+      } finally {
+        setReturnLoading(false);
+      }
+    },
+    [adults, returnDate, tripType]
+  );
 
   // ─── Copy quote ──────────────────────────────────────
 
@@ -339,7 +405,10 @@ export default function FlightPricingTool() {
     }
     text += ` · ${adults} traveller${adults !== "1" ? "s" : ""}\n\n`;
 
-    const addItinerary = (itinerary: FlightItinerary, title: string) => {
+    const addItinerary = (
+      itinerary: { flights: FlightSegment[]; layovers: Layover[] },
+      title: string
+    ) => {
       text += `── ${title} ──\n`;
       itinerary.flights.forEach((seg, i) => {
         text += `  ${seg.departure_airport.id} ${formatTime(seg.departure_airport.time)} → ${seg.arrival_airport.id} ${formatTime(seg.arrival_airport.time)}`;
@@ -355,21 +424,21 @@ export default function FlightPricingTool() {
       text += `\n`;
     };
 
-    if (selectedOutbound) {
-      addItinerary(selectedOutbound, "DEPARTURE");
-    }
-    if (selectedReturn) {
-      addItinerary(selectedReturn, "RETURN");
+    if (tripType === "round") {
+      if (selectedOutbound) {
+        addItinerary(selectedOutbound, "DEPARTURE");
+      }
+      if (selectedReturn) {
+        addItinerary(selectedReturn, "RETURN");
+      } else {
+        text += `RETURN: (no return flight selected yet)\n\n`;
+      }
+    } else if (selectedOutbound) {
+      addItinerary(selectedOutbound, "FLIGHT");
     }
 
     text += `---\n`;
-    if (tripType === "round" && selectedOutbound && selectedReturn) {
-      text += `Departure:  US$${calcFinalPrice(selectedOutbound.price ?? 0).total.toFixed(2)}\n`;
-      text += `Return:     US$${calcFinalPrice(selectedReturn.price ?? 0).total.toFixed(2)}\n`;
-      text += `Total:      US$${combinedFinal.total.toFixed(2)}\n`;
-    } else {
-      text += `Price:  US$${combinedFinal.total.toFixed(2)}\n`;
-    }
+    text += `Price:  US$${combinedFinal.total.toFixed(2)}\n`;
     text += `\nArcTravel — trusted travel since 2025`;
     text += `\n📞 ${contactInfo.phone}`;
 
@@ -381,7 +450,6 @@ export default function FlightPricingTool() {
     selectedOutbound,
     selectedReturn,
     combinedFinal,
-    calcFinalPrice,
     departureCode,
     arrivalCode,
     outboundDate,
@@ -611,21 +679,11 @@ export default function FlightPricingTool() {
           </div>
 
           {/* Selected summary */}
-          {(selectedOutbound || (tripType === "oneway" && selectedOutbound)) && (
+          {selectedOutbound && (
             <span className="ml-auto hidden text-xs text-muted-foreground sm:inline">
-              {tripType === "oneway" ? (
-                <>
-                  Base fare: <span className="font-medium text-foreground">US${(selectedOutbound?.price ?? 0).toFixed(0)}</span>
-                </>
-              ) : (
-                <>
-                  Outbound{selectedOutbound ? " ✅" : " ☐"}
-                  <span className="mx-1.5 text-border">|</span>
-                  Return{selectedReturn ? " ✅" : " ☐"}
-                  <span className="mx-1.5 text-border">|</span>
-                  Base: <span className="font-medium text-foreground">US${selectedBasePrice.toFixed(0)}</span>
-                </>
-              )}
+              {tripType === "round" ? "Round trip" : "Flight"} selected ✅
+              <span className="mx-1.5 text-border">|</span>
+              Base: <span className="font-medium text-foreground">US${selectedBasePrice.toFixed(0)}</span>
               <span className="mx-1.5 text-border">|</span>
               <span className="text-accent">+{premiumValue}%</span>
             </span>
@@ -719,9 +777,9 @@ export default function FlightPricingTool() {
           </div>
         )}
 
-        {/* Results per leg — two columns for round trips */}
+        {/* Results per leg — two columns only when multiple legs exist */}
         {hasResults && (
-          <div className={`grid gap-4 sm:gap-6 ${tripType === "round" ? "lg:grid-cols-2" : ""}`}>
+          <div className={`grid gap-4 sm:gap-6 ${legs.length > 1 ? "lg:grid-cols-2" : ""}`}>
             {legs.map((leg, legIndex) => (
               <div key={legIndex}>
                 {/* Leg header */}
@@ -729,10 +787,10 @@ export default function FlightPricingTool() {
                   <div className={`flex h-9 items-center gap-1.5 rounded-xl px-3 text-xs font-bold text-white shadow-sm ${
                     legIndex === 0 ? "bg-primary" : "bg-gradient-to-br from-secondary to-amber-600"
                   }`}>
-                    {legIndex === 0 ? "Departure" : "Return"}
+                    {legIndex === 0 ? (tripType === "round" ? "Round Trip" : "Departure") : "Return"}
                   </div>
                   <h2 className="text-sm font-semibold text-foreground">{leg.label}</h2>
-                  <span className="text-xs text-muted-foreground">· {leg.date}</span>
+                  <span className="text-xs text-muted-foreground">· {leg.date}{tripType === "round" && legIndex === 0 ? ` → ${returnDate}` : ""}</span>
                   {leg.loading && (
                     <RefreshCw className="h-3.5 w-3.5 animate-spin text-primary" />
                   )}
@@ -773,10 +831,7 @@ export default function FlightPricingTool() {
                     <div className="mb-4 grid gap-3">
                       {leg.best.map((itinerary, i) => {
                         const key = `${legIndex}-best-${i}`;
-                        const selected =
-                          legIndex === 0
-                            ? selectedOutbound === itinerary
-                            : selectedReturn === itinerary;
+                        const selected = selectedOutbound === itinerary;
                         return (
                           <FlightCard
                             key={key}
@@ -787,10 +842,7 @@ export default function FlightPricingTool() {
                             premiumType={premiumType}
                             premiumValue={premiumValue}
                             selected={selected}
-                            onSelect={() => {
-                              if (legIndex === 0) setSelectedOutbound(itinerary);
-                              else setSelectedReturn(itinerary);
-                            }}
+                            onSelect={() => selectOutbound(itinerary)}
                             tripType={tripType}
                           />
                         );
@@ -809,10 +861,7 @@ export default function FlightPricingTool() {
                     <div className="grid gap-3">
                       {leg.other.map((itinerary, i) => {
                         const key = `${legIndex}-other-${i}`;
-                        const selected =
-                          legIndex === 0
-                            ? selectedOutbound === itinerary
-                            : selectedReturn === itinerary;
+                        const selected = selectedOutbound === itinerary;
                         return (
                           <FlightCard
                             key={key}
@@ -823,10 +872,7 @@ export default function FlightPricingTool() {
                             premiumType={premiumType}
                             premiumValue={premiumValue}
                             selected={selected}
-                            onSelect={() => {
-                              if (legIndex === 0) setSelectedOutbound(itinerary);
-                              else setSelectedReturn(itinerary);
-                            }}
+                            onSelect={() => selectOutbound(itinerary)}
                             tripType={tripType}
                           />
                         );
@@ -839,14 +885,84 @@ export default function FlightPricingTool() {
           </div>
         )}
 
+        {/* Return flights for selected outbound (round trips — fetched via departure_token) */}
+        {tripType === "round" && selectedOutbound && (
+          <div className="mt-6">
+            {/* Return header */}
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-9 items-center gap-1.5 rounded-xl bg-gradient-to-br from-secondary to-amber-600 px-3 text-xs font-bold text-white shadow-sm">
+                Return
+              </div>
+              <h2 className="text-sm font-semibold text-foreground">
+                {selectedOutbound.flights[selectedOutbound.flights.length - 1]?.arrival_airport.id} → {selectedOutbound.flights[0]?.departure_airport.id}
+              </h2>
+              <span className="text-xs text-muted-foreground">· {returnDate}</span>
+              {returnLoading && <RefreshCw className="h-3.5 w-3.5 animate-spin text-primary" />}
+              {!returnLoading && returnResults && (
+                <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                  {returnResults.length} return flight{returnResults.length !== 1 ? "s" : ""}
+                </span>
+              )}
+            </div>
+
+            {/* Return loading */}
+            {returnLoading && (
+              <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/60 bg-white py-10 shadow-sm">
+                <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
+                <p className="mt-3 text-xs text-muted-foreground">Loading return flights for this outbound...</p>
+              </div>
+            )}
+
+            {/* Return error */}
+            {returnError && (
+              <div className="rounded-xl border border-amber-200 bg-gradient-to-r from-amber-50 to-amber-50/80 px-4 py-3 text-sm text-amber-700 shadow-sm">
+                <p className="text-xs font-semibold">Return flights unavailable</p>
+                <p className="mt-0.5 text-xs">{returnError}</p>
+              </div>
+            )}
+
+            {/* Return results */}
+            {!returnLoading && returnResults && returnResults.length > 0 && (
+              <div className="grid gap-3">
+                {returnResults.map((itinerary, i) => {
+                  const key = `return-${i}`;
+                  const selected = selectedReturn === itinerary;
+                  return (
+                    <FlightCard
+                      key={key}
+                      itinerary={itinerary}
+                      expanded={expandedCards.has(key)}
+                      onToggle={() => toggleExpand(key)}
+                      calcFinalPrice={calcFinalPrice}
+                      premiumType={premiumType}
+                      premiumValue={premiumValue}
+                      selected={selected}
+                      onSelect={() => setSelectedReturn(itinerary)}
+                      tripType="round"
+                    />
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Return empty */}
+            {!returnLoading && returnResults && returnResults.length === 0 && !returnError && (
+              <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/60 bg-white py-10 shadow-sm">
+                <Shuffle className="mb-2 h-5 w-5 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">No return flights found for this outbound</p>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Combined pricing + copy */}
-        {hasResults && (selectedOutbound || (tripType === "oneway" && selectedOutbound)) && (
+        {hasResults && selectedOutbound && (
           <div className="sticky bottom-0 mt-4 sm:mt-6 rounded-xl border border-primary/10 bg-gradient-to-r from-white via-white to-accent/[0.02] p-3 sm:p-5 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur-sm">
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               {/* Price breakdown */}
               <div>
                 <p className="text-xs font-medium text-muted-foreground">
-                  {tripType === "round" ? "Outbound + Return" : "Selected flight"}
+                  {tripType === "round" ? "Round trip — combined fare" : "Selected flight"}
                 </p>
                 <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <span className="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
@@ -861,27 +977,27 @@ export default function FlightPricingTool() {
                 </div>
                 {tripType === "round" && (
                   <p className="mt-1 text-xs text-muted-foreground">
-                    <span className="font-medium text-foreground">Departure</span>
-                    {selectedOutbound ? ` US$${(selectedOutbound.price ?? 0).toFixed(0)}` : " —"}
+                    {selectedOutbound.flights[0]?.departure_airport.id} → {selectedOutbound.flights[selectedOutbound.flights.length - 1]?.arrival_airport.id} → {selectedOutbound.flights[0]?.departure_airport.id}
                     <span className="mx-1.5 text-border">·</span>
-                    <span className="font-medium text-foreground">Return</span>
-                    {selectedReturn ? ` US$${(selectedReturn.price ?? 0).toFixed(0)}` : " —"}
+                    Out {outboundDate}
+                    <span className="mx-1.5 text-border">·</span>
+                    Ret {returnDate}
+                    <span className="mx-1.5 text-border">·</span>
+                    Combined fare
                   </p>
                 )}
               </div>
 
               {/* Actions */}
               <div className="flex items-center gap-3 flex-wrap">
-                {tripType === "round" && (!selectedOutbound || !selectedReturn) && (
+                {tripType === "round" && !selectedReturn && (
                   <p className="text-xs text-amber-600 font-medium">
-                    Select {!selectedOutbound ? "departure" : ""}
-                    {!selectedOutbound && !selectedReturn ? " and " : ""}
-                    {!selectedReturn ? "return" : ""} flights
+                    Select a return flight to complete the round trip
                   </p>
                 )}
                 <Button
                   onClick={copyCombinedQuote}
-                  disabled={tripType === "round" && (!selectedOutbound || !selectedReturn)}
+                  disabled={tripType === "round" ? !selectedReturn : !selectedOutbound}
                   size="lg"
                   className="whitespace-nowrap rounded-xl bg-gradient-to-r from-primary to-[#003d7a] text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 active:scale-[0.97] transition-all"
                 >
@@ -900,7 +1016,7 @@ export default function FlightPricingTool() {
               </div>
             </div>
 
-            {/* Combined Booking Options */}
+            {/* Booking options — round trip: combined here; one-way: inline in card */}
             {tripType === "round" && selectedOutbound && selectedReturn && (
               <CombinedBookingOptions outbound={selectedOutbound} returnFlight={selectedReturn} />
             )}
@@ -1183,106 +1299,26 @@ function FlightCard({
               </p>
             </div>
 
-            {itinerary.flights.map((segment, si) => (
-              <div key={si} className="mb-3 last:mb-0">
-                <div className="flex items-start gap-3">
-                  {/* Timeline dot */}
-                  <div className="flex flex-col items-center">
-                    <div className={`h-2.5 w-2.5 shrink-0 rounded-full ${si === 0 ? "bg-primary" : "bg-border"}`} />
-                    {si < itinerary.flights.length - 1 && <div className="mt-0.5 h-full min-h-[3rem] w-px bg-gradient-to-b from-primary/30 to-border" />}
-                  </div>
+            <SegmentList flights={itinerary.flights} layovers={itinerary.layovers} />
 
-                  {/* Segment details */}
-                  <div className="flex-1 min-w-0 pb-2">
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm font-semibold text-foreground">
-                        {segment.airline} {segment.flight_number}
-                      </p>
-                      {segment.airplane && (
-                        <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                          {segment.airplane}
-                        </span>
-                      )}
-                    </div>
-                    <div className="mt-1.5 grid grid-cols-2 gap-2 rounded-lg bg-muted/30 p-2.5 text-xs">
-                      <div className="flex items-center gap-1.5">
-                        <PlaneTakeoff className="h-3 w-3 text-muted-foreground shrink-0" />
-                        <span>
-                          <span className="font-semibold text-foreground">{segment.departure_airport.id}</span>
-                          <span className="text-muted-foreground"> {formatTime(segment.departure_airport.time)}</span>
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <PlaneLanding className="h-3 w-3 text-muted-foreground shrink-0" />
-                        <span>
-                          <span className="font-semibold text-foreground">{segment.arrival_airport.id}</span>
-                          <span className="text-muted-foreground"> {formatTime(segment.arrival_airport.time)}</span>
-                        </span>
-                      </div>
-                    </div>
-                    <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                      <span className="inline-flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {formatDuration(segment.duration)}
-                      </span>
-                      <span>{segment.travel_class}</span>
-                      {segment.legroom && <span>{segment.legroom} legroom</span>}
-                    </div>
-
-                    {/* Flight amenities */}
-                    {segment.extensions && segment.extensions.length > 0 && (
-                      <div className="mt-1.5 flex flex-wrap gap-1.5">
-                        {segment.extensions.map((ext, ei) => {
-                          const icon = getExtIcon(ext);
-                          return (
-                            <span
-                              key={ei}
-                              className="inline-flex items-center gap-0.5 rounded-md border border-border/60 bg-white px-1.5 py-0.5 text-[10px] text-muted-foreground shadow-sm"
-                              title={ext}
-                            >
-                              {icon && <span className="mr-0.5">{icon}</span>}
-                              {ext.split(":")[0].trim()}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {/* Flags */}
-                    <div className="mt-1.5 flex flex-wrap gap-1.5">
-                      {segment.overnight && (
-                        <span className="inline-flex items-center gap-1 rounded-md bg-gradient-to-r from-amber-50 to-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700 shadow-sm">
-                          🌙 Red-eye / Overnight
-                        </span>
-                      )}
-                      {segment.often_delayed_by_over_30_min && (
-                        <span className="inline-flex items-center gap-1 rounded-md bg-gradient-to-r from-red-50 to-red-100 px-2 py-0.5 text-[10px] font-medium text-red-700 shadow-sm">
-                          ⚠️ Often delayed
-                        </span>
-                      )}
-                    </div>
-                  </div>
+            {/* Return leg (round trips — comes combined from the search) */}
+            {itinerary.return_flights && itinerary.return_flights.flights.length > 0 && (
+              <div className="mt-6">
+                <div className="mb-3 flex items-center gap-2 rounded-lg bg-secondary/10 px-3 py-2">
+                  <Shuffle className="h-3 w-3 text-secondary shrink-0" />
+                  <p className="text-xs font-bold uppercase tracking-wide text-secondary">
+                    Return — {itinerary.return_flights.flights[0].departure_airport.id} → {itinerary.return_flights.flights[itinerary.return_flights.flights.length - 1].arrival_airport.id}
+                  </p>
+                  <span className="ml-auto text-[10px] text-muted-foreground">
+                    {formatDuration(itinerary.return_flights.total_duration)}
+                  </span>
                 </div>
-
-                {/* Layover between this segment and next */}
-                {si < itinerary.flights.length - 1 && itinerary.layovers[si] && (
-                  <div className="ml-3 mt-1.5 flex items-center gap-2.5 rounded-xl border border-amber-200/60 bg-gradient-to-r from-amber-50 to-amber-50/50 px-4 py-2.5 shadow-sm">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-100">
-                      <Clock className="h-3.5 w-3.5 text-amber-600 shrink-0" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium text-amber-800">
-                        Layover at {itinerary.layovers[si].name}
-                      </p>
-                      <p className="text-[11px] text-amber-600">
-                        {formatDuration(itinerary.layovers[si].duration)}
-                        {itinerary.layovers[si].overnight ? " · Overnight layover" : ""}
-                      </p>
-                    </div>
-                  </div>
-                )}
+                <SegmentList
+                  flights={itinerary.return_flights.flights}
+                  layovers={itinerary.return_flights.layovers}
+                />
               </div>
-            ))}
+            )}
 
             {/* Carbon info */}
             {itinerary.carbon_emissions && (
@@ -1305,12 +1341,129 @@ function FlightCard({
               </div>
             )}
 
-            {/* Booking Options */}
-            <BookingOptionsInline itinerary={itinerary} tripType={tripType} />
+            {/* Booking Options (one-way only — round trips use the combined options below) */}
+            {tripType === "oneway" && (
+              <BookingOptionsInline itinerary={itinerary} tripType="oneway" />
+            )}
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+// ─── Segment List (shared: outbound + return legs) ───────
+
+function SegmentList({
+  flights,
+  layovers,
+}: {
+  flights: FlightSegment[];
+  layovers: Layover[];
+}) {
+  return (
+    <>
+      {flights.map((segment, si) => (
+        <div key={si} className="mb-3 last:mb-0">
+          <div className="flex items-start gap-3">
+            {/* Timeline dot */}
+            <div className="flex flex-col items-center">
+              <div className={`h-2.5 w-2.5 shrink-0 rounded-full ${si === 0 ? "bg-primary" : "bg-border"}`} />
+              {si < flights.length - 1 && <div className="mt-0.5 h-full min-h-[3rem] w-px bg-gradient-to-b from-primary/30 to-border" />}
+            </div>
+
+            {/* Segment details */}
+            <div className="flex-1 min-w-0 pb-2">
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-semibold text-foreground">
+                  {segment.airline} {segment.flight_number}
+                </p>
+                {segment.airplane && (
+                  <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                    {segment.airplane}
+                  </span>
+                )}
+              </div>
+              <div className="mt-1.5 grid grid-cols-2 gap-2 rounded-lg bg-muted/30 p-2.5 text-xs">
+                <div className="flex items-center gap-1.5">
+                  <PlaneTakeoff className="h-3 w-3 text-muted-foreground shrink-0" />
+                  <span>
+                    <span className="font-semibold text-foreground">{segment.departure_airport.id}</span>
+                    <span className="text-muted-foreground"> {formatTime(segment.departure_airport.time)}</span>
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <PlaneLanding className="h-3 w-3 text-muted-foreground shrink-0" />
+                  <span>
+                    <span className="font-semibold text-foreground">{segment.arrival_airport.id}</span>
+                    <span className="text-muted-foreground"> {formatTime(segment.arrival_airport.time)}</span>
+                  </span>
+                </div>
+              </div>
+              <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                <span className="inline-flex items-center gap-1">
+                  <Clock className="h-3 w-3" />
+                  {formatDuration(segment.duration)}
+                </span>
+                <span>{segment.travel_class}</span>
+                {segment.legroom && <span>{segment.legroom} legroom</span>}
+              </div>
+
+              {/* Flight amenities */}
+              {segment.extensions && segment.extensions.length > 0 && (
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                  {segment.extensions.map((ext, ei) => {
+                    const icon = getExtIcon(ext);
+                    return (
+                      <span
+                        key={ei}
+                        className="inline-flex items-center gap-0.5 rounded-md border border-border/60 bg-white px-1.5 py-0.5 text-[10px] text-muted-foreground shadow-sm"
+                        title={ext}
+                      >
+                        {icon && <span className="mr-0.5">{icon}</span>}
+                        {ext.split(":")[0].trim()}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Flags */}
+              <div className="mt-1.5 flex flex-wrap gap-1.5">
+                {segment.overnight && (
+                  <span className="inline-flex items-center gap-1 rounded-md bg-gradient-to-r from-amber-50 to-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700 shadow-sm">
+                    🌙 Red-eye / Overnight
+                  </span>
+                )}
+                {segment.often_delayed_by_over_30_min && (
+                  <span className="inline-flex items-center gap-1 rounded-md bg-gradient-to-r from-red-50 to-red-100 px-2 py-0.5 text-[10px] font-medium text-red-700 shadow-sm">
+                    ⚠️ Often delayed
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Layover between this segment and next */}
+          {si < flights.length - 1 && layovers[si] && (
+            <div className="ml-3 mt-1.5 flex items-center gap-2.5 rounded-xl border border-amber-200/60 bg-gradient-to-r from-amber-50 to-amber-50/50 px-4 py-2.5 shadow-sm">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-100">
+                <Clock className="h-3.5 w-3.5 text-amber-600 shrink-0" />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-amber-800">
+                  Layover at {layovers[si].name}
+                </p>
+                <p className="text-[11px] text-amber-600">
+                  {formatDuration(layovers[si].duration)}
+                  {layovers[si].overnight ? " · Overnight layover" : ""}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </>
   );
 }
 
@@ -1530,7 +1683,7 @@ function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightIt
 
     const params = new URLSearchParams({
       departure_id: outbound.flights[0]?.departure_airport.id || "",
-      arrival_id: outbound.flights[outbound.flights.length - 1]?.arrival_airport.id || "",
+      arrival_id: returnFlight.flights[returnFlight.flights.length - 1]?.arrival_airport.id || "",
       outbound_date: outbound.flights[0]?.departure_airport.time?.split(" ")[0] || "",
       return_date: returnFlight.flights[0]?.departure_airport.time?.split(" ")[0] || "",
       type: "1",
