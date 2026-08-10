@@ -40,7 +40,7 @@ const reasons = [
 const tallCards = [
   {
     icon: Globe,
-    title: "Local Knowledge",
+    title: "We've Been There",
     description:
       "We've personally travelled the routes we sell — the lodges that deliver, the border posts that move fast, and the operators with the best track records. If we wouldn't book it for ourselves, we won't book it for you.",
     image:
@@ -49,7 +49,7 @@ const tallCards = [
   },
   {
     icon: Map,
-    title: "Zimbabwe-Based",
+    title: "Based in Harare",
     description:
       "We're based in Harare, not a call centre abroad. Same timezone, local numbers, and staff who've driven these roads — so when something changes mid-trip, we can fix it in minutes, not days.",
     image:
