@@ -14,7 +14,6 @@ import {
   DollarSign,
   MapPin,
   FileText,
-  Plane,
   Sparkles,
   ShieldCheck,
 } from "lucide-react";

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import Image from "next/image";
 import {
   Plane,
   Search,
@@ -381,7 +382,6 @@ export default function FlightPricingTool() {
     selectedReturn,
     combinedFinal,
     calcFinalPrice,
-    premiumValue,
     departureCode,
     arrivalCode,
     outboundDate,
@@ -389,9 +389,6 @@ export default function FlightPricingTool() {
     adults,
     tripType,
   ]);
-
-  // ─── Search params label ──────────────────────────────────
-  const searchParamsLabel = `${departureCode.toUpperCase()} → ${arrivalCode.toUpperCase()} · ${outboundDate}${tripType === "round" ? ` → ${returnDate}` : ""} · ${adults} ${adults === "1" ? "adult" : "adults"}`;
 
   // ─── Has results? ────────────────────────────────────────
   const hasResults = legs.some((leg) => leg.best.length > 0 || leg.other.length > 0);
@@ -1027,12 +1024,14 @@ function FlightCard({
           {/* Route summary */}
           <div className="flex items-center gap-3 min-w-0 flex-1">
             {/* Airline logo */}
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-muted to-muted/70 p-1.5 shadow-sm">
+            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-muted to-muted/70 p-1.5 shadow-sm">
               {itinerary.flights[0]?.airline_logo ? (
-                <img
+                <Image
                   src={itinerary.flights[0].airline_logo}
                   alt={itinerary.flights[0].airline}
-                  className="h-full w-full object-contain"
+                  fill
+                  sizes="48px"
+                  className="object-contain"
                 />
               ) : (
                 <Plane className="h-6 w-6 text-muted-foreground" />
@@ -1341,14 +1340,12 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
     const to = lastFlight?.arrival_airport.id || "";
     const outDate = firstFlight?.departure_airport.time?.split(" ")[0] || "";
 
-    let type: string;
     let selectedFlights: { outbound: SelectedFlightLeg[] };
     let params: URLSearchParams;
 
     if (isRoundTrip) {
       // SerpAPI's type=1 doesn't return return flight data — only the combined price.
       // Fall back to one-way booking options for the outbound flight.
-      type = "2";
       selectedFlights = {
         outbound: segs.map((f) => ({
           departure_id: f.departure_airport.id,
@@ -1368,7 +1365,6 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
         selected_flights_json: JSON.stringify(selectedFlights),
       });
     } else {
-      type = "2";
       selectedFlights = {
         outbound: segs.map((f) => ({
           departure_id: f.departure_airport.id,
@@ -1407,7 +1403,7 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
     } finally {
       setLoading(false);
     }
-  }, [itinerary, firstFlight, lastFlight, options, show]);
+  }, [itinerary, firstFlight, lastFlight, isRoundTrip, options, show]);
 
   return (
     <div className="mt-3">
@@ -1446,11 +1442,13 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     {opt.airline_logos?.[0] && (
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted p-1">
-                        <img
+                      <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted p-1">
+                        <Image
                           src={opt.airline_logos[0]}
                           alt={opt.book_with}
-                          className="h-full w-full object-contain"
+                          fill
+                          sizes="32px"
+                          className="object-contain"
                         />
                       </div>
                     )}
@@ -1599,11 +1597,13 @@ function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightIt
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     {opt.airline_logos?.[0] && (
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted p-1">
-                        <img
+                      <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted p-1">
+                        <Image
                           src={opt.airline_logos[0]}
                           alt={opt.book_with}
-                          className="h-full w-full object-contain"
+                          fill
+                          sizes="32px"
+                          className="object-contain"
                         />
                       </div>
                     )}

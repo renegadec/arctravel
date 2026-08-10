@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Globe,
   HeadphonesIcon,
@@ -83,12 +84,12 @@ export default function WhyChooseUs() {
               key={card.title}
               className="group relative overflow-hidden rounded-3xl lg:row-span-2"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={card.image}
                 alt={card.alt}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                fill
+                sizes="(min-width: 1024px) 25vw, 100vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#002a62]/95 via-[#002a62]/40 to-transparent" />
               <div className="relative flex h-full min-h-[22rem] flex-col justify-end p-8">

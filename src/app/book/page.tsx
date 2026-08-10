@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Plane,
   ShieldCheck,
@@ -63,10 +64,13 @@ export default function BookPage() {
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=80"
             alt="Traveller on a plane looking out the window"
-            className="h-full w-full object-cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#001b42]/95 via-[#002a62]/85 to-[#002a62]/95" />
         </div>

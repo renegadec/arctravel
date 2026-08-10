@@ -8,7 +8,6 @@ import {
   CheckCircle2,
   MapPin,
   Users,
-  Clock,
   ShieldCheck,
 } from "lucide-react";
 

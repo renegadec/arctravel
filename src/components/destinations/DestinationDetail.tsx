@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { packages } from "@/lib/constants";
 import type { DestinationContent } from "@/lib/destination-content";
@@ -24,10 +25,13 @@ export default function DestinationDetail({ data }: { data: DestinationContent }
       <section className="relative overflow-hidden">
         {/* Background image */}
         <div className="absolute inset-0">
-          <img
+          <Image
             src={data.heroImage}
             alt={data.name}
-            className="h-full w-full object-cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#001b42]/90 via-[#002a62]/75 to-[#002a62]/95" />
         </div>
@@ -114,10 +118,12 @@ export default function DestinationDetail({ data }: { data: DestinationContent }
                 className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-[#002a62]/10"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
+                  <Image
                     src={h.image}
                     alt={h.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    fill
+                    sizes="(min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#001b42]/60 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 </div>
@@ -158,15 +164,17 @@ export default function DestinationDetail({ data }: { data: DestinationContent }
               <div
                 key={i}
                 className={`group relative overflow-hidden rounded-2xl ${
-                  i === 0 ? "sm:col-span-2 sm:row-span-2" : ""
+                  i === 0
+                    ? "aspect-[4/3] sm:col-span-2 sm:row-span-2 sm:aspect-auto sm:h-full"
+                    : "aspect-[4/3]"
                 }`}
               >
-                <img
+                <Image
                   src={img}
                   alt={`${data.name} gallery ${i + 1}`}
-                  className={`w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
-                    i === 0 ? "aspect-[4/3] sm:aspect-auto sm:h-full" : "aspect-[4/3]"
-                  }`}
+                  fill
+                  sizes="(min-width: 640px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
             ))}

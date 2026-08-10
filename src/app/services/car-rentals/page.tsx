@@ -3,10 +3,6 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import {
   CarFront,
-  Fuel,
-  ShieldCheck,
-  MapPin,
-  Clock,
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";

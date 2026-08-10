@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { Send, ArrowRight, MessageCircle, Phone } from "lucide-react";
@@ -12,12 +13,13 @@ export default function CTASection() {
   return (
     <section className="relative isolate overflow-hidden">
       {/* Background photo */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={ctaImage}
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 -z-20 h-full w-full object-cover"
+        fill
+        sizes="100vw"
+        className="absolute inset-0 -z-20 object-cover"
       />
       {/* Navy gradient overlay for depth + readability */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#001b42]/95 via-[#002a62]/90 to-[#0a2440]/75" />

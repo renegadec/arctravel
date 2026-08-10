@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/select";
 import { services } from "@/lib/constants";
 import {
-  Plane,
   CheckCircle,
   Check,
   ArrowRight,

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import type { Package } from "@/lib/constants";
 import type { PackageContent } from "@/lib/package-content";
@@ -26,10 +27,13 @@ export default function PackageDetail({
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img
+          <Image
             src={content.heroImage}
             alt={pkg.title}
-            className="h-full w-full object-cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#001b42]/90 via-[#002a62]/75 to-[#002a62]/95" />
         </div>
@@ -259,15 +263,15 @@ export default function PackageDetail({
                   <div
                     key={i}
                     className={`group relative overflow-hidden rounded-2xl ${
-                      i === 0 ? "sm:col-span-2" : ""
+                      i === 0 ? "aspect-[16/9] sm:col-span-2" : "aspect-[4/3]"
                     }`}
                   >
-                    <img
+                    <Image
                       src={img}
                       alt={`${pkg.title} gallery ${i + 1}`}
-                      className={`w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
-                        i === 0 ? "aspect-[16/9]" : "aspect-[4/3]"
-                      }`}
+                      fill
+                      sizes="(min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
                 ))}
@@ -283,12 +287,14 @@ export default function PackageDetail({
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <Link
               href={content.relatedDestination}
-              className="group relative block overflow-hidden rounded-3xl"
+              className="group relative block h-64 overflow-hidden rounded-3xl sm:h-80"
             >
-              <img
+              <Image
                 src={content.heroImage}
                 alt="Explore the destination"
-                className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:h-80"
+                fill
+                sizes="100vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-[#001b42]/95 via-[#002a62]/80 to-transparent" />
               <div className="absolute inset-0 flex items-center">

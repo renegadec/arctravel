@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { destinations } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
@@ -124,10 +125,12 @@ export default function DestinationsPage() {
                       className="group relative aspect-3/4 overflow-hidden rounded-2xl bg-muted"
                     >
                       {/* Background image */}
-                      <img
+                      <Image
                         alt={dest.name}
                         src={destImages[dest.href]}
-                        className="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                        fill
+                        sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 100vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                       />
                       {/* Gradient overlay */}
                       <div

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -62,11 +63,13 @@ export default async function BlogPostPage({ params }: Props) {
       {/* Hero image */}
       <section className="relative">
         <div className="relative h-[320px] w-full overflow-hidden sm:h-[420px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={post.image}
             alt={post.title}
-            className="h-full w-full object-cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#002a62]/90 via-[#002a62]/40 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 mx-auto max-w-4xl px-4 pb-8 sm:px-6 sm:pb-12">

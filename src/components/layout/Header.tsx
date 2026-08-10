@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import {
@@ -91,9 +92,12 @@ export default function Header() {
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-24 lg:px-8">
           {/* Logo */}
           <Link href="/" className="flex shrink-0 items-center">
-            <img
+            <Image
               src="/arctravel_logo.svg"
               alt="ArcTravel"
+              width={120}
+              height={120}
+              priority
               className="h-14 w-auto sm:h-16 lg:h-20"
             />
           </Link>

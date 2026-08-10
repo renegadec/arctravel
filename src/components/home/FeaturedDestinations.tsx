@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, MapPin } from "lucide-react";
 
 // 🔁 SWAP THESE IMAGES with your own destination photos (3:4 or 4:3 crops work).
@@ -100,12 +101,12 @@ export default function FeaturedDestinations() {
               className={`group relative overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#002a62]/10 ${tile.size}`}
             >
               <div className={`relative overflow-hidden ${tile.imageHeight}`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={tileImages[tile.name]}
                   alt={`${tile.name} — plan your trip with ArcTravel`}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 {/* Country badge */}

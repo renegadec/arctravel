@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Star, Phone, ArrowRight } from "lucide-react";
 
@@ -160,13 +161,13 @@ export default function HeroSection() {
                         href={tile.href}
                         className="group relative block overflow-hidden rounded-2xl shadow-lg shadow-[#002a62]/10 ring-1 ring-black/5 transition-shadow hover:shadow-2xl hover:shadow-[#002a62]/20"
                       >
-                        <div className="aspect-[3/4] w-full">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
+                        <div className="relative aspect-[3/4] w-full">
+                          <Image
                             src={tile.image}
                             alt={`${tile.name} — plan your trip with ArcTravel`}
-                            loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            fill
+                            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
                           />
                         </div>
                         {/* Hover overlay label */}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   CalendarDays,
   Clock,
@@ -67,11 +68,12 @@ export default function BlogPage() {
           >
             {/* Image side */}
             <div className="relative aspect-[16/10] overflow-hidden lg:aspect-auto lg:min-h-[420px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={featured.image}
                 alt={featured.title}
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-[#ff8912] px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white shadow-lg">
                 <Sparkles className="h-3 w-3" />
@@ -134,12 +136,12 @@ export default function BlogPage() {
                   className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-[#002a62]/10"
                 >
                   <div className="relative aspect-[16/9] overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={post.image}
                       alt={post.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
                   <div className="flex flex-1 flex-col p-6">

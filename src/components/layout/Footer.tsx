@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import Image from "next/image";
+import { Mail, Phone, MapPin } from "lucide-react";
 import { services, destinations, contactInfo, socialLinks } from "@/lib/constants";
 
 // Brand icons (removed from lucide, so inline SVG paths)
@@ -73,9 +74,11 @@ export default function Footer() {
           {/* Brand + mission */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center">
-              <img
+              <Image
                 src="/arctravel_logo.svg"
                 alt="ArcTravel"
+                width={88}
+                height={88}
                 className="h-auto brightness-0 invert"
                 style={{ width: "auto", height: "88px" }}
               />
