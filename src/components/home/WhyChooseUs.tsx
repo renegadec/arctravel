@@ -49,9 +49,9 @@ const tallCards = [
   },
   {
     icon: Map,
-    title: "10+ Years in Zimbabwe",
+    title: "Travel Is Our Passion, Not Just Business",
     description:
-      "We're based in Harare, not a call centre abroad. Same timezone, local numbers, and staff who've driven these roads — so when something changes mid-trip, we can fix it in minutes, not days.",
+      "We're in this because we love travel — and we plan every trip like it's our own. The long hours, the last-minute fixes, the extra care: that's not a service tier, it's just how we work.",
     image:
       "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80",
     alt: "Road trip through Southern Africa",
