@@ -36,15 +36,14 @@ const reasons = [
   },
 ];
 
-// 🔁 SWAP with real photos when available (3:4 portrait crops recommended).
+// Real photos (3:4 portrait).
 const tallCards = [
   {
     icon: Globe,
     title: "Deep Industry Know-How",
     description:
       "Years of working with airlines, lodges, and ground operators mean we know who delivers — and who to avoid. If we wouldn't book it for ourselves, we won't book it for you.",
-    image:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
+    image: "/images/why-us/business.jpg",
     alt: "ArcTravel team planning a journey",
   },
   {
@@ -52,8 +51,7 @@ const tallCards = [
     title: "Passion, Not Just Business",
     description:
       "We're in this because we love travel — and we plan every trip like it's our own. The long hours, the last-minute fixes, the extra care: that's not a service tier, it's just how we work.",
-    image:
-      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80",
+    image: "/images/why-us/passion.jpg",
     alt: "Road trip through Southern Africa",
   },
 ];
