@@ -42,7 +42,7 @@ const tallCards = [
     icon: Globe,
     title: "Deep Industry Know-How",
     description:
-      "We've personally travelled the routes we sell — the lodges that deliver, the border posts that move fast, and the operators with the best track records. If we wouldn't book it for ourselves, we won't book it for you.",
+      "Years of working with airlines, lodges, and ground operators mean we know who delivers — and who to avoid. If we wouldn't book it for ourselves, we won't book it for you.",
     image:
       "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
     alt: "ArcTravel team planning a journey",
