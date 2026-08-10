@@ -5,16 +5,11 @@ import { ArrowRight, MapPin } from "lucide-react";
 // 🔁 SWAP THESE IMAGES with your own destination photos (3:4 or 4:3 crops work).
 // Drop files in /public/images/ and use e.g. image: "/images/vic-falls.jpg"
 const tileImages: Record<string, string> = {
-  "Victoria Falls":
-    "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=900&q=80",
-  "Hwange National Park":
-    "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=900&q=80",
-  "Cape Town":
-    "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=900&q=80",
-  Zanzibar:
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80",
-  Dubai:
-    "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=80",
+  "Victoria Falls": "/images/featured/victoria-falls.jpg",
+  "Hwange National Park": "/images/featured/hwange.jpg",
+  "Cape Town": "/images/featured/capetown.jpg",
+  "Diani Beach": "/images/featured/diani-beach.jpg",
+  Dubai: "/images/featured/dubai.jpg",
 };
 
 const tiles = [
@@ -46,11 +41,11 @@ const tiles = [
     imageHeight: "h-56 sm:h-64",
   },
   {
-    name: "Zanzibar",
-    country: "Tanzania",
-    href: "/destinations/zanzibar",
+    name: "Diani Beach",
+    country: "Kenya",
+    href: "/destinations/diani-beach",
     description:
-      "White-sand beaches, turquoise water, and Stone Town's winding alleys.",
+      "White-sand beaches, coral reefs, and easy-going Indian Ocean life.",
     size: "lg:col-span-2",
     imageHeight: "h-56 sm:h-64",
   },
