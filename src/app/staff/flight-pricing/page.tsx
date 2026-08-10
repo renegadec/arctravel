@@ -1683,7 +1683,9 @@ function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightIt
 
     const params = new URLSearchParams({
       departure_id: outbound.flights[0]?.departure_airport.id || "",
-      arrival_id: returnFlight.flights[returnFlight.flights.length - 1]?.arrival_airport.id || "",
+      // SerpAPI validates: top-level arrival_id must match the outbound's
+      // final arrival (the destination), not the return's final arrival.
+      arrival_id: outbound.flights[outbound.flights.length - 1]?.arrival_airport.id || "",
       outbound_date: outbound.flights[0]?.departure_airport.time?.split(" ")[0] || "",
       return_date: returnFlight.flights[0]?.departure_airport.time?.split(" ")[0] || "",
       type: "1",
