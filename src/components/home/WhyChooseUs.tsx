@@ -42,7 +42,7 @@ const tallCards = [
     icon: Globe,
     title: "Local Knowledge",
     description:
-      "We know Zimbabwe and Southern Africa intimately. Hidden gems, best routes, trusted partners — we've got the ground truth.",
+      "We've personally travelled the routes we sell — the lodges that deliver, the border posts that move fast, and the operators with the best track records. If we wouldn't book it for ourselves, we won't book it for you.",
     image:
       "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
     alt: "ArcTravel team planning a journey",
@@ -51,7 +51,7 @@ const tallCards = [
     icon: Map,
     title: "Zimbabwe-Based",
     description:
-      "We're local. We understand the terrain, the routes, the seasons, and what works best for travellers in this region.",
+      "We're based in Harare, not a call centre abroad. Same timezone, local numbers, and staff who've driven these roads — so when something changes mid-trip, we can fix it in minutes, not days.",
     image:
       "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80",
     alt: "Road trip through Southern Africa",
