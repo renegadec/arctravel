@@ -5,9 +5,8 @@ import { Reveal } from "@/components/ui/reveal";
 import { Send, ArrowRight, MessageCircle, Phone } from "lucide-react";
 import { contactInfo, socialLinks } from "@/lib/constants";
 
-// 🔁 SWAP with a real ArcTravel photo (wide, 16:9-ish landscape crop).
-const ctaImage =
-  "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=2000&q=80";
+// 🔁 Real ArcTravel photo (wide, 16:9-ish landscape crop).
+const ctaImage = "/images/cta-background.jpg";
 
 export default function CTASection() {
   return (
