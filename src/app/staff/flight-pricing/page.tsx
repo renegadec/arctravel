@@ -1128,7 +1128,7 @@ function AirportInput({
   return (
     <div ref={containerRef} className="relative">
       <Input
-        value={inputValue}
+        value={focused ? inputValue : value}
         onChange={(e) => {
           setInputValue(e.target.value.toUpperCase());
           onChange(e.target.value.toUpperCase());
