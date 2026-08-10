@@ -16,6 +16,7 @@ export async function GET(request: NextRequest) {
   const outbound_date = searchParams.get("outbound_date");
   const return_date = searchParams.get("return_date");
   const adults = searchParams.get("adults") || "1";
+  const children = searchParams.get("children");
   const type = searchParams.get("type");
   const departure_token = searchParams.get("departure_token");
 
@@ -48,6 +49,10 @@ export async function GET(request: NextRequest) {
   // Round-trip step 2: return flights for a selected outbound
   if (departure_token) {
     serpParams.set("departure_token", departure_token);
+  }
+
+  if (children && children !== "0") {
+    serpParams.set("children", children);
   }
 
   try {

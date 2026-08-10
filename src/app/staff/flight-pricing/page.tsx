@@ -22,6 +22,7 @@ import {
   RefreshCw,
   Building2,
   Users,
+  Baby,
   Calendar,
   Shuffle,
   ExternalLink,
@@ -212,6 +213,7 @@ export default function FlightPricingTool() {
   const [outboundDate, setOutboundDate] = useState(getNextWeekISO());
   const [returnDate, setReturnDate] = useState(getNextWeekISO());
   const [adults, setAdults] = useState("1");
+  const [children, setChildren] = useState("0");
   const [tripType, setTripType] = useState<"round" | "oneway">("round");
 
   // Flight search results (one leg for one-way, two legs for round trip)
@@ -299,6 +301,9 @@ export default function FlightPricingTool() {
         if (search.returnDate) {
           params.set("return_date", search.returnDate);
         }
+        if (children && children !== "0") {
+          params.set("children", children);
+        }
 
         try {
           const res = await fetch(`/api/staff/flight-search?${params.toString()}`);
@@ -324,7 +329,7 @@ export default function FlightPricingTool() {
 
     setTotalLoading(false);
     setExpandedCards(new Set());
-  }, [departureCode, arrivalCode, outboundDate, returnDate, adults, tripType]);
+  }, [departureCode, arrivalCode, outboundDate, returnDate, adults, children, tripType]);
 
   // ─── Premium calc ────────────────────────────────────
 
@@ -375,6 +380,9 @@ export default function FlightPricingTool() {
           adults,
         });
         if (returnDate) params.set("return_date", returnDate);
+        if (children && children !== "0") {
+          params.set("children", children);
+        }
         params.set("departure_token", itinerary.departure_token);
 
         const res = await fetch(`/api/staff/flight-search?${params.toString()}`);
@@ -392,7 +400,7 @@ export default function FlightPricingTool() {
         setReturnLoading(false);
       }
     },
-    [adults, returnDate, tripType]
+    [adults, children, returnDate, tripType]
   );
 
   // ─── Copy quote ──────────────────────────────────────
@@ -403,7 +411,11 @@ export default function FlightPricingTool() {
     if (tripType === "round") {
       text += ` → ${returnDate}`;
     }
-    text += ` · ${adults} traveller${adults !== "1" ? "s" : ""}\n\n`;
+    text += ` · ${adults} adult${adults !== "1" ? "s" : ""}`;
+    if (children && children !== "0") {
+      text += ` + ${children} child${children !== "1" ? "ren" : ""}`;
+    }
+    text += `\n\n`;
 
     const addItinerary = (
       itinerary: { flights: FlightSegment[]; layovers: Layover[] },
@@ -455,6 +467,7 @@ export default function FlightPricingTool() {
     outboundDate,
     returnDate,
     adults,
+    children,
     tripType,
   ]);
 
@@ -607,6 +620,24 @@ export default function FlightPricingTool() {
                   </SelectTrigger>
                   <SelectContent>
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                      <SelectItem key={n} value={String(n)}>
+                        {n}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="w-24 md:w-20 lg:w-24">
+                <label className="mb-1.5 block text-xs font-medium text-gray-600">
+                  <Baby className="mr-1 inline h-3.5 w-3.5 text-gray-400" />
+                  Children
+                </label>
+                <Select value={children} onValueChange={(v) => v && setChildren(v)}>
+                  <SelectTrigger className="h-10 rounded-xl border-gray-300 bg-white shadow-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                       <SelectItem key={n} value={String(n)}>
                         {n}
                       </SelectItem>
@@ -874,6 +905,8 @@ export default function FlightPricingTool() {
                             selected={selected}
                             onSelect={() => selectOutbound(itinerary)}
                             tripType={tripType}
+                          adults={adults}
+                          childCount={children}
                           />
                         );
                       })}
@@ -904,6 +937,8 @@ export default function FlightPricingTool() {
                             selected={selected}
                             onSelect={() => selectOutbound(itinerary)}
                             tripType={tripType}
+                          adults={adults}
+                          childCount={children}
                           />
                         );
                       })}
@@ -981,6 +1016,8 @@ export default function FlightPricingTool() {
                       selected={selected}
                       onSelect={() => setSelectedReturn(itinerary)}
                       tripType="round"
+                    adults={adults}
+                    childCount={children}
                     />
                   );
                 })}
@@ -1062,11 +1099,11 @@ export default function FlightPricingTool() {
 
             {/* Booking options — round trip: combined here; one-way: inline in card */}
             {tripType === "round" && selectedOutbound && selectedReturn && (
-              <CombinedBookingOptions outbound={selectedOutbound} returnFlight={selectedReturn} />
+              <CombinedBookingOptions outbound={selectedOutbound} returnFlight={selectedReturn} adults={adults} childCount={children} />
             )}
             {tripType === "oneway" && selectedOutbound && (
               <div className="mt-3">
-                <BookingOptionsInline itinerary={selectedOutbound} tripType="oneway" />
+                <BookingOptionsInline itinerary={selectedOutbound} tripType="oneway" adults={adults} childCount={children} />
               </div>
             )}
           </div>
@@ -1151,6 +1188,8 @@ function FlightCard({
   selected,
   onSelect,
   tripType,
+  adults,
+  childCount,
 }: {
   itinerary: FlightItinerary;
   expanded: boolean;
@@ -1161,6 +1200,8 @@ function FlightCard({
   selected: boolean;
   onSelect: () => void;
   tripType?: "round" | "oneway";
+  adults: string;
+  childCount: string;
 }) {
   const basePrice = itinerary.price ?? 0;
   const final = calcFinalPrice(basePrice);
@@ -1387,7 +1428,7 @@ function FlightCard({
 
             {/* Booking Options (one-way only — round trips use the combined options below) */}
             {tripType === "oneway" && (
-              <BookingOptionsInline itinerary={itinerary} tripType="oneway" />
+              <BookingOptionsInline itinerary={itinerary} tripType="oneway" adults={adults} childCount={childCount} />
             )}
           </div>
         )}
@@ -1513,7 +1554,7 @@ function SegmentList({
 
 // ─── Booking Options Section ────────────────────────────
 
-function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItinerary; tripType?: "round" | "oneway" }) {
+function BookingOptionsInline({ itinerary, tripType, adults, childCount }: { itinerary: FlightItinerary; tripType?: "round" | "oneway"; adults: string; childCount: string }) {
   const [options, setOptions] = useState<BookingOption[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -1558,7 +1599,7 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
         type: "2",
         currency: "USD",
         hl: "en",
-        adults: "1",
+        adults,
         selected_flights_json: JSON.stringify(selectedFlights),
       });
     } else {
@@ -1577,9 +1618,13 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
         type: "2",
         currency: "USD",
         hl: "en",
-        adults: "1",
+        adults,
         selected_flights_json: JSON.stringify(selectedFlights),
       });
+    }
+
+    if (childCount && childCount !== "0") {
+      params.set("children", childCount);
     }
 
     try {
@@ -1600,7 +1645,7 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
     } finally {
       setLoading(false);
     }
-  }, [itinerary, firstFlight, lastFlight, isRoundTrip, options, show]);
+  }, [itinerary, firstFlight, lastFlight, isRoundTrip, adults, childCount, options, show]);
 
   return (
     <div className="mt-3">
@@ -1695,7 +1740,7 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
 
 // ─── Combined Booking Options (round trip) ────────────────
 
-function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightItinerary; returnFlight: FlightItinerary }) {
+function CombinedBookingOptions({ outbound, returnFlight, adults, childCount }: { outbound: FlightItinerary; returnFlight: FlightItinerary; adults: string; childCount: string }) {
   const [options, setOptions] = useState<BookingOption[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -1735,9 +1780,13 @@ function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightIt
       type: "1",
       currency: "USD",
       hl: "en",
-      adults: "1",
+      adults,
       selected_flights_json: JSON.stringify(selectedFlights),
     });
+
+    if (childCount && childCount !== "0") {
+      params.set("children", childCount);
+    }
 
     try {
       const res = await fetch(`/api/staff/flight-booking-options?${params.toString()}`);
@@ -1757,7 +1806,7 @@ function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightIt
     } finally {
       setLoading(false);
     }
-  }, [outbound, returnFlight, options, show]);
+  }, [outbound, returnFlight, adults, childCount, options, show]);
 
   return (
     <div className="mt-4 border-t border-border/60 pt-4">

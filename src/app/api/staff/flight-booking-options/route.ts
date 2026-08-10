@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
   const return_date = searchParams.get("return_date");
   const type = searchParams.get("type") || "2";
   const adults = searchParams.get("adults") || "1";
+  const children = searchParams.get("children");
   const selectedFlightsJson = searchParams.get("selected_flights_json");
 
   if (!departure_id || !arrival_id || !outbound_date || !selectedFlightsJson) {
@@ -42,6 +43,10 @@ export async function GET(request: NextRequest) {
 
   if (return_date && type === "1") {
     serpParams.return_date = return_date;
+  }
+
+  if (children && children !== "0") {
+    serpParams.children = children;
   }
 
   try {
