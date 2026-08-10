@@ -13,38 +13,32 @@ const heroTiles = [
   {
     name: "Victoria Falls",
     href: "/destinations/victoria-falls",
-    image:
-      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=600&q=80",
+    image: "/images/hero/victoria-falls.jpg",
   },
   {
     name: "Hwange Safari",
     href: "/destinations/hwange-national-park",
-    image:
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=600&q=80",
+    image: "/images/hero/hwange.jpg",
   },
   {
-    name: "Zanzibar",
+    name: "Diani Beach",
     href: "/destinations/zanzibar",
-    image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
+    image: "/images/hero/diani-beach.jpg",
   },
   {
     name: "Cape Town",
     href: "/destinations/cape-town",
-    image:
-      "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=600&q=80",
+    image: "/images/hero/cape-town.jpg",
   },
   {
     name: "Dubai",
     href: "/destinations/dubai",
-    image:
-      "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80",
+    image: "/images/hero/dubai.jpg",
   },
   {
     name: "Eastern Highlands",
     href: "/destinations/eastern-highlands",
-    image:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80",
+    image: "/images/hero/eastern-highlands.jpg",
   },
 ];
 
