@@ -75,8 +75,28 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function extractBookingOptions(data: any) {
-  return (data.booking_options || []).map((opt: any) => {
+interface SerpBookingRequest {
+  url?: string;
+  post_data?: string | null;
+}
+
+interface SerpBookingOptionItem {
+  book_with?: string;
+  price?: number;
+  option_title?: string;
+  extensions?: string[];
+  baggage_prices?: string[];
+  booking_request?: SerpBookingRequest;
+  airline?: unknown;
+  airline_logos?: string[];
+}
+
+interface SerpBookingOption extends SerpBookingOptionItem {
+  together?: SerpBookingOptionItem;
+}
+
+function extractBookingOptions(data: { booking_options?: SerpBookingOption[] }) {
+  return (data.booking_options || []).map((opt) => {
     const item = opt.together || opt;
     return {
       book_with: item.book_with || "Unknown",

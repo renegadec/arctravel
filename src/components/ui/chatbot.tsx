@@ -165,7 +165,6 @@ export default function ChatBot() {
   const [showLeadForm, setShowLeadForm] = useState(false);
   const [showNameInput, setShowNameInput] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
-  const [started, setStarted] = useState(false);
   const [conversationDone, setConversationDone] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -182,10 +181,11 @@ export default function ChatBot() {
     }
   }, [loading, showLeadForm, showNameInput, messages, open]);
 
-  // Initial greeting
+  // Initial greeting — runs once, tracked via ref to avoid setState-in-effect
+  const startedRef = useRef(false);
   useEffect(() => {
-    if (open && !started) {
-      setStarted(true);
+    if (open && !startedRef.current) {
+      startedRef.current = true;
       setTimeout(() => {
         setMessages([
           {
@@ -196,7 +196,7 @@ export default function ChatBot() {
         setShowNameInput(true);
       }, 300);
     }
-  }, [open, started]);
+  }, [open]);
 
   function handleNameSubmit(name: string) {
     setUserName(name);

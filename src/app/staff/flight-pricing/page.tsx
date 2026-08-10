@@ -88,6 +88,25 @@ interface FlightItinerary {
   };
 }
 
+interface BookingOption {
+  book_with: string;
+  price?: number;
+  option_title: string;
+  extensions: string[];
+  baggage_prices: string[];
+  booking_url: string | null;
+  post_data: string | null;
+  airline?: unknown;
+  airline_logos: string[];
+}
+
+interface SelectedFlightLeg {
+  departure_id: string;
+  arrival_id: string;
+  flight_number: string;
+  date: string;
+}
+
 interface LegResults {
   label: string;
   departureCode: string;
@@ -395,7 +414,7 @@ export default function FlightPricingTool() {
   return (
     <div className="min-h-screen bg-[#f5f6fa]">
       {/* Header */}
-      <div className="sticky top-16 z-40 border-b border-primary/10 bg-gradient-to-r from-primary to-[#003d7a] shadow-md">
+      <div className="sticky top-20 z-40 border-b border-primary/10 bg-gradient-to-r from-primary to-[#003d7a] shadow-md md:top-[116px] lg:top-[132px]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-2 sm:px-6 sm:py-3 lg:px-8">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-xs font-bold text-white shadow-sm backdrop-blur-sm ring-1 ring-white/20">
@@ -1299,7 +1318,7 @@ function FlightCard({
 // ─── Booking Options Section ────────────────────────────
 
 function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItinerary; tripType?: "round" | "oneway" }) {
-  const [options, setOptions] = useState<any[] | null>(null);
+  const [options, setOptions] = useState<BookingOption[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [show, setShow] = useState(false);
@@ -1323,7 +1342,7 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
     const outDate = firstFlight?.departure_airport.time?.split(" ")[0] || "";
 
     let type: string;
-    let selectedFlights: any;
+    let selectedFlights: { outbound: SelectedFlightLeg[] };
     let params: URLSearchParams;
 
     if (isRoundTrip) {
@@ -1469,7 +1488,7 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
           {options?.some((o) => o.baggage_prices?.length > 0) && (
             <div className="mt-1.5 rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-blue-50/50 px-3 py-2">
               <p className="text-[10px] text-blue-700 font-medium">
-                💼 Baggage: {options.find((o) => o.baggage_prices?.length > 0).baggage_prices.join(" · ")}
+                💼 Baggage: {options.find((o) => o.baggage_prices?.length > 0)?.baggage_prices.join(" · ")}
               </p>
             </div>
           )}
@@ -1482,7 +1501,7 @@ function BookingOptionsInline({ itinerary, tripType }: { itinerary: FlightItiner
 // ─── Combined Booking Options (round trip) ────────────────
 
 function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightItinerary; returnFlight: FlightItinerary }) {
-  const [options, setOptions] = useState<any[] | null>(null);
+  const [options, setOptions] = useState<BookingOption[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [show, setShow] = useState(false);
@@ -1615,7 +1634,7 @@ function CombinedBookingOptions({ outbound, returnFlight }: { outbound: FlightIt
           {options?.some((o) => o.baggage_prices?.length > 0) && (
             <div className="mt-1.5 rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-blue-50/50 px-3 py-2">
               <p className="text-[10px] text-blue-700 font-medium">
-                💼 Baggage: {options.find((o) => o.baggage_prices?.length > 0).baggage_prices.join(" · ")}
+                💼 Baggage: {options.find((o) => o.baggage_prices?.length > 0)?.baggage_prices.join(" · ")}
               </p>
             </div>
           )}

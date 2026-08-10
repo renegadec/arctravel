@@ -34,10 +34,13 @@ export default function Header() {
   }, []);
 
   // Close dropdown on route change
-  useEffect(() => {
+  // (adjust state during render — avoids cascading setState-in-effect)
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setDropdown(null);
     setOpen(false);
-  }, [pathname]);
+  }
 
   function isActive(link: NavLink) {
     if (link.href === "/") return pathname === "/";
