@@ -507,24 +507,24 @@ export default function FlightPricingTool() {
       {/* Search Panel */}
       <div className="border-b border-border bg-white shadow-sm">
         <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 lg:px-8">
-          {/* Trip Type - full width on mobile, compact on desktop */}
-          <div className="mb-3 flex rounded-xl bg-muted p-1 sm:mb-4 lg:w-auto lg:mb-0">
+          {/* Trip Type - segmented control */}
+          <div className="mb-4 inline-flex rounded-xl bg-gray-100 p-0.5">
             <button
               onClick={() => setTripType("round")}
-              className={`flex-1 rounded-lg px-5 py-1.5 text-sm font-medium transition-all ${
+              className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all ${
                 tripType === "round"
-                  ? "bg-white text-primary shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-white text-primary shadow-sm ring-1 ring-gray-200"
+                  : "text-gray-500 hover:text-gray-900"
               }`}
             >
               Round Trip
             </button>
             <button
               onClick={() => setTripType("oneway")}
-              className={`flex-1 rounded-lg px-5 py-1.5 text-sm font-medium transition-all ${
+              className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all ${
                 tripType === "oneway"
-                  ? "bg-white text-primary shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-white text-primary shadow-sm ring-1 ring-gray-200"
+                  : "text-gray-500 hover:text-gray-900"
               }`}
             >
               One Way
@@ -536,8 +536,8 @@ export default function FlightPricingTool() {
             {/* From + Swap + To row on mobile, inline on desktop */}
             <div className="flex items-end gap-2 w-full lg:flex-1">
               <div className="flex-1">
-                <label className="mb-1 block text-xs font-medium text-muted-foreground">
-                  <PlaneTakeoff className="mr-0.5 inline h-3 w-3" />
+                <label className="mb-1.5 block text-xs font-medium text-gray-600">
+                  <PlaneTakeoff className="mr-1 inline h-3.5 w-3.5 text-gray-400" />
                   From
                 </label>
                 <AirportInput value={departureCode} onChange={setDepartureCode} />
@@ -548,14 +548,14 @@ export default function FlightPricingTool() {
                   setDepartureCode(arrivalCode);
                   setArrivalCode(tmp);
                 }}
-                className="flex h-10 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/5 text-primary transition-all hover:bg-primary/15 active:scale-95 lg:h-10 lg:w-10"
+                className="flex h-10 w-9 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white text-primary shadow-sm transition-all hover:border-primary/30 hover:bg-primary/5 active:scale-95 lg:h-10 lg:w-10"
                 title="Swap airports"
               >
                 <ArrowRight className="h-4 w-4 rotate-90 lg:rotate-0 shrink-0" />
               </button>
               <div className="flex-1">
-                <label className="mb-1 block text-xs font-medium text-muted-foreground">
-                  <PlaneLanding className="mr-0.5 inline h-3 w-3" />
+                <label className="mb-1.5 block text-xs font-medium text-gray-600">
+                  <PlaneLanding className="mr-1 inline h-3.5 w-3.5 text-gray-400" />
                   To
                 </label>
                 <AirportInput value={arrivalCode} onChange={setArrivalCode} />
@@ -565,8 +565,8 @@ export default function FlightPricingTool() {
             {/* Dates row on mobile, inline on desktop */}
             <div className="flex items-end gap-2 w-full md:flex-1">
               <div className="flex-1">
-                <label className="mb-1 block text-xs font-medium text-muted-foreground">
-                  <Calendar className="mr-0.5 inline h-3 w-3" />
+                <label className="mb-1.5 block text-xs font-medium text-gray-600">
+                  <Calendar className="mr-1 inline h-3.5 w-3.5 text-gray-400" />
                   Depart
                 </label>
                 <Input
@@ -574,13 +574,13 @@ export default function FlightPricingTool() {
                   value={outboundDate}
                   min={getTodayISO()}
                   onChange={(e) => setOutboundDate(e.target.value)}
-                  className="h-10 rounded-xl border-border/70 bg-background hover:border-primary/40 focus:border-primary transition-colors"
+                  className="h-10 rounded-xl border-gray-300 bg-white shadow-sm hover:border-gray-400 focus:border-primary transition-colors"
                 />
               </div>
               {tripType === "round" && (
                 <div className="flex-1">
-                  <label className="mb-1 block text-xs font-medium text-muted-foreground">
-                    <Calendar className="mr-0.5 inline h-3 w-3" />
+                  <label className="mb-1.5 block text-xs font-medium text-gray-600">
+                    <Calendar className="mr-1 inline h-3.5 w-3.5 text-gray-400" />
                     Return
                   </label>
                   <Input
@@ -588,7 +588,7 @@ export default function FlightPricingTool() {
                     value={returnDate}
                     min={outboundDate || getTodayISO()}
                     onChange={(e) => setReturnDate(e.target.value)}
-                    className="h-10 rounded-xl border-border/70 bg-background hover:border-primary/40 focus:border-primary transition-colors"
+                    className="h-10 rounded-xl border-gray-300 bg-white shadow-sm hover:border-gray-400 focus:border-primary transition-colors"
                   />
                 </div>
               )}
@@ -597,12 +597,12 @@ export default function FlightPricingTool() {
             {/* Passengers + Search row */}
             <div className="flex items-end gap-2 w-full md:w-auto">
               <div className="w-24 md:w-20 lg:w-24">
-                <label className="mb-1 block text-xs font-medium text-muted-foreground">
-                  <Users className="mr-0.5 inline h-3 w-3" />
+                <label className="mb-1.5 block text-xs font-medium text-gray-600">
+                  <Users className="mr-1 inline h-3.5 w-3.5 text-gray-400" />
                   Adults
                 </label>
                 <Select value={adults} onValueChange={(v) => v && setAdults(v)}>
-                  <SelectTrigger className="h-10 rounded-xl border-border/70">
+                  <SelectTrigger className="h-10 rounded-xl border-gray-300 bg-white shadow-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -631,7 +631,7 @@ export default function FlightPricingTool() {
 
           {/* Quick airport swaps row */}
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <span className="mr-1 text-xs font-medium text-muted-foreground">Quick routes:</span>
+            <span className="mr-1 text-xs font-medium text-gray-500">Quick routes:</span>
             {[["HRE", "JNB"], ["HRE", "DXB"], ["HRE", "CPT"], ["HRE", "NBO"], ["HRE", "LHR"], ["JNB", "DXB"], ["HRE", "VFA"], ["HRE", "ADD"]].map(
               ([from, to]) => (
                 <button
@@ -640,7 +640,7 @@ export default function FlightPricingTool() {
                     setDepartureCode(from);
                     setArrivalCode(to);
                   }}
-                  className="rounded-lg border border-border/60 bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/5 hover:text-primary active:scale-95"
+                  className="rounded-lg border border-gray-200 bg-white px-2.5 py-1 text-xs font-medium text-gray-600 shadow-sm transition-all hover:border-primary/30 hover:bg-primary/5 hover:text-primary active:scale-95"
                 >
                   <Plane className="-ml-0.5 mr-1 inline h-2.5 w-2.5" />
                   {from} → {to}
@@ -652,13 +652,13 @@ export default function FlightPricingTool() {
       </div>
 
       {/* Premium Settings Bar */}
-      <div className="border-b border-border bg-gradient-to-r from-white via-white to-accent/[0.02]">
+      <div className="border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-1.5 px-3 py-2 sm:px-6 sm:gap-3 lg:px-8">
           <div className="flex items-center gap-1.5">
-            <div className="flex h-5 w-5 items-center justify-center rounded-md bg-accent/10 sm:h-6 sm:w-6">
-              <Percent className="h-3 w-3 text-accent sm:h-3.5 sm:w-3.5" />
+            <div className="flex h-5 w-5 items-center justify-center rounded-md bg-gray-100 ring-1 ring-gray-200 sm:h-6 sm:w-6">
+              <Percent className="h-3 w-3 text-gray-600 sm:h-3.5 sm:w-3.5" />
             </div>
-            <span className="text-xs font-medium text-foreground sm:text-sm">Markup</span>
+            <span className="text-xs font-medium text-gray-700 sm:text-sm">Markup</span>
           </div>
 
           <div className="relative w-20 sm:w-28">
@@ -695,13 +695,13 @@ export default function FlightPricingTool() {
       <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
         {/* Errors */}
         {allErrors && (
-          <div className="mb-4 rounded-xl border border-red-200 bg-gradient-to-r from-red-50 to-red-50/80 px-4 py-3 text-sm text-red-700 shadow-sm">
+          <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
             <div className="flex items-start gap-2">
               <Shuffle className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
               <div>
-                <p className="text-xs font-semibold">Search Errors</p>
+                <p className="text-xs font-semibold text-red-800">Search Errors</p>
                 {legs.map((leg, i) =>
-                  leg.error ? <p key={i} className="mt-0.5 text-xs">{leg.label}: {leg.error}</p> : null
+                  leg.error ? <p key={i} className="mt-0.5 text-xs text-red-700">{leg.label}: {leg.error}</p> : null
                 )}
               </div>
             </div>
@@ -711,12 +711,12 @@ export default function FlightPricingTool() {
         {/* Partial errors */}
         {legs.map((leg, i) =>
           leg.error && !allErrors ? (
-            <div key={i} className="mb-4 rounded-xl border border-amber-200 bg-gradient-to-r from-amber-50 to-amber-50/80 px-4 py-3 text-sm text-amber-700 shadow-sm">
+            <div key={i} className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
               <div className="flex items-start gap-2">
                 <Shuffle className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
                 <div>
-                  <p className="text-xs font-semibold">{leg.label}</p>
-                  <p className="mt-0.5 text-xs">{leg.error}</p>
+                  <p className="text-xs font-semibold text-amber-800">{leg.label}</p>
+                  <p className="mt-0.5 text-xs text-amber-700">{leg.error}</p>
                 </div>
               </div>
             </div>
@@ -725,53 +725,69 @@ export default function FlightPricingTool() {
 
         {/* Loading skeleton */}
         {anyLoading && !hasResults && (
-          <div className="flex flex-col items-center justify-center py-24">
-            <div className="relative mb-6">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-accent/10">
-                <RefreshCw className="h-8 w-8 animate-spin text-primary" />
-              </div>
+          <div className="py-6">
+            <div className="mb-4 flex items-center gap-2 text-sm">
+              <RefreshCw className="h-4 w-4 animate-spin text-primary" />
+              <span className="font-medium text-gray-700">Searching live fares</span>
+              <span className="text-gray-400">
+                {tripType === "round" ? "· combined round trip" : "· one way"}
+              </span>
             </div>
-            <p className="text-sm font-medium text-foreground">Searching the skies...</p>
-            <p className="mt-1 text-xs text-muted-foreground">Checking live fares for your route</p>
-            {tripType === "round" && (
-              <p className="mt-2 text-xs text-muted-foreground">
-                Searching combined outbound + return
-              </p>
-            )}
+            <div className="grid gap-3">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="animate-pulse rounded-xl border border-gray-200 bg-white p-5">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-11 w-11 rounded-lg bg-gray-200" />
+                      <div>
+                        <div className="h-4 w-36 rounded bg-gray-200" />
+                        <div className="mt-2 h-3 w-52 rounded bg-gray-100" />
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="ml-auto h-3 w-14 rounded bg-gray-100" />
+                      <div className="mt-2 ml-auto h-5 w-20 rounded bg-gray-200" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
         {/* Empty state */}
         {!anyLoading && !hasResults && !allErrors && (
-          <div className="flex flex-col items-center justify-center py-24">
-            <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/[0.08] to-accent/[0.08] ring-1 ring-primary/5">
-              <Plane className="h-9 w-9 text-primary" />
-            </div>
-            <h2 className="mb-2 text-xl font-bold text-foreground">Flight Pricing Tool</h2>
-            <p className="mb-8 max-w-md text-center text-sm leading-relaxed text-muted-foreground">
-              Search live fares, compare itineraries, add ArcTravel&apos;s markup, and generate client-ready quotes.
-            </p>
-            <div className="grid max-w-lg grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="rounded-xl border border-border bg-white p-5 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <Search className="h-5 w-5 text-primary" />
-                </div>
-                <p className="text-sm font-semibold text-foreground">1. Search</p>
-                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">Enter route and dates</p>
+          <div className="py-16">
+            <div className="mx-auto max-w-md text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100 ring-1 ring-gray-200">
+                <Plane className="h-7 w-7 text-gray-400" />
               </div>
-              <div className="rounded-xl border border-border bg-white p-5 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10">
-                  <DollarSign className="h-5 w-5 text-accent" />
+              <h2 className="mt-4 text-lg font-semibold text-gray-900">Flight Pricing Tool</h2>
+              <p className="mt-1 text-sm leading-relaxed text-gray-500">
+                Search live fares, compare itineraries, add ArcTravel&apos;s markup, and generate client-ready quotes.
+              </p>
+              <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="rounded-xl border border-gray-200 bg-white p-4 text-center shadow-sm">
+                  <div className="mx-auto mb-2.5 flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100">
+                    <Search className="h-4.5 w-4.5 text-gray-600" />
+                  </div>
+                  <p className="text-sm font-semibold text-gray-900">1. Search</p>
+                  <p className="mt-1 text-xs leading-relaxed text-gray-500">Enter route and dates</p>
                 </div>
-                <p className="text-sm font-semibold text-foreground">2. Select &amp; Mark Up</p>
-                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">Pick flights, apply premium</p>
-              </div>
-              <div className="rounded-xl border border-border bg-white p-5 text-center shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
-                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <Copy className="h-5 w-5 text-primary" />
+                <div className="rounded-xl border border-gray-200 bg-white p-4 text-center shadow-sm">
+                  <div className="mx-auto mb-2.5 flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100">
+                    <DollarSign className="h-4.5 w-4.5 text-gray-600" />
+                  </div>
+                  <p className="text-sm font-semibold text-gray-900">2. Select &amp; Mark Up</p>
+                  <p className="mt-1 text-xs leading-relaxed text-gray-500">Pick flights, apply premium</p>
                 </div>
-                <p className="text-sm font-semibold text-foreground">3. Quote</p>
-                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">Copy &amp; share with client</p>
+                <div className="rounded-xl border border-gray-200 bg-white p-4 text-center shadow-sm">
+                  <div className="mx-auto mb-2.5 flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100">
+                    <Copy className="h-4.5 w-4.5 text-gray-600" />
+                  </div>
+                  <p className="text-sm font-semibold text-gray-900">3. Quote</p>
+                  <p className="mt-1 text-xs leading-relaxed text-gray-500">Copy &amp; share with client</p>
+                </div>
               </div>
             </div>
           </div>
@@ -784,18 +800,18 @@ export default function FlightPricingTool() {
               <div key={legIndex}>
                 {/* Leg header */}
                 <div className="mb-4 flex items-center gap-3">
-                  <div className={`flex h-9 items-center gap-1.5 rounded-xl px-3 text-xs font-bold text-white shadow-sm ${
+                  <div className={`flex h-8 items-center rounded-lg px-3 text-xs font-bold text-white shadow-sm ${
                     legIndex === 0 ? "bg-primary" : "bg-gradient-to-br from-secondary to-amber-600"
                   }`}>
                     {legIndex === 0 ? (tripType === "round" ? "Round Trip" : "Departure") : "Return"}
                   </div>
-                  <h2 className="text-sm font-semibold text-foreground">{leg.label}</h2>
-                  <span className="text-xs text-muted-foreground">· {leg.date}{tripType === "round" && legIndex === 0 ? ` → ${returnDate}` : ""}</span>
+                  <h2 className="text-sm font-semibold text-gray-900">{leg.label}</h2>
+                  <span className="text-xs text-gray-500">· {leg.date}{tripType === "round" && legIndex === 0 ? ` → ${returnDate}` : ""}</span>
                   {leg.loading && (
                     <RefreshCw className="h-3.5 w-3.5 animate-spin text-primary" />
                   )}
                   {!leg.loading && (
-                    <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                    <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
                       {leg.best.length + leg.other.length} flight{leg.best.length + leg.other.length !== 1 ? "s" : ""}
                     </span>
                   )}
@@ -803,17 +819,31 @@ export default function FlightPricingTool() {
 
                 {/* Loading skeleton for this leg */}
                 {leg.loading && (
-                  <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/60 bg-white py-14 shadow-sm">
-                    <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
-                    <p className="mt-3 text-xs text-muted-foreground">Loading flights...</p>
+                  <div className="grid gap-3">
+                    {[0, 1].map((i) => (
+                      <div key={i} className="animate-pulse rounded-xl border border-gray-200 bg-white p-5">
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-3">
+                            <div className="h-11 w-11 rounded-lg bg-gray-200" />
+                            <div>
+                              <div className="h-4 w-32 rounded bg-gray-200" />
+                              <div className="mt-2 h-3 w-44 rounded bg-gray-100" />
+                            </div>
+                          </div>
+                          <div className="h-5 w-20 rounded bg-gray-200" />
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
 
                 {/* No results */}
                 {!leg.loading && leg.best.length === 0 && leg.other.length === 0 && (
-                  <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/60 bg-white py-14 shadow-sm">
-                    <Shuffle className="mb-2 h-5 w-5 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">No flights found</p>
+                  <div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white py-10">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+                      <Shuffle className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <p className="mt-3 text-sm text-gray-500">No flights found</p>
                   </div>
                 )}
 
@@ -823,7 +853,7 @@ export default function FlightPricingTool() {
                     {leg.best.length > 0 && (
                       <div className="mb-2 flex items-center gap-2">
                         <div className="h-3 w-0.5 rounded-full bg-primary/40" />
-                        <p className="text-xs font-medium text-muted-foreground">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
                           {tripType === "oneway" ? "Flights" : "Best flights"}
                         </p>
                       </div>
@@ -856,7 +886,7 @@ export default function FlightPricingTool() {
                   <>
                     <div className="mb-2 flex items-center gap-2">
                       <div className="h-3 w-0.5 rounded-full bg-border" />
-                      <p className="text-xs font-medium text-muted-foreground">Other flights</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Other flights</p>
                     </div>
                     <div className="grid gap-3">
                       {leg.other.map((itinerary, i) => {
@@ -890,16 +920,16 @@ export default function FlightPricingTool() {
           <div className="mt-6">
             {/* Return header */}
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-9 items-center gap-1.5 rounded-xl bg-gradient-to-br from-secondary to-amber-600 px-3 text-xs font-bold text-white shadow-sm">
+              <div className="flex h-8 items-center rounded-lg bg-gradient-to-br from-secondary to-amber-600 px-3 text-xs font-bold text-white shadow-sm">
                 Return
               </div>
-              <h2 className="text-sm font-semibold text-foreground">
+              <h2 className="text-sm font-semibold text-gray-900">
                 {selectedOutbound.flights[selectedOutbound.flights.length - 1]?.arrival_airport.id} → {selectedOutbound.flights[0]?.departure_airport.id}
               </h2>
-              <span className="text-xs text-muted-foreground">· {returnDate}</span>
+              <span className="text-xs text-gray-500">· {returnDate}</span>
               {returnLoading && <RefreshCw className="h-3.5 w-3.5 animate-spin text-primary" />}
               {!returnLoading && returnResults && (
-                <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
                   {returnResults.length} return flight{returnResults.length !== 1 ? "s" : ""}
                 </span>
               )}
@@ -907,17 +937,29 @@ export default function FlightPricingTool() {
 
             {/* Return loading */}
             {returnLoading && (
-              <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/60 bg-white py-10 shadow-sm">
-                <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
-                <p className="mt-3 text-xs text-muted-foreground">Loading return flights for this outbound...</p>
+              <div className="grid gap-3">
+                {[0, 1].map((i) => (
+                  <div key={i} className="animate-pulse rounded-xl border border-gray-200 bg-white p-5">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="h-11 w-11 rounded-lg bg-gray-200" />
+                        <div>
+                          <div className="h-4 w-32 rounded bg-gray-200" />
+                          <div className="mt-2 h-3 w-44 rounded bg-gray-100" />
+                        </div>
+                      </div>
+                      <div className="h-5 w-20 rounded bg-gray-200" />
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
 
             {/* Return error */}
             {returnError && (
-              <div className="rounded-xl border border-amber-200 bg-gradient-to-r from-amber-50 to-amber-50/80 px-4 py-3 text-sm text-amber-700 shadow-sm">
-                <p className="text-xs font-semibold">Return flights unavailable</p>
-                <p className="mt-0.5 text-xs">{returnError}</p>
+              <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+                <p className="text-xs font-semibold text-amber-800">Return flights unavailable</p>
+                <p className="mt-0.5 text-xs text-amber-700">{returnError}</p>
               </div>
             )}
 
@@ -947,9 +989,11 @@ export default function FlightPricingTool() {
 
             {/* Return empty */}
             {!returnLoading && returnResults && returnResults.length === 0 && !returnError && (
-              <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/60 bg-white py-10 shadow-sm">
-                <Shuffle className="mb-2 h-5 w-5 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground">No return flights found for this outbound</p>
+              <div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white py-10">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+                  <Shuffle className="h-5 w-5 text-gray-400" />
+                </div>
+                <p className="mt-3 text-sm text-gray-500">No return flights found for this outbound</p>
               </div>
             )}
           </div>
@@ -957,12 +1001,12 @@ export default function FlightPricingTool() {
 
         {/* Combined pricing + copy */}
         {hasResults && selectedOutbound && (
-          <div className="sticky bottom-0 mt-4 sm:mt-6 rounded-xl border border-primary/10 bg-gradient-to-r from-white via-white to-accent/[0.02] p-3 sm:p-5 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur-sm">
+          <div className="sticky bottom-0 mt-4 sm:mt-6 rounded-xl border border-gray-200 bg-white/95 p-3 sm:p-5 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur-sm">
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
               {/* Price breakdown */}
               <div>
-                <p className="text-xs font-medium text-muted-foreground">
-                  {tripType === "round" ? "Round trip — combined fare" : "Selected flight"}
+                <p className="text-xs font-medium text-gray-500">
+                  {tripType === "round" ? "Round trip, combined fare" : "Selected flight"}
                 </p>
                 <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <span className="text-2xl font-bold tracking-tight text-primary sm:text-3xl">
@@ -1065,7 +1109,7 @@ function AirportInput({
         onFocus={() => setFocused(true)}
         onBlur={() => setTimeout(() => setFocused(false), 200)}
         placeholder="e.g. HRE"
-        className="h-10 rounded-xl border-border/70 bg-background hover:border-primary/40 focus:border-primary transition-colors"
+        className="h-10 rounded-xl border-gray-300 bg-white shadow-sm hover:border-gray-400 focus:border-primary transition-colors"
       />
       {filtered.length > 0 && (
         <div className="absolute left-0 right-0 top-full z-50 mt-1 overflow-visible rounded-xl border border-border/70 bg-white shadow-xl min-w-[320px] w-auto">
@@ -1128,19 +1172,19 @@ function FlightCard({
 
   return (
     <div
-      className={`rounded-2xl border bg-white shadow-sm transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${
+      className={`rounded-xl border bg-white shadow-sm transition-shadow duration-200 ${
         selected
           ? "border-primary ring-2 ring-primary/20 shadow-md"
-          : "border-border"
-      } ${expanded ? "shadow-md" : ""}`}
+          : "border-gray-200 hover:shadow-md"
+      }`}
     >
-      <div className="p-3 sm:p-5">
+      <div className="p-4 sm:p-5">
         {/* Main row */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {/* Route summary */}
           <div className="flex items-center gap-3 min-w-0 flex-1">
             {/* Airline logo */}
-            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-muted to-muted/70 p-1.5 shadow-sm">
+            <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-gray-100 p-1.5 ring-1 ring-gray-200">
               {itinerary.flights[0]?.airline_logo ? (
                 <Image
                   src={itinerary.flights[0].airline_logo}
@@ -1157,28 +1201,28 @@ function FlightCard({
             <div className="min-w-0">
               {/* Route codes */}
               <div className="flex items-center gap-1.5">
-                <span className="text-base font-bold text-foreground">
+                <span className="text-base font-bold text-gray-900">
                   {firstFlight?.departure_airport.id || "---"}
                 </span>
                 <div className="flex items-center gap-1">
-                  <div className="h-px w-5 bg-border" />
+                  <div className="h-px w-5 bg-gray-200" />
                   <div className="flex h-4 w-4 items-center justify-center rounded-full bg-primary/5">
                     <Plane className="h-2.5 w-2.5 rotate-90 text-primary/60 shrink-0" />
                   </div>
-                  <div className="h-px w-5 bg-border" />
+                  <div className="h-px w-5 bg-gray-200" />
                   {itinerary.layovers.length > 0 && (
                     <span className="ml-1 rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-600">
                       {itinerary.flights.length - 1} stop{itinerary.flights.length - 1 > 1 ? "s" : ""}
                     </span>
                   )}
                 </div>
-                <span className="text-base font-bold text-foreground">
+                <span className="text-base font-bold text-gray-900">
                   {lastFlight?.arrival_airport.id || "---"}
                 </span>
               </div>
 
               {/* Flight info */}
-              <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+              <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-gray-500">
                 <span className="truncate max-w-[120px]">{itinerary.flights[0]?.airline || "Unknown"}</span>
                 <span className="text-[10px] text-border">•</span>
                 <span>{itinerary.flights[0]?.flight_number || ""}</span>
@@ -1197,14 +1241,14 @@ function FlightCard({
 
               {/* Depart/Arrive times */}
               <div className="mt-1.5 flex items-center gap-2 text-xs">
-                <span className="font-semibold text-foreground">
+                <span className="font-semibold text-gray-900">
                   {formatTime(firstFlight?.departure_airport.time)}
                 </span>
-                <span className="inline-flex items-center gap-1 text-muted-foreground">
+                <span className="inline-flex items-center gap-1 text-gray-500">
                   <Clock className="h-3 w-3" />
                   {formatDuration(itinerary.total_duration)}
                 </span>
-                <span className="font-semibold text-foreground">
+                <span className="font-semibold text-gray-900">
                   {formatTime(lastFlight?.arrival_airport.time)}
                 </span>
               </div>
@@ -1215,10 +1259,10 @@ function FlightCard({
           <div className="flex items-center justify-between gap-3 sm:shrink-0 sm:gap-4 sm:flex-col">
             <div className="flex items-center gap-3 sm:flex-col sm:text-right">
               <div className="sm:text-right">
-                <p className="text-[10px] text-muted-foreground line-through sm:text-[11px]">US${basePrice.toFixed(2)}</p>
+                <p className="text-xs text-gray-400 line-through">US${basePrice.toFixed(2)}</p>
                 <p className="text-xl font-bold tracking-tight text-primary sm:text-2xl">US${final.total.toFixed(0)}</p>
-                <p className="text-[10px] text-muted-foreground sm:text-[11px]">
-                  <span className="text-accent">+US${final.premium.toFixed(2)}</span> <span className="hidden sm:inline">{premiumType === "percent" ? `(${premiumValue}%)` : "markup"}</span>
+                <p className="text-xs text-gray-500">
+                  <span className="font-medium text-accent">+US${final.premium.toFixed(2)}</span> <span className="hidden sm:inline">{premiumType === "percent" ? `(${premiumValue}%)` : "markup"}</span>
                 </p>
               </div>
               <Button
@@ -1248,20 +1292,20 @@ function FlightCard({
                 href={googleFlightsUrl(itinerary)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-0.5 text-[10px] text-blue-600 hover:text-blue-700 underline underline-offset-2 transition-colors sm:text-xs sm:gap-1"
+                className="inline-flex items-center gap-0.5 text-xs text-gray-500 hover:text-primary underline underline-offset-2 transition-colors sm:gap-1"
               >
-                <ExternalLink className="h-2 w-2 sm:h-2.5 sm:w-2.5" />
+                <ExternalLink className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                 Google
               </a>
               <button
                 onClick={onToggle}
-                className="inline-flex items-center gap-0.5 rounded-md px-1 py-0.5 text-[10px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground sm:text-xs sm:px-1.5"
+                className="inline-flex items-center gap-0.5 rounded-md px-1 py-0.5 text-xs text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 sm:px-1.5"
               >
                 {expanded ? "Less" : "More"}
                 {expanded ? (
-                  <ChevronUp className="h-2.5 w-2.5 sm:h-3 sm:w-3 transition-transform duration-200" />
+                  <ChevronUp className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform duration-200" />
                 ) : (
-                  <ChevronDown className="h-2.5 w-2.5 sm:h-3 sm:w-3 transition-transform duration-200" />
+                  <ChevronDown className="h-3 w-3 sm:h-3.5 sm:w-3.5 transition-transform duration-200" />
                 )}
               </button>
             </div>
@@ -1290,7 +1334,7 @@ function FlightCard({
 
         {/* Expanded details */}
         {expanded && (
-          <div className="mt-4 border-t border-border pt-4 overflow-hidden">
+          <div className="mt-4 border-t border-gray-100 pt-4 overflow-hidden">
             {/* Route chain */}
             <div className="mb-3 flex items-center gap-2 rounded-lg bg-muted/50 px-3 py-2">
               <Shuffle className="h-3 w-3 text-muted-foreground shrink-0" />
