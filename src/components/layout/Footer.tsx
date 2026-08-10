@@ -51,6 +51,7 @@ function WhatsappIcon(props: React.SVGProps<SVGSVGElement>) {
 const companyLinks = [
   { name: "About Us", href: "/about" },
   { name: "Blog", href: "/blog" },
+  { name: "FAQ", href: "/faq" },
   { name: "Packages", href: "/packages" },
   { name: "Contact", href: "/contact" },
 ];

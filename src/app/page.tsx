@@ -5,7 +5,6 @@ import FeaturedDestinations from "@/components/home/FeaturedDestinations";
 import ServicesOverview from "@/components/home/ServicesOverview";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
-import FAQSection from "@/components/home/FAQSection";
 import CTASection from "@/components/home/CTASection";
 
 export default function Home() {
@@ -18,7 +17,6 @@ export default function Home() {
       <ServicesOverview />
       <WhyChooseUs />
       <TestimonialsSection />
-      <FAQSection />
       <CTASection />
     </>
   );

@@ -46,51 +46,29 @@ const faqs = [
   },
 ];
 
-export default function FAQSection() {
+export function FAQAccordion() {
   return (
-    <section className="bg-white py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-widest text-[#ff8912]">
-            Good to know
-          </p>
-          <h2 className="mt-2 text-3xl font-bold tracking-tight text-[#002a62] sm:text-4xl">
-            Frequently Asked Questions
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            The answers our clients ask for most. Anything else — just ask.
-          </p>
-        </div>
-
-        <div className="mx-auto mt-12 max-w-4xl">
-          <dl className="divide-y divide-slate-200">
-            {faqs.map((faq) => (
-              <Disclosure key={faq.question} as="div" className="py-6 first:pt-0 last:pb-0">
-                <dt>
-                  <DisclosureButton className="group flex w-full cursor-pointer items-start justify-between gap-6 text-left">
-                    <span className="text-base font-semibold text-[#002a62] sm:text-lg">
-                      {faq.question}
-                    </span>
-                    <span className="flex h-7 shrink-0 items-center">
-                      <PlusSmallIcon className="size-6 text-[#ff8912] transition-transform group-data-open:rotate-45" />
-                      <MinusSmallIcon className="hidden size-6 text-[#ff8912]" />
-                    </span>
-                  </DisclosureButton>
-                </dt>
-                <DisclosurePanel
-                  as="dd"
-                  unmount={false}
-                  className="mt-3 pr-8 sm:pr-16"
-                >
-                  <p className="text-sm leading-relaxed text-slate-600 sm:text-base">
-                    {faq.answer}
-                  </p>
-                </DisclosurePanel>
-              </Disclosure>
-            ))}
-          </dl>
-        </div>
-      </div>
-    </section>
+    <dl className="divide-y divide-slate-200">
+      {faqs.map((faq) => (
+        <Disclosure key={faq.question} as="div" className="py-6 first:pt-0 last:pb-0">
+          <dt>
+            <DisclosureButton className="group flex w-full cursor-pointer items-start justify-between gap-6 text-left">
+              <span className="text-base font-semibold text-[#002a62] sm:text-lg">
+                {faq.question}
+              </span>
+              <span className="flex h-7 shrink-0 items-center">
+                <PlusSmallIcon className="size-6 text-[#ff8912] transition-transform group-data-open:rotate-45" />
+                <MinusSmallIcon className="hidden size-6 text-[#ff8912]" />
+              </span>
+            </DisclosureButton>
+          </dt>
+          <DisclosurePanel as="dd" unmount={false} className="mt-3 pr-8 sm:pr-16">
+            <p className="text-sm leading-relaxed text-slate-600 sm:text-base">
+              {faq.answer}
+            </p>
+          </DisclosurePanel>
+        </Disclosure>
+      ))}
+    </dl>
   );
 }
