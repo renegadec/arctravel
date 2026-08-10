@@ -14,17 +14,17 @@ export default function TrustStrip() {
   return (
     <section className="border-y border-slate-100 bg-white py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-sm font-semibold uppercase tracking-widest text-slate-400">
+        <p className="text-center text-sm font-semibold uppercase tracking-widest text-slate-500">
           We work with the region&apos;s leading travel providers
         </p>
-        <div className="mx-auto mt-8 grid max-w-lg grid-cols-2 items-center gap-x-8 gap-y-8 sm:max-w-xl sm:grid-cols-3 lg:mx-0 lg:max-w-none lg:grid-cols-5">
+        <div className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-3 sm:gap-4">
           {partners.map((partner) => (
             <div
               key={partner.name}
-              className="flex items-center justify-center gap-2 text-slate-300 transition-colors hover:text-[#ff8912]"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-slate-500 shadow-sm transition-colors hover:border-[#ff8912]/30 hover:text-[#ff8912] sm:px-5"
             >
-              <partner.icon className="h-5 w-5" />
-              <span className="text-sm font-bold uppercase tracking-wide">
+              <partner.icon className="h-4 w-4 shrink-0" />
+              <span className="text-sm font-semibold tracking-wide">
                 {partner.name}
               </span>
             </div>
