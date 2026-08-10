@@ -49,6 +49,7 @@ const destImages: Record<string, string> = {
     "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
   "/destinations/nairobi-maasai-mara":
     "https://images.unsplash.com/photo-1535941339077-2dd1c7963098?auto=format&fit=crop&w=800&q=80",
+  "/destinations/diani-beach": "/images/hero/diani-beach.jpg",
 };
 
 const regions = [

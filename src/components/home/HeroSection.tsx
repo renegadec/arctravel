@@ -22,7 +22,7 @@ const heroTiles = [
   },
   {
     name: "Diani Beach",
-    href: "/destinations/zanzibar",
+    href: "/destinations/diani-beach",
     image: "/images/hero/diani-beach.jpg",
   },
   {

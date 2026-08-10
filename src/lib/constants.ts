@@ -273,6 +273,15 @@ export const destinations: {
     href: "/destinations/nairobi-maasai-mara",
     image: "/images/nairobi.jpg",
   },
+  {
+    name: "Diani Beach",
+    country: "Kenya",
+    region: "international",
+    description:
+      "White-sand beaches, coral reefs, and easy-going Indian Ocean life on Kenya's south coast.",
+    href: "/destinations/diani-beach",
+    image: "/images/diani-beach.jpg",
+  },
 ];
 
 export interface Package {

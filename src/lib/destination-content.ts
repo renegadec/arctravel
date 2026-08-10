@@ -811,4 +811,69 @@ export const destinationContent: Record<string, DestinationContent> = {
       "The Great Migration is one of nature's greatest spectacles. Let us plan your Kenyan adventure.",
     ctaButton: "Start Planning",
   },
+
+  "diani-beach": {
+    slug: "diani-beach",
+    name: "Diani Beach",
+    location: "Kenya — Kwale County, south coast",
+    tagline: "White sands and turquoise Indian Ocean on Kenya's south coast",
+    description:
+      "17 km of powder-white sand, palm-fringed shores, and warm coral-filled waters — consistently rated among Africa's best beaches.",
+    heroImage:
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80",
+    bookUrl: "/book?destination=Diani+Beach&notes=Diani+Beach+destination+page",
+    facts: [
+      { label: "Best time to visit", value: "Dec–Mar (hot & dry) or Jul–Oct (cooler dry season)" },
+      { label: "Ideal for", value: "Honeymooners, divers & beach lovers" },
+      { label: "Suggested stay", value: "4–7 nights" },
+      { label: "Getting there", value: "Fly to Mombasa (MBA) or Ukunda (UKA), then a 30–60 min drive" },
+    ],
+    highlights: [
+      {
+        title: "The Beach",
+        description:
+          "Kilometres of white sand and warm, shallow water — perfect for swimming, long walks, and beachfront sundowners.",
+        image:
+          "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      },
+      {
+        title: "Snorkelling & Diving",
+        description:
+          "Coral gardens, dolphins, turtles, and reef fish at Kisite-Mpunguti Marine Park — a short dhow ride from Diani.",
+        image:
+          "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80",
+      },
+      {
+        title: "Dhow Trips & Wasini Island",
+        description:
+          "Sail a traditional dhow to Wasini Island for lunch, snorkelling, and a visit to the sea turtle sanctuary.",
+        image:
+          "https://images.unsplash.com/photo-1444628838545-ac4016a5418a?auto=format&fit=crop&w=800&q=80",
+      },
+      {
+        title: "Shimba Hills & Forest Walks",
+        description:
+          "Elephants, sable antelope, and the rare Angolan colobus monkey in the rainforest of Shimba Hills National Reserve.",
+        image:
+          "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+      },
+    ],
+    gallery: [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80",
+    ],
+    tips: [
+      "Best time to visit: December to March (hot, dry) or July to October (cooler); avoid the long rains (April–June)",
+      "Kenya now uses an eTA — apply online before you travel (from about US$34)",
+      "ATMs are limited in Diani — carry some cash; USD and M-Pesa are widely accepted",
+      "Don't miss the dhow trip to Wasini Island — dolphins are common on the crossing",
+      "Combine with a safari: Tsavo East/West and Shimba Hills are close enough for day trips",
+    ],
+    relatedPackages: ["/packages/zanzibar-beach"],
+    ctaTitle: "Diani Days Await",
+    ctaText:
+      "Tell us your dates and we'll put together flights, beachfront stays, and day trips to Wasini and the marine park.",
+    ctaButton: "Plan My Beach Escape",
+  },
 };
