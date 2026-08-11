@@ -145,13 +145,13 @@ export const SITE_URL = "https://arctravel.co.zw";
 export const contactInfo = {
   phone: "078 657 7594",
   email: "info@arctravel.co.zw",
-  address: "Harare, Zimbabwe",
+  address: "Belgravia, Zimbabwe",
 };
 
 export const socialLinks = {
-  instagram: "#",
+  instagram: "https://www.instagram.com/arc_travelco",
   facebook: "#",
-  linkedin: "#",
+  linkedin: "https://www.linkedin.com/company/arc-travel-and-tours/",
   whatsapp: "https://wa.me/263786577594",
 };
 
