@@ -4,7 +4,7 @@ import { Compass, ArrowRight, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "Page Not Found — ArcTravel",
+  title: "Page Not Found",
   description:
     "The page you're looking for doesn't exist. Let's get you back on track to your next adventure.",
   robots: { index: false },

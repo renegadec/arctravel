@@ -3,9 +3,9 @@ import DestinationDetail from "@/components/destinations/DestinationDetail";
 import { destinationContent } from "@/lib/destination-content";
 
 export const metadata: Metadata = {
-  title: "Cape Town — ArcTravel",
+  title: "Cape Town",
   description:
-    "Stunning coastal city with Table Mountain, vibrant waterfront, wine country, and incredible beaches. Plan your Cape Town trip with ArcTravel.",
+    "Stunning coastal city with Table Mountain, vibrant waterfront, wine country, and incredible beaches. Plan your Cape Town trip with Arc Travel & Tours.",
 };
 
 export default function CapeTownPage() {

@@ -6,7 +6,7 @@ import { FAQAccordion } from "./FAQAccordion";
 import { contactInfo, socialLinks } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "FAQ — ArcTravel",
+  title: "FAQ",
   description:
     "Answers to the questions our clients ask most: quotes, booking timelines, visas, payments, flight changes, and more.",
 };

@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Car Rentals — ArcTravel",
+  title: "Car Rentals",
   description:
     "Self-drive or chauffeur-driven car rentals in Zimbabwe. Sedans, SUVs, 4x4s, and minibuses for any itinerary.",
 };

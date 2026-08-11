@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Travel Packages — ArcTravel",
+  title: "Travel Packages",
   description:
     "Curated travel packages across Zimbabwe, Southern Africa, and beyond. All-inclusive weekends, safaris, and holidays at great prices.",
 };

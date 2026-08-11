@@ -3,7 +3,7 @@ title: "7 Ways to Book Cheaper Flights from Harare (Without the Headaches)"
 date: "2026-08-03"
 excerpt: "Airfares out of Harare are rarely cheap by accident. These are the booking habits that actually save money — and the traps that cost it."
 image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80"
-author: "ArcTravel"
+author: "Arc Travel & Tours"
 tags: [flights, money-saving, harare]
 ---
 

@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Day Trips — ArcTravel",
+  title: "Day Trips",
   description:
     "Curated one-day experiences in Zimbabwe — Victoria Falls, Great Zimbabwe, Eastern Highlands, game drives, and more.",
 };

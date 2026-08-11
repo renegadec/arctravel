@@ -94,7 +94,7 @@ export default function Header() {
           <Link href="/" className="flex shrink-0 items-center">
             <Image
               src="/arctravel_logo.svg"
-              alt="ArcTravel"
+              alt="Arc Travel & Tours"
               width={120}
               height={120}
               priority

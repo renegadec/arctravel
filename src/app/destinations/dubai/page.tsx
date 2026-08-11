@@ -3,7 +3,7 @@ import DestinationDetail from "@/components/destinations/DestinationDetail";
 import { destinationContent } from "@/lib/destination-content";
 
 export const metadata: Metadata = {
-  title: "Dubai — ArcTravel",
+  title: "Dubai",
   description:
     "Ultra-modern city with world-class shopping, dining, desert safaris, and architectural wonders.",
 };

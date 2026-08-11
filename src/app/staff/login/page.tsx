@@ -57,7 +57,7 @@ function LoginForm() {
             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
               <Plane className="h-6 w-6 text-primary" />
             </div>
-            <h1 className="text-lg font-semibold text-foreground">ArcTravel Staff</h1>
+            <h1 className="text-lg font-semibold text-foreground">Arc Travel & Tours Staff</h1>
             <p className="text-xs text-muted-foreground">Internal tools · Authorised only</p>
           </div>
 
@@ -90,7 +90,7 @@ function LoginForm() {
           </form>
 
           <p className="mt-4 text-center text-[10px] text-muted-foreground">
-            This area is for ArcTravel staff only.
+            This area is for Arc Travel & Tours staff only.
           </p>
         </div>
       </div>

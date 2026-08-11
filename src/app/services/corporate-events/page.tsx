@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Corporate Events — ArcTravel",
+  title: "Corporate Events",
   description:
     "End-to-end corporate event travel management — conferences, retreats, incentive trips, and team building.",
 };

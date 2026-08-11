@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Us — ArcTravel",
+  title: "About Us",
   description:
-    "ArcTravel is a full-service travel agency based in Zimbabwe, dedicated to making travel effortless for individuals, families, and businesses.",
+    "Arc Travel & Tours is a full-service travel agency based in Zimbabwe, dedicated to making travel effortless for individuals, families, and businesses.",
 };
 
 // 🔁 SWAP with real photos when available.
@@ -56,12 +56,12 @@ const values = [
   },
 ];
 
-// 🔁 Adjust milestones to match ArcTravel's real story.
+// 🔁 Adjust milestones to match Arc Travel & Tours's real story.
 const timeline = [
   {
     date: "2021",
     title: "Founded in Harare",
-    text: "ArcTravel started with one mission: make travel effortless for Zimbabweans — no browser-tab chaos, no stressful planning.",
+    text: "Arc Travel & Tours started with one mission: make travel effortless for Zimbabweans — no browser-tab chaos, no stressful planning.",
   },
   {
     date: "2022",
@@ -126,7 +126,7 @@ export default function AboutPage() {
               Our story
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              About ArcTravel
+              About Arc Travel & Tours
             </h1>
             <p className="mx-auto mt-4 max-w-lg text-lg text-white/70">
               We exist to make travel effortless — whether you&apos;re flying
@@ -162,7 +162,7 @@ export default function AboutPage() {
               <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-xl shadow-[#002a62]/10">
                 <Image
                   src={storyImage}
-                  alt="The ArcTravel team planning a journey"
+                  alt="The Arc Travel & Tours team planning a journey"
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   className="object-cover"
@@ -181,13 +181,13 @@ export default function AboutPage() {
                 <span className="text-[#ff8912]">not exhausting.</span>
               </h2>
               <p className="mt-5 leading-relaxed text-slate-600">
-                ArcTravel was founded on a simple belief: travel should be
+                Arc Travel & Tours was founded on a simple belief: travel should be
                 exciting, not exhausting. Too often, people spend more time
                 planning a trip than enjoying it — juggling flights,
                 accommodations, transfers, visas, and a dozen browser tabs.
               </p>
               <p className="mt-4 leading-relaxed text-slate-600">
-                We built ArcTravel to change that. As a full-service travel
+                We built Arc Travel & Tours to change that. As a full-service travel
                 agency based in Zimbabwe, we handle every aspect of your
                 journey — from the first flight booking to the final transfer
                 home. Our team combines local knowledge with global reach,
@@ -206,7 +206,7 @@ export default function AboutPage() {
               The journey so far
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight text-[#002a62] sm:text-4xl">
-              How ArcTravel Grew
+              How Arc Travel & Tours Grew
             </h2>
           </div>
 

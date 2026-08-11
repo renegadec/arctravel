@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Private Charter Flights — ArcTravel",
+  title: "Private Charter Flights",
   description:
     "Private air charters for executive travel, emergency evacuation, and accessing remote destinations on your schedule.",
 };

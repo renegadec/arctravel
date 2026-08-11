@@ -158,7 +158,7 @@ export default function HeroSection() {
                         <div className="relative aspect-[3/4] w-full">
                           <Image
                             src={tile.image}
-                            alt={`${tile.name} — plan your trip with ArcTravel`}
+                            alt={`${tile.name} — plan your trip with Arc Travel & Tours`}
                             fill
                             sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                             className="object-cover transition-transform duration-500 group-hover:scale-105"

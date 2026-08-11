@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Accommodation — ArcTravel",
+  title: "Accommodation",
   description:
     "Hotels, lodges, resorts, and B&Bs across Zimbabwe and beyond. Curated stays for every budget and style.",
 };

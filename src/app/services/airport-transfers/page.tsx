@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Airport Transfers — ArcTravel",
+  title: "Airport Transfers",
   description:
     "Hassle-free meet-and-greet airport transfers with professional drivers. Flight tracking included — we're always on time.",
 };

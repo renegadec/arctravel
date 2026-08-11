@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Destinations — ArcTravel",
+  title: "Destinations",
   description:
     "Explore Zimbabwe, Southern Africa, and beyond — Victoria Falls, Hwange, Cape Town, Zanzibar, Dubai, and more.",
 };

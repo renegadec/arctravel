@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   icons: "/arctravel_logo.svg",
   title: {
-    default: "ArcTravel — Your Trusted Travel Agency in Zimbabwe",
-    template: "%s | ArcTravel",
+    default: "Arc Travel & Tours — Your Trusted Travel Agency in Zimbabwe",
+    template: "%s | Arc Travel & Tours",
   },
   description:
     "Full-service travel agency in Zimbabwe — flights, hotels, tours, visas, airport transfers, corporate travel, and more. Let us plan your next journey.",
@@ -29,14 +29,15 @@ export const metadata: Metadata = {
     "visa assistance Zimbabwe",
     "corporate travel Zimbabwe",
     "holiday packages Zimbabwe",
-    "ArcTravel",
+    "Arc Travel & Tours",
+    "Arc Travel & Tours",
   ],
   openGraph: {
-    title: "ArcTravel — Your Trusted Travel Agency in Zimbabwe",
+    title: "Arc Travel & Tours — Your Trusted Travel Agency in Zimbabwe",
     description:
       "Flights, hotels, tours, visas, airport transfers, corporate travel — tell us where you're going and we'll take care of the rest.",
     url: SITE_URL,
-    siteName: "ArcTravel",
+    siteName: "Arc Travel & Tours",
     locale: "en_ZW",
     type: "website",
     images: [
@@ -44,13 +45,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "ArcTravel — Your Next Adventure Starts Here",
+        alt: "Arc Travel & Tours — Your Next Adventure Starts Here",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ArcTravel — Your Trusted Travel Agency in Zimbabwe",
+    title: "Arc Travel & Tours — Your Trusted Travel Agency in Zimbabwe",
     description:
       "Flights, hotels, tours, visas, airport transfers, corporate travel — let us plan your next journey.",
     images: ["/og-image.png"],
@@ -70,7 +71,7 @@ export const metadata: Metadata = {
 const travelAgencySchema = {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
-  name: "ArcTravel",
+  name: "Arc Travel & Tours",
   url: SITE_URL,
   logo: `${SITE_URL}/arctravel_logo.svg`,
   image: `${SITE_URL}/og-image.png`,

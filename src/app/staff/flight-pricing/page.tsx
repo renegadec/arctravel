@@ -407,7 +407,7 @@ export default function FlightPricingTool() {
   // ─── Copy quote ──────────────────────────────────────
 
   const copyCombinedQuote = useCallback(() => {
-    let text = `✈️ ArcTravel — Flight Quote\n`;
+    let text = `✈️ Arc Travel & Tours — Flight Quote\n`;
     text += `${departureCode.toUpperCase()} → ${arrivalCode.toUpperCase()} · ${outboundDate}`;
     if (tripType === "round") {
       text += ` → ${returnDate}`;
@@ -452,7 +452,7 @@ export default function FlightPricingTool() {
 
     text += `---\n`;
     text += `Price:  US$${combinedFinal.total.toFixed(2)}\n`;
-    text += `\nArcTravel — trusted travel since 2025`;
+    text += `\nArc Travel & Tours — trusted travel since 2025`;
     text += `\n📞 ${contactInfo.phone}`;
 
     navigator.clipboard.writeText(text).then(() => {
@@ -501,7 +501,7 @@ export default function FlightPricingTool() {
             </div>
             <div>
               <h1 className="text-sm font-semibold text-white">Flight Pricing Tool</h1>
-              <p className="text-xs text-white/70">ArcTravel Internal</p>
+              <p className="text-xs text-white/70">Arc Travel & Tours Internal</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -791,7 +791,7 @@ export default function FlightPricingTool() {
               </div>
               <h2 className="mt-4 text-lg font-semibold text-gray-900">Flight Pricing Tool</h2>
               <p className="mt-1 text-sm leading-relaxed text-gray-500">
-                Search live fares, compare itineraries, add ArcTravel&apos;s markup, and generate client-ready quotes.
+                Search live fares, compare itineraries, add Arc Travel & Tours&apos;s markup, and generate client-ready quotes.
               </p>
               <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <div className="rounded-xl border border-gray-200 bg-white p-4 text-center shadow-sm">

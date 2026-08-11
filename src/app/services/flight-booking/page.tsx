@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Flight Booking — ArcTravel",
+  title: "Flight Booking",
   description:
     "Domestic and international flights with expertly curated itineraries. Best routes, best times, best value.",
 };

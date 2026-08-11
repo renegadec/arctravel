@@ -77,7 +77,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center">
               <Image
                 src="/arctravel_logo.svg"
-                alt="ArcTravel"
+                alt="Arc Travel & Tours"
                 width={88}
                 height={88}
                 className="h-auto brightness-0 invert"

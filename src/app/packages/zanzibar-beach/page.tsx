@@ -4,7 +4,7 @@ import { packageContent } from "@/lib/package-content";
 import PackageDetail from "@/components/packages/PackageDetail";
 
 export const metadata: Metadata = {
-  title: "Zanzibar Beach Holiday — ArcTravel",
+  title: "Zanzibar Beach Holiday",
   description:
     "White sands, crystal waters, and spice-scented air — unwind on Tanzania's paradise island. From US$980 per person.",
 };

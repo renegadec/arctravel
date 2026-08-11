@@ -44,7 +44,7 @@ const tallCards = [
     description:
       "Years of working with airlines, lodges, and ground operators mean we know who delivers — and who to avoid. If we wouldn't book it for ourselves, we won't book it for you.",
     image: "/images/why-us/business.jpg",
-    alt: "ArcTravel team planning a journey",
+    alt: "Arc Travel & Tours team planning a journey",
   },
   {
     icon: Map,
@@ -63,10 +63,10 @@ export default function WhyChooseUs() {
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-semibold uppercase tracking-widest text-[#ff8912]">
-              The ArcTravel difference
+              The Arc Travel & Tours difference
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight text-[#002a62] sm:text-4xl">
-              Why Choose <span className="text-[#ff8912]">ArcTravel</span>
+              Why Choose <span className="text-[#ff8912]">Arc Travel & Tours</span>
             </h2>
             <p className="mt-4 text-muted-foreground">
               We&apos;re not a booking platform — we&apos;re your travel

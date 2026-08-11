@@ -32,7 +32,7 @@ function parsePost(fileName: string): BlogPost {
     date: data.date,
     excerpt: data.excerpt,
     image: data.image,
-    author: data.author ?? "ArcTravel",
+    author: data.author ?? "Arc Travel & Tours",
     tags: data.tags ?? [],
     content,
     readingTime: readingTime(content),

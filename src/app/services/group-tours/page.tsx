@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Group Tour Packages — ArcTravel",
+  title: "Group Tour Packages",
   description:
     "Tailored group travel for families, friends, corporates, and organisations. We handle everything from transport to accommodation to activities.",
 };

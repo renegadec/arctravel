@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Cruise Bookings — ArcTravel",
+  title: "Cruise Bookings",
   description:
     "Luxury and expedition cruises across Africa, the Indian Ocean, Mediterranean, and worldwide destinations.",
 };

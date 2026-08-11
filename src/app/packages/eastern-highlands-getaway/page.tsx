@@ -4,7 +4,7 @@ import { packageContent } from "@/lib/package-content";
 import PackageDetail from "@/components/packages/PackageDetail";
 
 export const metadata: Metadata = {
-  title: "Eastern Highlands Getaway — ArcTravel",
+  title: "Eastern Highlands Getaway",
   description:
     "Escape to the cool mountains of Nyanga and Chimanimani for hiking, waterfalls, and forest retreats. From US$350 per person.",
 };

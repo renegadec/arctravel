@@ -3,7 +3,7 @@ title: "How to Get a Visa for Your Next Trip: A Practical Guide for Zimbabwean T
 date: "2026-08-04"
 excerpt: "Visa rules change constantly. Here's how to check requirements, avoid the common mistakes, and get your visa sorted without the stress."
 image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80"
-author: "ArcTravel"
+author: "Arc Travel & Tours"
 tags: [visas, travel-tips, documents]
 ---
 

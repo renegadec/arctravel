@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Ground Transportation — ArcTravel",
+  title: "Ground Transportation",
   description:
     "Reliable intercity and regional ground transport — buses, shuttles, and private transfers across Zimbabwe and SADC.",
 };

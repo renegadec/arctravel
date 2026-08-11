@@ -12,9 +12,9 @@ import { contactInfo, socialLinks } from "@/lib/constants";
 import ContactForm from "./ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact Us — ArcTravel",
+  title: "Contact Us",
   description:
-    "Get in touch with ArcTravel for flight bookings, tours, visa assistance, and all your travel needs. We're here to help.",
+    "Get in touch with Arc Travel & Tours for flight bookings, tours, visa assistance, and all your travel needs. We're here to help.",
 };
 
 const contactMethods = [
@@ -168,7 +168,7 @@ export default function ContactPage() {
                 <div className="flex items-center gap-2">
                   <Clock className="size-4 text-[#ff8912]" />
                   <p className="text-sm font-semibold text-[#002a62]">
-                    Why contact ArcTravel?
+                    Why contact Arc Travel & Tours?
                   </p>
                 </div>
                 <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-1">

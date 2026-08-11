@@ -3,7 +3,7 @@ import DestinationDetail from "@/components/destinations/DestinationDetail";
 import { destinationContent } from "@/lib/destination-content";
 
 export const metadata: Metadata = {
-  title: "Nairobi & Maasai Mara — ArcTravel",
+  title: "Nairobi & Maasai Mara",
   description:
     "East Africa's safari capital — the Great Migration, Maasai culture, and vibrant urban energy.",
 };

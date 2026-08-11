@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Travel Insurance — ArcTravel",
+  title: "Travel Insurance",
   description:
     "Comprehensive travel insurance covering medical emergencies, trip cancellation, lost luggage, and more.",
 };

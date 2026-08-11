@@ -3,9 +3,9 @@ import DestinationDetail from "@/components/destinations/DestinationDetail";
 import { destinationContent } from "@/lib/destination-content";
 
 export const metadata: Metadata = {
-  title: "Diani Beach — ArcTravel",
+  title: "Diani Beach",
   description:
-    "White-sand beaches, coral reefs, and easy-going Indian Ocean life on Kenya's south coast. Flights, stays, and day trips planned by ArcTravel.",
+    "White-sand beaches, coral reefs, and easy-going Indian Ocean life on Kenya's south coast. Flights, stays, and day trips planned by Arc Travel & Tours.",
 };
 
 export default function DianiBeachPage() {

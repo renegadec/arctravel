@@ -15,7 +15,7 @@ import NewsletterSignup from "@/components/blog/NewsletterSignup";
 export const metadata: Metadata = {
   title: "Travel Blog — Guides, Tips & Destination Stories",
   description:
-    "Practical travel guides and tips from the ArcTravel team — destination guides, visa advice, flight booking tips, and more for travellers from Zimbabwe and beyond.",
+    "Practical travel guides and tips from the Arc Travel & Tours team — destination guides, visa advice, flight booking tips, and more for travellers from Zimbabwe and beyond.",
 };
 
 function formatDate(date: string) {
@@ -46,7 +46,7 @@ export default function BlogPage() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-[#ffb25e]">
-              The ArcTravel Journal
+              The Arc Travel & Tours Journal
             </p>
             <h1 className="text-3xl font-bold tracking-tight text-white sm:text-5xl">
               Travel Guides &amp; Tips

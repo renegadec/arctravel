@@ -3,7 +3,7 @@ title: "Victoria Falls: The Complete First-Timer's Guide"
 date: "2026-08-05"
 excerpt: "Everything you need to plan your first trip to Victoria Falls — when to go, where to stay, what to pack, and the experiences you shouldn't miss."
 image: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=1200&q=80"
-author: "ArcTravel"
+author: "Arc Travel & Tours"
 tags: [destinations, victoria-falls, travel-guide]
 ---
 

@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Guided Tours — ArcTravel",
+  title: "Guided Tours",
   description:
     "Expert-led tours across Zimbabwe, Southern Africa, and beyond — from wildlife safaris to cultural experiences.",
 };

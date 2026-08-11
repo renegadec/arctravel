@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import BookingForm from "./BookingForm";
 
 export const metadata: Metadata = {
-  title: "Book Your Trip — ArcTravel",
+  title: "Book Your Trip",
   description:
     "Tell us what you need — flights, accommodation, tours, or a full package. We'll build a quote and get back to you within 24 hours.",
 };
@@ -191,11 +191,11 @@ export default function BookPage() {
                 </ol>
               </div>
 
-              {/* Why book with ArcTravel */}
+              {/* Why book with Arc Travel & Tours */}
               <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-7">
                 <h3 className="flex items-center gap-2 text-base font-bold text-foreground">
                   <BadgeCheck className="h-5 w-5 text-[#ff8912]" />
-                  Why book with ArcTravel?
+                  Why book with Arc Travel & Tours?
                 </h3>
                 <ul className="mt-4 space-y-3">
                   {perks.map((p) => (

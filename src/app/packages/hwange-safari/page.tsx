@@ -4,7 +4,7 @@ import { packageContent } from "@/lib/package-content";
 import PackageDetail from "@/components/packages/PackageDetail";
 
 export const metadata: Metadata = {
-  title: "Hwange Safari Escape — ArcTravel",
+  title: "Hwange Safari Escape",
   description:
     "Four days in Zimbabwe's largest national park — game drives, wildlife viewing, and starlit dinners. From US$780 per person.",
 };

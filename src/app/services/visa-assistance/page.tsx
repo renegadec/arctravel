@@ -14,7 +14,7 @@ import {
 import VisaPageClient from "./VisaPageClient";
 
 export const metadata: Metadata = {
-  title: "Visa Directory — ArcTravel",
+  title: "Visa Directory",
   description:
     "Search our complete visa directory for Zimbabwean passport holders. Find visa requirements, fees, processing times, and required documents for over 90 countries.",
 };

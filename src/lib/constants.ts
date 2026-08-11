@@ -403,11 +403,11 @@ export const testimonials = [
   {
     name: "Tendai M.",
     location: "Harare",
-    text: "ArcTravel handled our entire family holiday to Victoria Falls. Every detail was perfect — from the flights to the lodge. Will definitely book again.",
+    text: "Arc Travel & Tours handled our entire family holiday to Victoria Falls. Every detail was perfect — from the flights to the lodge. Will definitely book again.",
   },
   {
     name: "Rachel K.",
     location: "Bulawayo",
-    text: "I needed a last-minute visa for a business trip. ArcTravel got it sorted in 48 hours. Professional and reliable.",
+    text: "I needed a last-minute visa for a business trip. Arc Travel & Tours got it sorted in 48 hours. Professional and reliable.",
   },
 ];

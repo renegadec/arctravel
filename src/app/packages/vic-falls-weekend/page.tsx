@@ -4,7 +4,7 @@ import { packageContent } from "@/lib/package-content";
 import PackageDetail from "@/components/packages/PackageDetail";
 
 export const metadata: Metadata = {
-  title: "Victoria Falls Weekend — ArcTravel",
+  title: "Victoria Falls Weekend",
   description:
     "A perfect long weekend at Victoria Falls — see the falls, enjoy a sunset cruise, and adventure activities. From US$450 per person.",
 };

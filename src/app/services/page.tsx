@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Send } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Our Services — ArcTravel",
+  title: "Our Services",
   description:
     "Full-service travel agency offering flights, hotels, tours, visas, airport transfers, car rentals, corporate travel, cruises, and more.",
 };

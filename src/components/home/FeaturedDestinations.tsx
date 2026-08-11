@@ -98,7 +98,7 @@ export default function FeaturedDestinations() {
               <div className={`relative overflow-hidden ${tile.imageHeight}`}>
                 <Image
                   src={tileImages[tile.name]}
-                  alt={`${tile.name} — plan your trip with ArcTravel`}
+                  alt={`${tile.name} — plan your trip with Arc Travel & Tours`}
                   fill
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
