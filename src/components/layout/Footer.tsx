@@ -208,9 +208,14 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
-          <p className="text-xs text-white/40">
-            &copy; {new Date().getFullYear()} Arc Travel & Tours. All rights reserved.
-          </p>
+          <div className="text-center sm:text-left">
+            <p className="text-xs text-white/40">
+              &copy; {new Date().getFullYear()} Arc Travel & Tours. All rights reserved.
+            </p>
+            <p className="mt-1.5 text-[10px] text-white/30">
+              Destination photos: Johannesburg skyline by Mark Hillary (CC BY 2.0); vineyard &amp; mountains, Western Cape by South African Tourism (CC BY 2.0) — via Wikimedia Commons.
+            </p>
+          </div>
           <p className="flex items-center gap-1.5 text-xs text-white/40">
             Confidence made it.
             <span aria-hidden="true">✈️</span>

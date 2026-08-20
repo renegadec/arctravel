@@ -392,7 +392,7 @@ export const destinationContent: Record<string, DestinationContent> = {
         description:
           "Explore Stellenbosch, Franschhoek, and Paarl — world-class wine estates, cellar tours, and farm-to-table dining.",
         image:
-          "https://images.unsplash.com/photo-1520110112025-678cbc9ba056?auto=format&fit=crop&w=800&q=80",
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Vineyard_and_Mountains%2C_Western_cape_%286252726861%29.jpg/1280px-Vineyard_and_Mountains%2C_Western_cape_%286252726861%29.jpg",
       },
       {
         title: "Waterfront & City Life",
@@ -405,7 +405,7 @@ export const destinationContent: Record<string, DestinationContent> = {
     gallery: [
       "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=1200&q=80",
       "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1520110112025-678cbc9ba056?auto=format&fit=crop&w=800&q=80",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Vineyard_and_Mountains%2C_Western_cape_%286252726861%29.jpg/1280px-Vineyard_and_Mountains%2C_Western_cape_%286252726861%29.jpg",
     ],
     tips: [
       "Best time: November to March (summer — warm, sunny, perfect beach weather)",
@@ -557,7 +557,7 @@ export const destinationContent: Record<string, DestinationContent> = {
     description:
       "City energy and world-class safari in one trip — Soweto and Sandton paired with Kruger National Park's Big Five.",
     heroImage:
-      "https://images.unsplash.com/photo-1536081784351-6a2f2ba35b57?auto=format&fit=crop&w=1600&q=80",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Johannesburg_skyline_2017.jpg/1280px-Johannesburg_skyline_2017.jpg",
     bookUrl: "/book?destination=Johannesburg+%26+Kruger&notes=Joburg+and+Kruger+destination+page",
     facts: [
       { label: "Best time to visit", value: "May–October (dry season, best Kruger viewing)" },
@@ -571,7 +571,7 @@ export const destinationContent: Record<string, DestinationContent> = {
         description:
           "Explore Maboneng, Soweto, the Apartheid Museum, and the vibrant arts and food scene of South Africa's largest city.",
         image:
-          "https://images.unsplash.com/photo-1536081784351-6a2f2ba35b57?auto=format&fit=crop&w=800&q=80",
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Johannesburg_skyline_2017.jpg/1280px-Johannesburg_skyline_2017.jpg",
       },
       {
         title: "Kruger National Park",
@@ -596,7 +596,7 @@ export const destinationContent: Record<string, DestinationContent> = {
       },
     ],
     gallery: [
-      "https://images.unsplash.com/photo-1536081784351-6a2f2ba35b57?auto=format&fit=crop&w=1200&q=80",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Johannesburg_skyline_2017.jpg/1280px-Johannesburg_skyline_2017.jpg",
       "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
     ],
@@ -642,7 +642,7 @@ export const destinationContent: Record<string, DestinationContent> = {
         description:
           "Dune bashing, camel rides, sandboarding, and a BBQ dinner under the stars in the Arabian desert.",
         image:
-          "https://images.unsplash.com/photo-1533364978476-58e0c16e8f39?auto=format&fit=crop&w=800&q=80",
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Dunes_in_the_Dubai_Desert_Conservation.jpg/1280px-Dunes_in_the_Dubai_Desert_Conservation.jpg",
       },
       {
         title: "Gold Souk & Traditional Dubai",
@@ -662,7 +662,7 @@ export const destinationContent: Record<string, DestinationContent> = {
     gallery: [
       "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
       "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1533364978476-58e0c16e8f39?auto=format&fit=crop&w=800&q=80",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Dunes_in_the_Dubai_Desert_Conservation.jpg/1280px-Dunes_in_the_Dubai_Desert_Conservation.jpg",
     ],
     tips: [
       "Best time: November to March (cooler, 20-30°C)",
