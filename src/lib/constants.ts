@@ -150,7 +150,7 @@ export const contactInfo = {
 
 export const socialLinks = {
   instagram: "https://www.instagram.com/arc_travelco",
-  facebook: "#",
+  facebook: "facebook.com/arctravelandtourszw",
   linkedin: "https://www.linkedin.com/company/arc-travel-and-tours/",
   whatsapp: "https://wa.me/263786577594",
 };
@@ -171,7 +171,7 @@ export const destinations: {
     description:
       "One of the Seven Natural Wonders of the World — a must-visit for every traveller.",
     href: "/destinations/victoria-falls",
-    image: "/images/vic-falls.jpg",
+    image: "/images/destinations/victoria-falls.jpg",
   },
   {
     name: "Great Zimbabwe",
@@ -180,7 +180,7 @@ export const destinations: {
     description:
       "Ancient stone ruins and UNESCO World Heritage site, rich with history and culture.",
     href: "/destinations/great-zimbabwe",
-    image: "/images/great-zimbabwe.jpg",
+    image: "/images/destinations/great-zimbabwe.jpg",
   },
   {
     name: "Eastern Highlands",
@@ -189,7 +189,7 @@ export const destinations: {
     description:
       "Lush mountains, waterfalls, and tea estates — perfect for nature lovers and hikers.",
     href: "/destinations/eastern-highlands",
-    image: "/images/eastern-highlands.jpg",
+    image: "/images/destinations/eastern-highlands.jpg",
   },
   {
     name: "Hwange National Park",
@@ -198,7 +198,16 @@ export const destinations: {
     description:
       "Zimbabwe's largest game reserve, home to over 100 mammal species and 400 bird species.",
     href: "/destinations/hwange-national-park",
-    image: "/images/hwange.jpg",
+    image: "/images/destinations/hwange.jpg",
+  },
+  {
+    name: "Lake Kariba",
+    country: "Zimbabwe",
+    region: "domestic",
+    description:
+      "The world's largest man-made lake by volume — houseboat safaris, tiger fishing, and Matusadona wildlife.",
+    href: "/destinations/kariba",
+    image: "/images/destinations/kariba.jpg",
   },
   // Regional SADC
   {

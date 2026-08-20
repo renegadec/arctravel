@@ -25,14 +25,11 @@ export const metadata: Metadata = {
 // and use e.g. image: "/images/vic-falls.jpg"
 // ============================================================
 const destImages: Record<string, string> = {
-  "/destinations/victoria-falls":
-    "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80",
-  "/destinations/great-zimbabwe":
-    "https://images.unsplash.com/photo-1509233725247-49e657c54213?auto=format&fit=crop&w=800&q=80",
-  "/destinations/eastern-highlands":
-    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80",
-  "/destinations/hwange-national-park":
-    "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80",
+  "/destinations/victoria-falls": "/images/destinations/victoria-falls.jpg",
+  "/destinations/great-zimbabwe": "/images/destinations/great-zimbabwe.jpg",
+  "/destinations/eastern-highlands": "/images/destinations/eastern-highlands.jpg",
+  "/destinations/hwange-national-park": "/images/destinations/hwange.jpg",
+  "/destinations/kariba": "/images/destinations/kariba.jpg",
   "/destinations/cape-town":
     "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=800&q=80",
   "/destinations/okavango-delta":

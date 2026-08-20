@@ -43,8 +43,7 @@ export const destinationContent: Record<string, DestinationContent> = {
     tagline: "One of the Seven Natural Wonders of the World",
     description:
       "The world's largest sheet of falling water, surrounded by adventure, wildlife, and one of Africa's most iconic sunsets.",
-    heroImage:
-      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=1600&q=80",
+    heroImage: "/images/destinations/victoria-falls.jpg",
     bookUrl: "/book?destination=Victoria+Falls&notes=Victoria+Falls+destination+page",
     facts: [
       { label: "Best time to visit", value: "Mar–May (high water) or Jun–Aug (clear views)" },
@@ -83,7 +82,7 @@ export const destinationContent: Record<string, DestinationContent> = {
       },
     ],
     gallery: [
-      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=1200&q=80",
+      "/images/destinations/victoria-falls.jpg",
       "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1444628838545-ac4016a5418a?auto=format&fit=crop&w=800&q=80",
     ],
@@ -108,8 +107,7 @@ export const destinationContent: Record<string, DestinationContent> = {
     tagline: "A UNESCO World Heritage site and a thousand years of history",
     description:
       "Walk through the ancient stone ruins of a medieval city that once ruled a vast trading empire.",
-    heroImage:
-      "https://images.unsplash.com/photo-1509233725247-49e657c54213?auto=format&fit=crop&w=1600&q=80",
+    heroImage: "/images/destinations/great-zimbabwe.jpg",
     bookUrl: "/book?destination=Great+Zimbabwe&notes=Great+Zimbabwe+destination+page",
     facts: [
       { label: "Best time to visit", value: "May–September (cool, dry weather)" },
@@ -148,7 +146,7 @@ export const destinationContent: Record<string, DestinationContent> = {
       },
     ],
     gallery: [
-      "https://images.unsplash.com/photo-1509233725247-49e657c54213?auto=format&fit=crop&w=1200&q=80",
+      "/images/destinations/great-zimbabwe.jpg",
       "https://images.unsplash.com/photo-1517070208541-6ddc4d3efbcb?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
     ],
@@ -173,8 +171,7 @@ export const destinationContent: Record<string, DestinationContent> = {
     tagline: "Lush mountains, waterfalls, and rolling tea estates",
     description:
       "Zimbabwe's cool green escape — misty peaks, trout rivers, botanical gardens, and some of the best hiking in the country.",
-    heroImage:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=80",
+    heroImage: "/images/destinations/eastern-highlands.jpg",
     bookUrl: "/book?destination=Eastern+Highlands&notes=Eastern+Highlands+destination+page",
     facts: [
       { label: "Best time to visit", value: "April–September (cool, dry, clear skies)" },
@@ -213,7 +210,7 @@ export const destinationContent: Record<string, DestinationContent> = {
       },
     ],
     gallery: [
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+      "/images/destinations/eastern-highlands.jpg",
       "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
     ],
@@ -238,8 +235,7 @@ export const destinationContent: Record<string, DestinationContent> = {
     tagline: "Zimbabwe's largest game reserve — over 100 mammal species",
     description:
       "One of Africa's great safari destinations, famous for its enormous elephant herds and more than 400 bird species.",
-    heroImage:
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1600&q=80",
+    heroImage: "/images/destinations/hwange.jpg",
     bookUrl: "/book?destination=Hwange+National+Park&notes=Hwange+destination+page",
     facts: [
       { label: "Best time to visit", value: "July–October (dry season — wildlife at waterholes)" },
@@ -278,7 +274,7 @@ export const destinationContent: Record<string, DestinationContent> = {
       },
     ],
     gallery: [
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1200&q=80",
+      "/images/destinations/hwange.jpg",
       "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=800&q=80",
       "https://images.unsplash.com/photo-1547970810-dc1eac37d174?auto=format&fit=crop&w=800&q=80",
     ],
@@ -294,6 +290,70 @@ export const destinationContent: Record<string, DestinationContent> = {
     ctaText:
       "Tell us your dates, group size, and preferred accommodation style. We'll arrange everything.",
     ctaButton: "Book a Safari",
+  },
+
+  "kariba": {
+    slug: "kariba",
+    name: "Lake Kariba",
+    location: "Zimbabwe — Zambezi Valley (Kariba)",
+    tagline: "The world's largest man-made lake by volume — houseboats, tiger fish, and endless sunsets",
+    description:
+      "A vast inland sea created by the Kariba Dam, where houseboat safaris, world-class tiger fishing, and wildlife meet on the Zambezi.",
+    heroImage: "/images/destinations/kariba.jpg",
+    bookUrl: "/book?destination=Lake+Kariba&notes=Lake+Kariba+destination+page",
+    facts: [
+      { label: "Best time to visit", value: "April–October (dry season; Aug–Oct prime for tiger fishing)" },
+      { label: "Ideal for", value: "Families, anglers & slow travellers" },
+      { label: "Suggested stay", value: "2–3 nights" },
+      { label: "Getting there", value: "~5 hours' drive from Harare, or fly into Kariba (KAB)" },
+    ],
+    highlights: [
+      {
+        title: "Houseboat Safaris",
+        description:
+          "Sleep on the water and wake to sunrise over the lake — houseboats cruise the shoreline with decks for wildlife spotting, fishing, and stargazing.",
+        image:
+          "https://images.unsplash.com/photo-1444628838545-ac4016a5418a?auto=format&fit=crop&w=800&q=80",
+      },
+      {
+        title: "Tiger Fishing",
+        description:
+          "Kariba is world-famous for tigerfish — one of Africa's hardest-fighting freshwater fish. Peak season runs August to October.",
+        image:
+          "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+      },
+      {
+        title: "Matusadona & Wildlife",
+        description:
+          "Game drives and boating safaris in Matusadona National Park — elephants, lions, buffalo, and hippos along the lake's southern shore.",
+        image:
+          "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80",
+      },
+      {
+        title: "Sunset Cruises & the Dam Wall",
+        description:
+          "Cruise the lake at golden hour, watch the Kapenta fishing boats light up at night, and visit the Kariba Dam wall — one of Africa's great engineering feats.",
+        image:
+          "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      },
+    ],
+    gallery: [
+      "/images/destinations/kariba.jpg",
+      "https://images.unsplash.com/photo-1444628838545-ac4016a5418a?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80",
+    ],
+    tips: [
+      "Best time to visit: April to October; book houseboats well ahead for December–January and August–October",
+      "Tiger fishing peaks August–October — the tigerfish is a spectacular fighter",
+      "Hippos and crocodiles are common — always follow your guide's instructions around the water",
+      "Pack strong sun protection and light clothing; evenings on the water can be breezy",
+      "Carry cash — ATM and card options are limited in Kariba town",
+    ],
+    relatedPackages: [],
+    ctaTitle: "Sleep on the Lake",
+    ctaText:
+      "Tell us your dates and group size — we'll arrange houseboat hire, transfers, and activities.",
+    ctaButton: "Plan a Kariba Escape",
   },
 
   "cape-town": {
