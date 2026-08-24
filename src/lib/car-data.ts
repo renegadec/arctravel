@@ -1,9 +1,9 @@
 // ============================================================
 // CAR HIRE FLEET
 // One file driving the /services/car-rentals page.
-// 🔁 IMAGES: Unsplash placeholders — swap with real photos of
-// your actual fleet. Drop files in /public/images/ and use
-// e.g. image: "/images/cars/toyota-hilux.jpg"
+// 📸 IMAGES: real photos in /public/images/cars/*.png (1200×900).
+// 💰 PRICES + mileage policy + transmissions confirmed by the owner (Aug 2025).
+// ⚠️ Still to confirm: year, colour.
 // ============================================================
 
 export type CarCategory = "4x4 & SUV" | "Sedan" | "Hatchback" | "Minibus";
@@ -16,8 +16,8 @@ export interface Car {
   /** Daily hire price in US dollars. */
   pricePerDay: number;
   description: string;
-  /** Total distance driven, in kilometres. */
-  mileage: number;
+  /** Kilometres per day included in the daily rate. */
+  includedKmPerDay: number;
   color: string;
   /** Hex value used to render the colour swatch. */
   colorHex: string;
@@ -31,167 +31,124 @@ export interface Car {
 
 export const cars: Car[] = [
   {
-    id: "toyota-hilux-double-cab",
+    id: "toyota-hilux-d4d",
     brand: "Toyota",
-    model: "Hilux Double Cab 4x4",
-    year: 2023,
-    pricePerDay: 95,
+    model: "Hilux D4D",
+    year: 2019, // ⚠️ CONFIRM
+    pricePerDay: 120,
     description:
-      "Rugged and reliable double-cab 4x4 — ideal for game parks, rural roads, and long cross-country trips. Roof rack and tow bar included.",
-    mileage: 38500,
-    color: "White",
+      "Tough double-cab 4x4 built for game parks and rough roads — ideal for safaris and long cross-country trips.",
+    includedKmPerDay: 300,
+    color: "White", // ⚠️ CONFIRM
     colorHex: "#e6e6e6",
     category: "4x4 & SUV",
     seats: 5,
     transmission: "Automatic",
     fuel: "Diesel",
-    image:
-      "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=800&q=80",
+    image: "/images/cars/toyota_hilux_d4d.png",
     popular: true,
   },
   {
-    id: "toyota-fortuner-28-gd6",
+    id: "toyota-fortuner-d4d",
     brand: "Toyota",
-    model: "Fortuner 2.8 GD-6",
-    year: 2022,
-    pricePerDay: 85,
+    model: "Fortuner D4D",
+    year: 2018, // ⚠️ CONFIRM
+    pricePerDay: 120,
     description:
-      "Spacious seven-seater SUV with excellent ground clearance — perfect for family safaris and business travel alike.",
-    mileage: 52000,
-    color: "Silver",
+      "Reliable seven-seater diesel SUV with strong ground clearance — a favourite for family trips and group travel.",
+    includedKmPerDay: 300,
+    color: "Silver", // ⚠️ CONFIRM
     colorHex: "#c0c0c0",
     category: "4x4 & SUV",
     seats: 7,
     transmission: "Automatic",
     fuel: "Diesel",
-    image:
-      "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=800&q=80",
+    image: "/images/cars/toyota_fortuner_d4d.png",
+  },
+  {
+    id: "toyota-fortuner-gd6",
+    brand: "Toyota",
+    model: "Fortuner GD-6",
+    year: 2021, // ⚠️ CONFIRM
+    pricePerDay: 150,
+    description:
+      "The newer Fortuner — smoother and more refined, yet just as capable for safaris and business travel.",
+    includedKmPerDay: 300,
+    color: "White", // ⚠️ CONFIRM
+    colorHex: "#e6e6e6",
+    category: "4x4 & SUV",
+    seats: 7,
+    transmission: "Automatic",
+    fuel: "Diesel",
+    image: "/images/cars/toyota_fortuner_gd6.png",
     popular: true,
   },
   {
-    id: "land-rover-defender-110",
-    brand: "Land Rover",
-    model: "Defender 110",
-    year: 2021,
-    pricePerDay: 150,
-    description:
-      "Iconic luxury 4x4 built for premium overland adventures without compromising on comfort.",
-    mileage: 41000,
-    color: "Black",
-    colorHex: "#1a1a1a",
-    category: "4x4 & SUV",
-    seats: 5,
-    transmission: "Automatic",
-    fuel: "Diesel",
-    image:
-      "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: "toyota-corolla-quest",
+    id: "toyota-allion",
     brand: "Toyota",
-    model: "Corolla Quest",
-    year: 2023,
-    pricePerDay: 55,
+    model: "Allion",
+    year: 2017, // ⚠️ CONFIRM
+    pricePerDay: 60,
     description:
-      "The dependable city runabout — economical, comfortable, and easy to park for meetings and errands around town.",
-    mileage: 29000,
-    color: "Pearl White",
-    colorHex: "#f2f0ea",
+      "Comfortable, economical sedan — a dependable choice for city driving and business travel.",
+    includedKmPerDay: 200,
+    color: "Silver", // ⚠️ CONFIRM
+    colorHex: "#c0c0c0",
     category: "Sedan",
     seats: 5,
     transmission: "Automatic",
     fuel: "Petrol",
-    image:
-      "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80",
+    image: "/images/cars/toyota_alion.png",
   },
   {
-    id: "mercedes-benz-c200",
-    brand: "Mercedes-Benz",
-    model: "C200",
-    year: 2022,
-    pricePerDay: 110,
+    id: "toyota-aqua",
+    brand: "Toyota",
+    model: "Aqua",
+    year: 2018, // ⚠️ CONFIRM
+    pricePerDay: 45,
     description:
-      "Executive sedan for business travellers who want to arrive in style. Leather interior and climate control included.",
-    mileage: 44000,
-    color: "Obsidian Black",
-    colorHex: "#0d0d0d",
-    category: "Sedan",
+      "Fuel-sipping hybrid hatchback — cheap to run and easy to park, perfect for Harare city hops.",
+    includedKmPerDay: 200,
+    color: "Blue", // ⚠️ CONFIRM
+    colorHex: "#2f5d8a",
+    category: "Hatchback",
     seats: 5,
     transmission: "Automatic",
     fuel: "Petrol",
-    image:
-      "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: "bmw-320i",
-    brand: "BMW",
-    model: "320i",
-    year: 2022,
-    pricePerDay: 105,
-    description:
-      "Sporty yet refined sedan — a balanced drive for both city commutes and weekend getaways.",
-    mileage: 46000,
-    color: "Tanzanite Blue",
-    colorHex: "#1f3a5f",
-    category: "Sedan",
-    seats: 5,
-    transmission: "Automatic",
-    fuel: "Petrol",
-    image:
-      "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=800&q=80",
+    image: "/images/cars/toyota_aqua.png",
   },
   {
     id: "honda-fit",
     brand: "Honda",
     model: "Fit",
-    year: 2021,
+    year: 2019, // ⚠️ CONFIRM
     pricePerDay: 45,
     description:
-      "Compact, fuel-efficient hatchback that's surprisingly roomy — a favourite for city hops and budget hire.",
-    mileage: 58000,
-    color: "Graphite Grey",
-    colorHex: "#4a4f57",
+      "Compact, surprisingly roomy hatchback — great on fuel and a popular budget hire.",
+    includedKmPerDay: 200,
+    color: "White", // ⚠️ CONFIRM
+    colorHex: "#e6e6e6",
     category: "Hatchback",
     seats: 5,
     transmission: "Automatic",
     fuel: "Petrol",
-    image:
-      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80",
+    image: "/images/cars/honda_fit.png",
   },
   {
-    id: "suzuki-swift",
-    brand: "Suzuki",
-    model: "Swift",
-    year: 2022,
-    pricePerDay: 40,
-    description:
-      "Nimble and fun little hatchback — great on fuel and easy to manoeuvre through Harare traffic.",
-    mileage: 33000,
-    color: "Sunshine Yellow",
-    colorHex: "#f4c20d",
-    category: "Hatchback",
-    seats: 5,
-    transmission: "Manual",
-    fuel: "Petrol",
-    image:
-      "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: "toyota-quantum",
+    id: "toyota-hiace",
     brand: "Toyota",
-    model: "Quantum",
-    year: 2020,
+    model: "Hiace",
+    year: 2019, // ⚠️ CONFIRM
     pricePerDay: 120,
     description:
-      "Ten-seater minibus for group transfers, church trips, and family outings — with plenty of luggage space.",
-    mileage: 96000,
-    color: "White",
+      "Spacious van for group transfers, airport shuttles, church trips, and family outings.",
+    includedKmPerDay: 300,
+    color: "White", // ⚠️ CONFIRM
     colorHex: "#e6e6e6",
     category: "Minibus",
-    seats: 10,
-    transmission: "Manual",
+    seats: 8,
+    transmission: "Automatic",
     fuel: "Diesel",
-    image:
-      "https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?auto=format&fit=crop&w=800&q=80",
+    image: "/images/cars/toyota_hiace.png",
   },
 ];
