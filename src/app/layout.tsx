@@ -30,7 +30,6 @@ export const metadata: Metadata = {
     "corporate travel Zimbabwe",
     "holiday packages Zimbabwe",
     "Arc Travel & Tours",
-    "Arc Travel & Tours",
   ],
   openGraph: {
     title: "Arc Travel & Tours — Your Trusted Travel Agency in Zimbabwe",
