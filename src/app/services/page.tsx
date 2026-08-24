@@ -33,7 +33,7 @@ const categories = [
       "day-trips",
       "group-tours",
       "corporate-events",
-      "cruise-booking",
+      "cruise-bookings",
     ],
   },
   {

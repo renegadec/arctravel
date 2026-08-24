@@ -68,6 +68,24 @@ Each page = **1 hero + 4 highlights + 3 gallery**. ✅ = done.
 - [ ] **About** — 1 team/office photo
 - [ ] **Book** — 1 background photo (falls or travel scene)
 
+## 7. Car hire fleet (7 vehicles) ✅
+
+Real photos are wired in — `public/images/cars/*.png` (1200×900, 4:3). The
+fleet is defined in `src/lib/car-data.ts`.
+
+| Vehicle | File |
+|---|---|
+| Toyota Hilux D4D | `toyota_hilux_d4d.png` |
+| Toyota Fortuner D4D | `toyota_fortuner_d4d.png` |
+| Toyota Fortuner GD-6 | `toyota_fortuner_gd6.png` |
+| Toyota Allion | `toyota_alion.png` |
+| Toyota Aqua | `toyota_aqua.png` |
+| Honda Fit | `honda_fit.png` |
+| Toyota Hiace | `toyota_hiace.png` |
+
+> Optional: convert PNG → JPEG/WebP to shrink the repo. Next.js already serves
+> WebP on the fly, so this only affects storage, not page speed.
+
 ---
 
 ## Suggested order
