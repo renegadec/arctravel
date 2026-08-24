@@ -129,6 +129,7 @@ export const navLinks: NavLink[] = [
     href: "/services",
     children: [
       { label: "All Services", href: "/services" },
+      { label: "Car Hire", href: "/services/car-rentals", description: "Self-drive or chauffeur-driven — our fleet" },
       { label: "Destinations", href: "/destinations", description: "Zimbabwe, Southern Africa & beyond" },
       { label: "Packages", href: "/packages", description: "Ready-made trips, priced & planned" },
       { label: "Visa Assistance", href: "/services/visa-assistance", description: "Search visa requirements for any destination" },
