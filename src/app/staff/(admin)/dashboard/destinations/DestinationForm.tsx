@@ -20,6 +20,7 @@ import {
   PairsEditor,
   HighlightsEditor,
 } from "@/components/staff/form-fields";
+import ImageUploader from "@/components/staff/ImageUploader";
 import { Save, ArrowLeft, AlertTriangle } from "lucide-react";
 
 type FormState = {
@@ -176,13 +177,14 @@ export default function DestinationForm({
               </SelectContent>
             </Select>
           </Field>
-          <Field label="Card image" hint="URL or /images/... path">
-            <Input
+          <div className="sm:col-span-2 lg:col-span-3">
+            <ImageUploader
               value={form.image}
-              onChange={(e) => set("image", e.target.value)}
-              placeholder="/images/destinations/victoria-falls.jpg"
+              onChange={(v) => set("image", v)}
+              label="Card image"
+              hint="Shown on the destinations listing card."
             />
-          </Field>
+          </div>
           <Field label="Card description">
             <Input
               value={form.shortDescription}
@@ -213,13 +215,14 @@ export default function DestinationForm({
               placeholder="One of the Seven Natural Wonders of the World"
             />
           </Field>
-          <Field label="Hero image" className="sm:col-span-2">
-            <Input
+          <div className="sm:col-span-2">
+            <ImageUploader
               value={form.heroImage}
-              onChange={(e) => set("heroImage", e.target.value)}
-              placeholder="URL or /images/... path"
+              onChange={(v) => set("heroImage", v)}
+              label="Hero image"
+              hint="Full-width background for the destination page."
             />
-          </Field>
+          </div>
           <Field label="Description" className="sm:col-span-2">
             <Textarea
               value={form.description}

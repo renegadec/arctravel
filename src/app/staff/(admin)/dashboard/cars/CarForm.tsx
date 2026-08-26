@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Field } from "@/components/staff/form-fields";
+import ImageUploader from "@/components/staff/ImageUploader";
 import { Save, ArrowLeft, AlertTriangle } from "lucide-react";
 
 const CATEGORIES = ["4x4 & SUV", "Sedan", "Hatchback", "Minibus"] as const;
@@ -190,13 +191,14 @@ export default function CarForm({ car }: { car?: Car }) {
             className="h-10 w-full cursor-pointer rounded-lg border border-input bg-transparent px-1"
           />
         </Field>
-        <Field label="Photo" hint="URL or /images/... path">
-          <Input
+        <div className="sm:col-span-2 lg:col-span-3">
+          <ImageUploader
             value={form.image}
-            onChange={(e) => set("image", e.target.value)}
-            placeholder="/images/cars/toyota-hilux-d4d.png"
+            onChange={(v) => set("image", v)}
+            label="Photo"
+            hint="Upload a photo of the vehicle, or paste a URL / /images/... path."
           />
-        </Field>
+        </div>
       </div>
 
       <Field label="Description">
