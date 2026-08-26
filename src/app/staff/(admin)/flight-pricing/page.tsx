@@ -29,7 +29,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import DashboardShell from "@/components/staff/DashboardShell";
 import {
   Select,
   SelectContent,
@@ -491,7 +490,7 @@ export default function FlightPricingTool() {
   // ─── Render ──────────────────────────────────────────
 
   return (
-    <DashboardShell>
+    <div className="min-h-screen bg-[#f5f6fa]">
       {/* Search Panel */}
       <div className="border-b border-border bg-white shadow-sm">
         <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 lg:px-8">
@@ -1073,7 +1072,7 @@ export default function FlightPricingTool() {
           </div>
         )}
       </div>
-    </DashboardShell>
+    </div>
   );
 }
 
