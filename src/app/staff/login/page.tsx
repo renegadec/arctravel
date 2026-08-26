@@ -20,7 +20,7 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/staff/flight-pricing";
+  const redirect = searchParams.get("redirect") || "/staff/dashboard";
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

@@ -12,6 +12,9 @@ import {
   BadgeCheck,
 } from "lucide-react";
 import VisaPageClient from "./VisaPageClient";
+import { getVisas } from "@/lib/stores/visas";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Visa Directory",
@@ -55,11 +58,13 @@ const benefits = [
   "Transparent fees — no hidden charges",
 ];
 
-export default function VisaAssistancePage() {
+export default async function VisaAssistancePage() {
+  const visas = await getVisas();
+
   return (
     <>
       {/* Visa Directory — searchable list */}
-      <VisaPageClient />
+      <VisaPageClient visas={visas} />
 
       {/* Services */}
       <section className="border-t border-slate-100 bg-[#faf9f6] py-16">

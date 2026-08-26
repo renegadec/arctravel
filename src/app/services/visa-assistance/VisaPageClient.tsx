@@ -19,9 +19,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { visaCountries, regions, visaTypeLabels, type VisaType } from "@/lib/visa-data";
+import { regions, visaTypeLabels, type VisaType, type VisaCountry } from "@/lib/visa-data";
 
-export default function VisaPageClient() {
+export default function VisaPageClient({ visas }: { visas: VisaCountry[] }) {
   const [search, setSearch] = useState("");
   const [regionFilter, setRegionFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState<VisaType | "all">("all");
@@ -29,7 +29,7 @@ export default function VisaPageClient() {
   const [showContact, setShowContact] = useState(false);
 
   const filtered = useMemo(() => {
-    return visaCountries.filter((c) => {
+    return visas.filter((c) => {
       const matchesSearch =
         !search ||
         c.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -38,7 +38,7 @@ export default function VisaPageClient() {
       const matchesType = typeFilter === "all" || c.type === typeFilter;
       return matchesSearch && matchesRegion && matchesType;
     });
-  }, [search, regionFilter, typeFilter]);
+  }, [search, regionFilter, typeFilter, visas]);
 
   const toggleExpand = (slug: string) => {
     setExpanded((prev) => {
@@ -50,16 +50,16 @@ export default function VisaPageClient() {
   };
 
   const typeCounts = useMemo(() => {
-    const counts: Record<string, number> = { all: visaCountries.length };
-    for (const c of visaCountries) {
+    const counts: Record<string, number> = { all: visas.length };
+    for (const c of visas) {
       counts[c.type] = (counts[c.type] || 0) + 1;
     }
     // Add region counts
     for (const r of regions) {
-      if (r !== "All") counts[`region-${r}`] = visaCountries.filter((c) => c.region === r).length;
+      if (r !== "All") counts[`region-${r}`] = visas.filter((c) => c.region === r).length;
     }
     return counts;
-  }, []);
+  }, [visas]);
 
   return (
     <>
@@ -152,7 +152,7 @@ export default function VisaPageClient() {
           {/* Results count */}
           <p className="mt-4 text-xs text-muted-foreground">
             Showing <span className="font-medium text-foreground">{filtered.length}</span> of{" "}
-            <span className="font-medium text-foreground">{visaCountries.length}</span> countries
+            <span className="font-medium text-foreground">{visas.length}</span> countries
           </p>
         </div>
       </section>
@@ -184,7 +184,10 @@ export default function VisaPageClient() {
             <div className="grid gap-3">
               {filtered.map((country) => {
                 const isExpanded = expanded.has(country.slug);
-                const badge = visaTypeLabels[country.type];
+                const badge = visaTypeLabels[country.type] ?? {
+                  label: country.type,
+                  badge: "bg-slate-100 text-slate-700",
+                };
                 return (
                   <div
                     key={country.slug}

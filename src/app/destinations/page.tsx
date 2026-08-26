@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { destinations } from "@/lib/constants";
+import { getDestinations } from "@/lib/stores/destinations";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
@@ -12,41 +12,12 @@ import {
   Sparkles,
 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Destinations",
   description:
     "Explore Zimbabwe, Southern Africa, and beyond — Victoria Falls, Hwange, Cape Town, Zanzibar, Dubai, and more.",
-};
-
-// ============================================================
-// DESTINATION CARD IMAGES
-// 🔁 SWAP THESE with your own destination photos.
-// Best crops: 3:4 portrait. Drop files in /public/images/
-// and use e.g. image: "/images/vic-falls.jpg"
-// ============================================================
-const destImages: Record<string, string> = {
-  "/destinations/victoria-falls": "/images/destinations/victoria-falls.jpg",
-  "/destinations/great-zimbabwe": "/images/destinations/great-zimbabwe.jpg",
-  "/destinations/eastern-highlands": "/images/destinations/eastern-highlands.jpg",
-  "/destinations/hwange-national-park": "/images/destinations/hwange.jpg",
-  "/destinations/kariba": "/images/destinations/kariba.jpg",
-  "/destinations/cape-town":
-    "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=800&q=80",
-  "/destinations/okavango-delta":
-    "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80",
-  "/destinations/zanzibar":
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
-  "/destinations/johannesburg-kruger":
-    "https://images.unsplash.com/photo-1536081784351-6a2f2ba35b57?auto=format&fit=crop&w=800&q=80",
-  "/destinations/dubai":
-    "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
-  "/destinations/london":
-    "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80",
-  "/destinations/bali":
-    "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
-  "/destinations/nairobi-maasai-mara":
-    "https://images.unsplash.com/photo-1535941339077-2dd1c7963098?auto=format&fit=crop&w=800&q=80",
-  "/destinations/diani-beach": "/images/hero/diani-beach.jpg",
 };
 
 const regions = [
@@ -55,7 +26,9 @@ const regions = [
   { key: "international", label: "International", icon: Plane },
 ];
 
-export default function DestinationsPage() {
+export default async function DestinationsPage() {
+  const listings = await getDestinations();
+
   return (
     <>
       {/* Hero */}
@@ -90,7 +63,7 @@ export default function DestinationsPage() {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {regions.map((region) => {
-            const regionDests = destinations.filter(
+            const regionDests = listings.filter(
               (d) => d.region === region.key
             );
             if (regionDests.length === 0) return null;
@@ -125,7 +98,7 @@ export default function DestinationsPage() {
                       {/* Background image */}
                       <Image
                         alt={dest.name}
-                        src={destImages[dest.href]}
+                        src={dest.image}
                         fill
                         sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 100vw"
                         className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
