@@ -1,4 +1,5 @@
 import { queryRows, queryOne, runQuery } from "@/lib/db";
+import { cached, invalidateAll } from "@/lib/cache";
 import { cars as seedCars, type Car } from "@/lib/car-data";
 
 interface CarRow {
@@ -48,20 +49,24 @@ function rowToCar(row: CarRow): Car {
  * is authoritative — including an empty fleet.
  */
 export async function getCars(): Promise<Car[]> {
-  const rows = await queryRows<CarRow>(
-    "SELECT * FROM cars ORDER BY sort_order ASC, brand ASC, model ASC"
-  );
-  if (!rows) return seedCars;
-  return rows.map(rowToCar);
+  return cached("cars:public", 15_000, async () => {
+    const rows = await queryRows<CarRow>(
+      "SELECT * FROM cars ORDER BY sort_order ASC, brand ASC, model ASC"
+    );
+    if (!rows) return seedCars;
+    return rows.map(rowToCar);
+  });
 }
 
 /** Admin: DB only. Returns null when the DB is unavailable (caller shows a setup notice). */
 export async function adminListCars(): Promise<Car[] | null> {
-  const rows = await queryRows<CarRow>(
-    "SELECT * FROM cars ORDER BY sort_order ASC, brand ASC, model ASC"
-  );
-  if (!rows) return null;
-  return rows.map(rowToCar);
+  return cached("cars:list", 15_000, async () => {
+    const rows = await queryRows<CarRow>(
+      "SELECT * FROM cars ORDER BY sort_order ASC, brand ASC, model ASC"
+    );
+    if (!rows) return null;
+    return rows.map(rowToCar);
+  });
 }
 
 export async function adminGetCar(id: string): Promise<Car | null> {
@@ -129,7 +134,7 @@ export function sanitizeCar(body: Record<string, unknown>): CarInput {
 }
 
 export async function upsertCar(input: CarInput): Promise<boolean> {
-  return runQuery(
+  const ok = await runQuery(
     `INSERT INTO cars (id, brand, model, year, price_per_day, included_km_per_day, color, color_hex, category, seats, transmission, fuel, image, popular, available, description)
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
      ON CONFLICT (id) DO UPDATE SET
@@ -158,8 +163,12 @@ export async function upsertCar(input: CarInput): Promise<boolean> {
       input.description || null,
     ]
   );
+  if (ok) invalidateAll();
+  return ok;
 }
 
 export async function deleteCar(id: string): Promise<boolean> {
-  return runQuery("DELETE FROM cars WHERE id = $1", [id]);
+  const ok = await runQuery("DELETE FROM cars WHERE id = $1", [id]);
+  if (ok) invalidateAll();
+  return ok;
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import type { DbStatus } from "@/lib/db";
 import { Database, RefreshCw, CheckCircle2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -10,15 +11,13 @@ import { Button } from "@/components/ui/button";
  * "no-db"     → DATABASE_URL not set in .env.local
  * "not-ready" → DATABASE_URL set but tables missing → run the migration
  */
-export default function DbSetupBanner({
-  status,
-}: {
-  status: "no-db" | "not-ready";
-}) {
+export default function DbSetupBanner({ status }: { status: DbStatus }) {
   const [state, setState] = useState<"idle" | "running" | "done" | "error">(
     "idle"
   );
   const router = useRouter();
+
+  if (status === "ok") return null;
 
   async function runSetup() {
     setState("running");

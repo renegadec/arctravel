@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -29,6 +29,12 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+
+  // Warm the server render for the nav destinations so switching pages feels
+  // instant instead of waiting on a fresh server round-trip.
+  useEffect(() => {
+    for (const item of NAV) router.prefetch(item.href);
+  }, [router]);
 
   async function handleLogout() {
     setLoggingOut(true);

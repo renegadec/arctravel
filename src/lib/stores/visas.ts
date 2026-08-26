@@ -1,4 +1,5 @@
 import { queryRows, queryOne, runQuery } from "@/lib/db";
+import { cached, invalidateAll } from "@/lib/cache";
 import { visaCountries, type VisaCountry } from "@/lib/visa-data";
 import { slugify } from "@/lib/stores/cars";
 
@@ -39,20 +40,24 @@ function rowToVisa(row: VisaRow): VisaCountry {
  * is unavailable.
  */
 export async function getVisas(): Promise<VisaCountry[]> {
-  const rows = await queryRows<VisaRow>(
-    "SELECT * FROM visas ORDER BY sort_order ASC, name ASC"
-  );
-  if (!rows) return visaCountries;
-  return rows.map(rowToVisa);
+  return cached("visas:public", 15_000, async () => {
+    const rows = await queryRows<VisaRow>(
+      "SELECT * FROM visas ORDER BY sort_order ASC, name ASC"
+    );
+    if (!rows) return visaCountries;
+    return rows.map(rowToVisa);
+  });
 }
 
 /** Admin: DB only. Returns null when the DB is unavailable. */
 export async function adminListVisas(): Promise<VisaCountry[] | null> {
-  const rows = await queryRows<VisaRow>(
-    "SELECT * FROM visas ORDER BY sort_order ASC, name ASC"
-  );
-  if (!rows) return null;
-  return rows.map(rowToVisa);
+  return cached("visas:list", 15_000, async () => {
+    const rows = await queryRows<VisaRow>(
+      "SELECT * FROM visas ORDER BY sort_order ASC, name ASC"
+    );
+    if (!rows) return null;
+    return rows.map(rowToVisa);
+  });
 }
 
 export async function adminGetVisa(id: string): Promise<VisaCountry | null> {
@@ -104,7 +109,7 @@ export function sanitizeVisa(body: Record<string, unknown>): VisaInput {
 }
 
 export async function upsertVisa(input: VisaInput): Promise<boolean> {
-  return runQuery(
+  const ok = await runQuery(
     `INSERT INTO visas (id, name, slug, type, visa_category, max_stay, processing_time, visa_fee, service_fee, requirements, notes, region)
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
      ON CONFLICT (id) DO UPDATE SET
@@ -128,8 +133,12 @@ export async function upsertVisa(input: VisaInput): Promise<boolean> {
       input.region,
     ]
   );
+  if (ok) invalidateAll();
+  return ok;
 }
 
 export async function deleteVisa(id: string): Promise<boolean> {
-  return runQuery("DELETE FROM visas WHERE id = $1", [id]);
+  const ok = await runQuery("DELETE FROM visas WHERE id = $1", [id]);
+  if (ok) invalidateAll();
+  return ok;
 }

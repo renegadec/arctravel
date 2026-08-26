@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getDbStatus } from "@/lib/db";
+import { isDbConfigured, type DbStatus } from "@/lib/db";
 import { adminListCars } from "@/lib/stores/cars";
+import type { Car } from "@/lib/car-data";
 import DbSetupBanner from "@/components/staff/DbSetupBanner";
 import { DeleteCarButton } from "@/components/staff/DeleteButtons";
 import { Plus } from "lucide-react";
@@ -9,7 +10,9 @@ import { Plus } from "lucide-react";
 export const dynamic = "force-dynamic";
 
 export default async function CarsAdminPage() {
-  const status = await getDbStatus();
+  const cars = await adminListCars();
+  const status: DbStatus =
+    cars === null ? (isDbConfigured() ? "not-ready" : "no-db") : "ok";
 
   return (
     <div className="space-y-6">
@@ -31,26 +34,16 @@ export default async function CarsAdminPage() {
         )}
       </div>
 
-      {status !== "ok" ? (
+      {cars === null ? (
         <DbSetupBanner status={status} />
       ) : (
-        <FleetTable />
+        <FleetTable cars={cars} />
       )}
     </div>
   );
 }
 
-async function FleetTable() {
-  const cars = await adminListCars();
-
-  if (!cars) {
-    return (
-      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-800">
-        Could not reach the database. Check that DATABASE_URL is correct.
-      </div>
-    );
-  }
-
+function FleetTable({ cars }: { cars: Car[] }) {
   if (cars.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
