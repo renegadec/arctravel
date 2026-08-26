@@ -1,4 +1,5 @@
 import { queryRows, queryOne, runQuery } from "@/lib/db";
+import { cached, invalidateAll } from "@/lib/cache";
 import { destinations as seedDestinations } from "@/lib/constants";
 import {
   destinationContent,
@@ -116,20 +117,24 @@ const fallbackListings: DestinationListing[] = seedDestinations.map((d) => ({
  * database is unavailable.
  */
 export async function getDestinations(): Promise<DestinationListing[]> {
-  const rows = await queryRows<DestinationRow>(
-    "SELECT * FROM destinations WHERE published = TRUE ORDER BY sort_order ASC, name ASC"
-  );
-  if (!rows) return fallbackListings;
-  return rows.map(rowToListing);
+  return cached("destinations:public", 15_000, async () => {
+    const rows = await queryRows<DestinationRow>(
+      "SELECT * FROM destinations WHERE published = TRUE ORDER BY sort_order ASC, name ASC"
+    );
+    if (!rows) return fallbackListings;
+    return rows.map(rowToListing);
+  });
 }
 
 /** Admin: DB only (includes unpublished). Returns null when the DB is unavailable. */
 export async function adminListDestinations(): Promise<DestinationListing[] | null> {
-  const rows = await queryRows<DestinationRow>(
-    "SELECT * FROM destinations ORDER BY sort_order ASC, name ASC"
-  );
-  if (!rows) return null;
-  return rows.map(rowToListing);
+  return cached("destinations:list", 15_000, async () => {
+    const rows = await queryRows<DestinationRow>(
+      "SELECT * FROM destinations ORDER BY sort_order ASC, name ASC"
+    );
+    if (!rows) return null;
+    return rows.map(rowToListing);
+  });
 }
 
 /**
@@ -211,7 +216,7 @@ export function sanitizeDestination(body: Record<string, unknown>): DestinationI
 }
 
 export async function upsertDestination(input: DestinationInput): Promise<boolean> {
-  return runQuery(
+  const ok = await runQuery(
     `INSERT INTO destinations (slug, name, country, region, short_description, image, location, tagline, description, hero_image, book_url, facts, highlights, gallery, tips, related_packages, cta_title, cta_text, cta_button, published)
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)
      ON CONFLICT (slug) DO UPDATE SET
@@ -246,8 +251,40 @@ export async function upsertDestination(input: DestinationInput): Promise<boolea
       input.published,
     ]
   );
+  if (ok) invalidateAll();
+  return ok;
 }
 
 export async function deleteDestination(slug: string): Promise<boolean> {
-  return runQuery("DELETE FROM destinations WHERE slug = $1", [slug]);
+  const ok = await runQuery("DELETE FROM destinations WHERE slug = $1", [slug]);
+  if (ok) invalidateAll();
+  return ok;
+}
+
+/** Full edit-page payload for one destination — content + listing fields in a single query. */
+export async function adminGetDestinationWithListing(slug: string): Promise<{
+  content: DestinationContent;
+  listing: {
+    shortDescription: string;
+    country: string;
+    region: string;
+    image: string;
+    published: boolean;
+  };
+} | null> {
+  const row = await queryOne<DestinationRow>(
+    "SELECT * FROM destinations WHERE slug = $1",
+    [slug]
+  );
+  if (!row) return null;
+  return {
+    content: rowToContent(row),
+    listing: {
+      shortDescription: row.short_description ?? "",
+      country: row.country ?? "",
+      region: row.region,
+      image: row.image ?? "",
+      published: row.published !== false,
+    },
+  };
 }

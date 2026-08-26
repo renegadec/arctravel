@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { getDbStatus } from "@/lib/db";
-import { adminListDestinations } from "@/lib/stores/destinations";
+import { isDbConfigured, type DbStatus } from "@/lib/db";
+import { adminListDestinations, type DestinationListing } from "@/lib/stores/destinations";
 import DbSetupBanner from "@/components/staff/DbSetupBanner";
 import { DeleteDestinationButton } from "@/components/staff/DeleteButtons";
 import { Plus } from "lucide-react";
@@ -8,7 +8,13 @@ import { Plus } from "lucide-react";
 export const dynamic = "force-dynamic";
 
 export default async function DestinationsAdminPage() {
-  const status = await getDbStatus();
+  const destinations = await adminListDestinations();
+  const status: DbStatus =
+    destinations === null
+      ? isDbConfigured()
+        ? "not-ready"
+        : "no-db"
+      : "ok";
 
   return (
     <div className="space-y-6">
@@ -30,26 +36,16 @@ export default async function DestinationsAdminPage() {
         )}
       </div>
 
-      {status !== "ok" ? (
+      {destinations === null ? (
         <DbSetupBanner status={status} />
       ) : (
-        <DestinationsTable />
+        <DestinationsTable destinations={destinations} />
       )}
     </div>
   );
 }
 
-async function DestinationsTable() {
-  const destinations = await adminListDestinations();
-
-  if (!destinations) {
-    return (
-      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-800">
-        Could not reach the database. Check that DATABASE_URL is correct.
-      </div>
-    );
-  }
-
+function DestinationsTable({ destinations }: { destinations: DestinationListing[] }) {
   if (destinations.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">

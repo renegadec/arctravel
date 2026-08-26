@@ -1,4 +1,5 @@
 import { Pool } from "pg";
+import { cached } from "@/lib/cache";
 
 // Reuse a single pool across hot reloads and serverless warm instances.
 const globalForPool = globalThis as unknown as { __arctravelPool?: Pool };
@@ -24,17 +25,20 @@ export type DbStatus = "ok" | "no-db" | "not-ready";
  * not-ready   — DATABASE_URL set but tables missing (run the migration/seed)
  */
 export async function getDbStatus(): Promise<DbStatus> {
-  const pool = getPool();
-  if (!pool) return "no-db";
-  try {
-    const res = await pool.query(
-      "SELECT to_regclass('public.cars') AS cars, to_regclass('public.destinations') AS dest, to_regclass('public.visas') AS visas"
-    );
-    const row = res.rows[0];
-    return row?.cars && row?.dest && row?.visas ? "ok" : "not-ready";
-  } catch {
-    return "not-ready";
-  }
+  // Cached for a few seconds — the status check runs on most admin pages.
+  return cached("db:status", 10_000, async () => {
+    const pool = getPool();
+    if (!pool) return "no-db";
+    try {
+      const res = await pool.query(
+        "SELECT to_regclass('public.cars') AS cars, to_regclass('public.destinations') AS dest, to_regclass('public.visas') AS visas"
+      );
+      const row = res.rows[0];
+      return row?.cars && row?.dest && row?.visas ? "ok" : "not-ready";
+    } catch {
+      return "not-ready";
+    }
+  });
 }
 
 /** Run a SELECT and return rows, or null when the DB is unavailable. */
@@ -74,17 +78,19 @@ export async function getTableCounts(): Promise<{
   destinations: number;
   visas: number;
 } | null> {
-  const rows = await queryRows<{ cars: number; destinations: number; visas: number }>(
-    `SELECT
-       (SELECT count(*) FROM cars) AS cars,
-       (SELECT count(*) FROM destinations) AS destinations,
-       (SELECT count(*) FROM visas) AS visas`
-  );
-  if (!rows || rows.length === 0) return null;
-  const r = rows[0];
-  return {
-    cars: Number(r.cars),
-    destinations: Number(r.destinations),
-    visas: Number(r.visas),
-  };
+  return cached("stats:counts", 15_000, async () => {
+    const rows = await queryRows<{ cars: number; destinations: number; visas: number }>(
+      `SELECT
+         (SELECT count(*) FROM cars) AS cars,
+         (SELECT count(*) FROM destinations) AS destinations,
+         (SELECT count(*) FROM visas) AS visas`
+    );
+    if (!rows || rows.length === 0) return null;
+    const r = rows[0];
+    return {
+      cars: Number(r.cars),
+      destinations: Number(r.destinations),
+      visas: Number(r.visas),
+    };
+  });
 }

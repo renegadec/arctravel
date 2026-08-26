@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getDbStatus, getTableCounts } from "@/lib/db";
+import { isDbConfigured, getTableCounts, type DbStatus } from "@/lib/db";
 import DbSetupBanner from "@/components/staff/DbSetupBanner";
 import {
   CarFront,
@@ -11,8 +11,14 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function DashboardOverviewPage() {
-  const status = await getDbStatus();
-  const counts = status === "ok" ? await getTableCounts() : null;
+  // One query covers both the counts and the status: counts are null when
+  // the DB is unavailable, and the config flag tells us why.
+  const counts = await getTableCounts();
+  const status: DbStatus = counts
+    ? "ok"
+    : isDbConfigured()
+      ? "not-ready"
+      : "no-db";
 
   const cards = [
     {

@@ -1,19 +1,8 @@
 import { notFound } from "next/navigation";
 import DestinationForm from "../DestinationForm";
-import { adminGetDestination } from "@/lib/stores/destinations";
-import { queryOne } from "@/lib/db";
+import { adminGetDestinationWithListing } from "@/lib/stores/destinations";
 
 export const dynamic = "force-dynamic";
-
-interface ListingRow {
-  slug: string;
-  name: string;
-  country: string | null;
-  region: string;
-  short_description: string | null;
-  image: string | null;
-  published: boolean | null;
-}
 
 export default async function EditDestinationPage({
   params,
@@ -21,14 +10,10 @@ export default async function EditDestinationPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const data = await adminGetDestination(slug);
-  if (!data) notFound();
+  const full = await adminGetDestinationWithListing(slug);
+  if (!full) notFound();
 
-  // Listing-level fields live alongside the detail content in the same row.
-  const row = await queryOne<ListingRow>(
-    "SELECT slug, name, country, region, short_description, image, published FROM destinations WHERE slug = $1",
-    [slug]
-  );
+  const { content: data, listing } = full;
 
   return (
     <div className="space-y-6">
@@ -42,11 +27,11 @@ export default async function EditDestinationPage({
         <DestinationForm
           data={data}
           extra={{
-            shortDescription: row?.short_description ?? "",
-            country: row?.country ?? "",
-            region: row?.region ?? "domestic",
-            image: row?.image ?? "",
-            published: row?.published !== false,
+            shortDescription: listing.shortDescription,
+            country: listing.country,
+            region: listing.region,
+            image: listing.image,
+            published: listing.published,
           }}
         />
       </div>

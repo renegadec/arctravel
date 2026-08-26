@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isStaffAuthed } from "@/lib/staff-auth";
 import { getPool, runQuery } from "@/lib/db";
+import { invalidateAll } from "@/lib/cache";
 import { SCHEMA_SQL } from "@/lib/db/schema";
 import { cars as seedCars } from "@/lib/car-data";
 import { destinations as seedDestinations } from "@/lib/constants";
@@ -127,6 +128,9 @@ export async function POST(req: NextRequest) {
     );
     if (ok) visas++;
   }
+
+  // Drop cached reads so the dashboard reflects the seeded data immediately.
+  invalidateAll();
 
   return NextResponse.json({
     success: true,
