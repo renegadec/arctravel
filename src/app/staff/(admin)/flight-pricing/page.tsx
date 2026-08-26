@@ -29,7 +29,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SITE_URL } from "@/lib/constants";
+import DashboardShell from "@/components/staff/DashboardShell";
 import {
   Select,
   SelectContent,
@@ -491,33 +491,7 @@ export default function FlightPricingTool() {
   // ─── Render ──────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[#f5f6fa]">
-      {/* Header */}
-      <div className="sticky top-20 z-40 border-b border-primary/10 bg-gradient-to-r from-primary to-[#003d7a] shadow-md md:top-[116px] lg:top-[132px]">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-2 sm:px-6 sm:py-3 lg:px-8">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15 text-xs font-bold text-white shadow-sm backdrop-blur-sm ring-1 ring-white/20">
-              AT
-            </div>
-            <div>
-              <h1 className="text-sm font-semibold text-white">Flight Pricing Tool</h1>
-              <p className="text-xs text-white/70">Arc Travel & Tours Internal</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="hidden rounded-full bg-accent/20 px-3 py-0.5 text-xs font-medium text-accent ring-1 ring-accent/30 sm:inline-block">
-              Staff Only
-            </span>
-            <a
-              href={SITE_URL}
-              className="inline-flex h-7 items-center justify-center gap-1 rounded-lg border border-white/20 bg-white/10 px-2.5 text-[0.8rem] font-medium whitespace-nowrap text-white/90 transition-all hover:bg-white/20"
-            >
-              Back to Site
-            </a>
-          </div>
-        </div>
-      </div>
-
+    <DashboardShell>
       {/* Search Panel */}
       <div className="border-b border-border bg-white shadow-sm">
         <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 lg:px-8">
@@ -1099,7 +1073,7 @@ export default function FlightPricingTool() {
           </div>
         )}
       </div>
-    </div>
+    </DashboardShell>
   );
 }
 
