@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { CarFront, ArrowRight, CheckCircle2 } from "lucide-react";
 import FleetExplorer from "./FleetExplorer";
+import { getCars } from "@/lib/stores/cars";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Car Rentals",
@@ -21,7 +24,9 @@ const features = [
   "Cross-border travel available (conditions apply)",
 ];
 
-export default function CarRentalsPage() {
+export default async function CarRentalsPage() {
+  const cars = await getCars();
+
   return (
     <>
       {/* Hero */}
@@ -66,7 +71,7 @@ export default function CarRentalsPage() {
       </section>
 
       {/* Fleet (interactive: category filters + per-car enquiry) */}
-      <FleetExplorer />
+      <FleetExplorer cars={cars} />
 
       {/* Features */}
       <section className="bg-[#faf9f6] py-16">

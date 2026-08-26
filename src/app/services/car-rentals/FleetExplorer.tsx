@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { cars, type Car, type CarCategory } from "@/lib/car-data";
+import type { Car, CarCategory } from "@/lib/car-data";
 import { Button } from "@/components/ui/button";
 import {
   CarFront,
@@ -15,25 +15,34 @@ import CarEnquiryModal from "./CarEnquiryModal";
 
 const ALL = "All" as const;
 
-export default function FleetExplorer() {
+export default function FleetExplorer({ cars }: { cars: Car[] }) {
   const [category, setCategory] = useState<CarCategory | typeof ALL>(ALL);
   const [selected, setSelected] = useState<Car | null>(null);
 
+  // Only vehicles marked available appear in the public fleet.
+  const availableCars = useMemo(
+    () => cars.filter((c) => c.available !== false),
+    [cars]
+  );
+
   const categories = useMemo(() => {
     const list: { value: CarCategory | typeof ALL; count: number }[] = [
-      { value: ALL, count: cars.length },
+      { value: ALL, count: availableCars.length },
     ];
     const order: CarCategory[] = ["4x4 & SUV", "Sedan", "Hatchback", "Minibus"];
     for (const c of order) {
-      const count = cars.filter((car) => car.category === c).length;
+      const count = availableCars.filter((car) => car.category === c).length;
       if (count > 0) list.push({ value: c, count });
     }
     return list;
-  }, []);
+  }, [availableCars]);
 
   const visible = useMemo(
-    () => (category === ALL ? cars : cars.filter((c) => c.category === category)),
-    [category]
+    () =>
+      category === ALL
+        ? availableCars
+        : availableCars.filter((c) => c.category === category),
+    [category, availableCars]
   );
 
   return (

@@ -27,6 +27,8 @@ export interface Car {
   fuel: "Petrol" | "Diesel";
   image: string;
   popular?: boolean;
+  /** Set false to take the vehicle out of the public fleet. */
+  available?: boolean;
 }
 
 export const cars: Car[] = [
