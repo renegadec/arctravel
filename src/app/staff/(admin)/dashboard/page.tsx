@@ -76,25 +76,55 @@ export default async function DashboardOverviewPage() {
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-sm font-semibold text-[#002a62]">Good to know</h2>
+        <h2 className="text-sm font-semibold text-[#002a62]">Quick guide</h2>
         <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
           <li>
-            • Cars, destinations and visas are stored in Postgres (
-            <code className="rounded bg-slate-100 px-1 py-0.5 text-xs">DATABASE_URL</code>
-            ).
+            • Every change you save here goes live on the website immediately —
+            no rebuild needed.
           </li>
           <li>
-            • While the database isn&apos;t configured, the public site shows the
-            built-in content — the dashboard needs it to save changes.
+            • To take a vehicle out of the public fleet, uncheck{" "}
+            <span className="font-medium text-foreground">Available</span> on
+            the car rather than deleting it.
           </li>
           <li>
-            • The{" "}
+            • Use the{" "}
+            <span className="font-medium text-foreground">Upload image</span>{" "}
+            button on forms to add photos directly — no need for image URLs.
+          </li>
+          <li>
+            • For client flight quotes, use the{" "}
             <Link href="/staff/flight-pricing" className="font-medium text-[#e67a00] hover:underline">
               Flight Pricing Tool
-            </Link>{" "}
-            is still available under Staff Tools.
+            </Link>.
           </li>
         </ul>
+        <div className="mt-4 border-t border-slate-100 pt-4">
+          <p className="text-sm font-semibold text-[#002a62]">View the live site</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <Link
+              href="/services/car-rentals"
+              target="_blank"
+              className="inline-flex h-8 items-center rounded-lg border border-border px-3 text-xs font-medium transition-colors hover:border-[#ff8912]/40 hover:text-[#e67a00]"
+            >
+              Car Rentals
+            </Link>
+            <Link
+              href="/destinations"
+              target="_blank"
+              className="inline-flex h-8 items-center rounded-lg border border-border px-3 text-xs font-medium transition-colors hover:border-[#ff8912]/40 hover:text-[#e67a00]"
+            >
+              Destinations
+            </Link>
+            <Link
+              href="/services/visa-assistance"
+              target="_blank"
+              className="inline-flex h-8 items-center rounded-lg border border-border px-3 text-xs font-medium transition-colors hover:border-[#ff8912]/40 hover:text-[#e67a00]"
+            >
+              Visa Directory
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
