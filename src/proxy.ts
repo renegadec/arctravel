@@ -4,18 +4,26 @@ import type { NextRequest } from "next/server";
 const STAFF_PASSWORD = process.env.STAFF_PASSWORD || "arctravel2026";
 const STAFF_COOKIE = "staff_session";
 const FLIGHTS_HOST = "flights.arctravel.co.zw";
+const DASHBOARD_HOST = "dashboard.arctravel.co.zw";
+
+function hostMatches(host: string, target: string) {
+  return host === target || host === `www.${target}`;
+}
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const host = request.headers.get("host") || "";
-  const isFlightsSubdomain = host === FLIGHTS_HOST || host === `www.${FLIGHTS_HOST}`;
+  const isFlightsSubdomain = hostMatches(host, FLIGHTS_HOST);
+  const isDashboardSubdomain = hostMatches(host, DASHBOARD_HOST);
 
   // ─── Subdomain routing ──────────────────────────────────
-  // If visiting flights subdomain, determine the target staff path
+  // flights.* → the flight pricing tool; dashboard.* → the admin dashboard
   let effectivePath = pathname;
 
   if (isFlightsSubdomain && !pathname.startsWith("/staff")) {
     effectivePath = "/staff/flight-pricing";
+  } else if (isDashboardSubdomain && !pathname.startsWith("/staff")) {
+    effectivePath = "/staff/dashboard";
   }
 
   // ─── Auth protection ─────────────────────────────────────
