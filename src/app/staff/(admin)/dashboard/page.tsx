@@ -79,8 +79,7 @@ export default async function DashboardOverviewPage() {
         <h2 className="text-sm font-semibold text-[#002a62]">Quick guide</h2>
         <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
           <li>
-            • Every change you save here goes live on the website immediately —
-            no rebuild needed.
+            • Every change you save here goes live on the website immediately
           </li>
           <li>
             • To take a vehicle out of the public fleet, uncheck{" "}
