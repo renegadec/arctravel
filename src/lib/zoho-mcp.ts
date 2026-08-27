@@ -101,6 +101,8 @@ export interface McpInvoiceResult {
   total: number;
   /** Hosted invoice page (view/download PDF) — from Zoho's invoice_url. */
   invoiceUrl?: string;
+  /** True when the invoice was emailed to the customer (status "sent"). */
+  sent?: boolean;
   raw: unknown;
 }
 
@@ -173,23 +175,39 @@ export async function createInvoiceViaMcp(draft: {
   }
 
   // 3. Create the invoice (date + customer_id + line_items are required).
-  const invoice = (await callZohoMcpTool("Create an Invoice", {
-    headers,
-    body: {
-      customer_id: contactId,
-      date: new Date().toLocaleDateString("en-CA"), // YYYY-MM-DD
-      line_items: draft.lineItems.map((li) => ({
-        name: li.name,
-        quantity: li.quantity,
-        rate: li.rate,
-      })),
-      notes: draft.notes ?? "",
-    },
-  })) as {
+  //    When we have the customer's email, send it right away (send=true) so
+  //    the invoice isn't stuck in draft and the hosted link actually opens.
+  const body = {
+    customer_id: contactId,
+    date: new Date().toLocaleDateString("en-CA"), // YYYY-MM-DD
+    line_items: draft.lineItems.map((li) => ({
+      name: li.name,
+      quantity: li.quantity,
+      rate: li.rate,
+    })),
+    notes: draft.notes ?? "",
+  };
+  let invoiceRaw: unknown;
+  if (draft.customerEmail) {
+    try {
+      invoiceRaw = await callZohoMcpTool("Create an Invoice", {
+        headers,
+        body,
+        query_params: { send: true },
+      });
+    } catch {
+      // Sending can fail (e.g. Zoho missing the address) — retry without send.
+      invoiceRaw = await callZohoMcpTool("Create an Invoice", { headers, body });
+    }
+  } else {
+    invoiceRaw = await callZohoMcpTool("Create an Invoice", { headers, body });
+  }
+  const invoice = invoiceRaw as {
     invoice?: {
       invoice_id?: string;
       invoice_number?: string;
       invoice_url?: string;
+      status?: string;
     };
     invoice_id?: string;
     invoice_number?: string;
@@ -210,11 +228,19 @@ export async function createInvoiceViaMcp(draft: {
     invoice?.invoice?.invoice_url ??
     invoice?.invoice_url ??
     (invoice?.data as { invoice_url?: string } | undefined)?.invoice_url;
+  const invoiceStatus = invoice?.invoice?.status ?? null;
 
   if (!invoiceId) {
     throw new Error("Zoho MCP did not return an invoice id.");
   }
 
   const total = draft.lineItems.reduce((s, li) => s + li.quantity * li.rate, 0);
-  return { invoiceId, invoiceNumber: invoiceNumber ?? invoiceId, total, invoiceUrl, raw: invoice };
+  return {
+    invoiceId,
+    invoiceNumber: invoiceNumber ?? invoiceId,
+    total,
+    invoiceUrl,
+    sent: invoiceStatus === "sent",
+    raw: invoice,
+  };
 }
