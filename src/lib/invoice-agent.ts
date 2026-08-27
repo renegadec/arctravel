@@ -163,6 +163,8 @@ export interface ExecuteResult {
   pdf?: { bytes: Buffer; filename: string; contentType: string };
   /** Hosted invoice page (view/download PDF). */
   invoiceUrl?: string;
+  /** True when Zoho emailed the invoice to the customer. */
+  sent?: boolean;
 }
 
 export async function executeDraft(draft: InvoiceDraft): Promise<ExecuteResult> {
@@ -170,8 +172,8 @@ export async function executeDraft(draft: InvoiceDraft): Promise<ExecuteResult> 
 
   // Preferred path: Zoho's hosted MCP server (ZOHO_MCP_URL).
   if (zohoMcpUrl()) {
-    const { invoiceNumber, total, invoiceUrl } = await createInvoiceViaMcp(draft);
-    return { invoiceNumber, total, currency, invoiceUrl };
+    const { invoiceNumber, total, invoiceUrl, sent } = await createInvoiceViaMcp(draft);
+    return { invoiceNumber, total, currency, invoiceUrl, sent };
   }
 
   // Fallback: direct Zoho REST (needs the refresh-token credentials).

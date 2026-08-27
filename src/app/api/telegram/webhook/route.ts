@@ -91,13 +91,20 @@ export async function POST(request: Request) {
             );
           }
         } else {
-          const linkLine = result.invoiceUrl
-            ? `\n\n📎 View / download the PDF: ${result.invoiceUrl}`
-            : "";
-          await sendTelegramMessage(
-            chatId,
-            `${base}${linkLine}\n\nThe PDF is delivered by Zoho's email or the link above.`
-          );
+          if (result.sent) {
+            const linkLine = result.invoiceUrl
+              ? `\n\n📎 View / download the PDF: ${result.invoiceUrl}`
+              : "";
+            await sendTelegramMessage(
+              chatId,
+              `${base}${linkLine}\n\nThe PDF was also emailed to the customer.`
+            );
+          } else {
+            await sendTelegramMessage(
+              chatId,
+              `${base}\n\nCreated as a draft — include the customer's email in your instruction (e.g. “Invoice Tendai tendai@email.com US$150…”) so Zoho sends the PDF and the link works.`
+            );
+          }
         }
       } catch (err) {
         console.error("[invoice] create failed:", err);
