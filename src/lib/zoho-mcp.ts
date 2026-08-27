@@ -143,12 +143,16 @@ export async function createInvoiceViaMcp(draft: {
 
   // 2. Create the contact if we couldn't find one.
   if (!contactId) {
+    const contactBody: Record<string, unknown> = {
+      contact_name: draft.customerName,
+    };
+    if (draft.customerEmail) {
+      // Email isn't a top-level contact field — it lives under contact_persons.
+      contactBody.contact_persons = [{ email: draft.customerEmail }];
+    }
     const created = (await callZohoMcpTool("Create a Contact", {
       headers,
-      body: {
-        contact_name: draft.customerName,
-        email: draft.customerEmail ?? "",
-      },
+      body: contactBody,
     })) as {
       customer?: { contact_id?: string };
       contact?: { contact_id?: string };
@@ -166,11 +170,12 @@ export async function createInvoiceViaMcp(draft: {
     }
   }
 
-  // 3. Create the invoice.
+  // 3. Create the invoice (date + customer_id + line_items are required).
   const invoice = (await callZohoMcpTool("Create an Invoice", {
     headers,
     body: {
       customer_id: contactId,
+      date: new Date().toLocaleDateString("en-CA"), // YYYY-MM-DD
       line_items: draft.lineItems.map((li) => ({
         name: li.name,
         quantity: li.quantity,
