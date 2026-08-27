@@ -186,10 +186,15 @@ export async function createInvoiceViaMcp(draft: {
       notes: draft.notes ?? "",
     },
   })) as {
-    invoice?: { invoice_id?: string; invoice_number?: string };
+    invoice?: {
+      invoice_id?: string;
+      invoice_number?: string;
+      invoice_url?: string;
+    };
     invoice_id?: string;
     invoice_number?: string;
-    data?: { invoice_id?: string; invoice_number?: string };
+    invoice_url?: string;
+    data?: { invoice_id?: string; invoice_number?: string; invoice_url?: string };
   };
 
   const invoiceId =
