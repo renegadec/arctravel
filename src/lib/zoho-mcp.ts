@@ -61,9 +61,11 @@ export async function callZohoMcpTool(
 ): Promise<unknown> {
   const client = await getClient();
   const tools = await zohoMcpListTools();
-  const tool = tools.find((t) =>
-    t.name.toLowerCase().includes(nameLike.toLowerCase())
-  );
+  // Zoho names tools like "ZohoInvoice_Create_a_Contact" — compare on
+  // normalized (lowercased, non-alphanumeric-stripped) names.
+  const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const needle = normalize(nameLike);
+  const tool = tools.find((t) => normalize(t.name).includes(needle));
   if (!tool) {
     const names = tools.map((t) => t.name).join(", ");
     throw new Error(
