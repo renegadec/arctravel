@@ -6,6 +6,7 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import type { Tool } from "@modelcontextprotocol/sdk/types.js";
+import { createZohoMcpFetch } from "@/lib/zoho-mcp-auth";
 
 const globalForMcp = globalThis as unknown as {
   __zohoMcpClient?: Client;
@@ -26,7 +27,9 @@ async function getClient(): Promise<Client> {
     return globalForMcp.__zohoMcpClient;
   }
   const client = new Client({ name: "arctravel-invoice-bot", version: "1.0.0" });
-  const transport = new StreamableHTTPClientTransport(new URL(url));
+  const transport = new StreamableHTTPClientTransport(new URL(url), {
+    fetch: createZohoMcpFetch(),
+  });
   await client.connect(transport);
   globalForMcp.__zohoMcpClient = client;
   globalForMcp.__zohoMcpUrl = url;
