@@ -20,7 +20,9 @@ const globalForAuth = globalThis as unknown as {
 };
 
 export function zohoMcpCallbackUrl(): string {
-  const base = process.env.ZOHO_MCP_CALLBACK_URL || "https://arctravel.co.zw";
+  // The apex domain 308-redirects to www, which breaks OAuth/Telegram
+  // deliveries, so the callback defaults to the www host.
+  const base = process.env.ZOHO_MCP_CALLBACK_URL || "https://www.arctravel.co.zw";
   return `${base.replace(/\/+$/, "")}/api/mcp/zoho/callback`;
 }
 

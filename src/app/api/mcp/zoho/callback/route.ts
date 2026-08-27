@@ -12,12 +12,12 @@ export async function GET(request: Request) {
     if (!code || !state) throw new Error("Missing code or state.");
     await handleZohoMcpCallback(code, state);
     return NextResponse.redirect(
-      new URL("/staff/dashboard?zoho=connected", process.env.ZOHO_MCP_CALLBACK_URL || "https://arctravel.co.zw")
+      new URL("/staff/dashboard?zoho=connected", process.env.ZOHO_MCP_CALLBACK_URL || "https://www.arctravel.co.zw")
     );
   } catch (err) {
     console.error("[zoho-mcp] callback failed:", err);
     return NextResponse.redirect(
-      new URL("/staff/dashboard?zoho=error", process.env.ZOHO_MCP_CALLBACK_URL || "https://arctravel.co.zw")
+      new URL("/staff/dashboard?zoho=error", process.env.ZOHO_MCP_CALLBACK_URL || "https://www.arctravel.co.zw")
     );
   }
 }
