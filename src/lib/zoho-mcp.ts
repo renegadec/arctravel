@@ -99,6 +99,8 @@ export interface McpInvoiceResult {
   invoiceId: string;
   invoiceNumber: string;
   total: number;
+  /** Hosted invoice page (view/download PDF) — from Zoho's invoice_url. */
+  invoiceUrl?: string;
   raw: unknown;
 }
 
@@ -184,10 +186,15 @@ export async function createInvoiceViaMcp(draft: {
       notes: draft.notes ?? "",
     },
   })) as {
-    invoice?: { invoice_id?: string; invoice_number?: string };
+    invoice?: {
+      invoice_id?: string;
+      invoice_number?: string;
+      invoice_url?: string;
+    };
     invoice_id?: string;
     invoice_number?: string;
-    data?: { invoice_id?: string; invoice_number?: string };
+    invoice_url?: string;
+    data?: { invoice_id?: string; invoice_number?: string; invoice_url?: string };
   };
 
   const invoiceId =
@@ -199,11 +206,15 @@ export async function createInvoiceViaMcp(draft: {
     invoice?.invoice_number ??
     (invoice?.data as { invoice_number?: string } | undefined)?.invoice_number ??
     invoiceId;
+  const invoiceUrl =
+    invoice?.invoice?.invoice_url ??
+    invoice?.invoice_url ??
+    (invoice?.data as { invoice_url?: string } | undefined)?.invoice_url;
 
   if (!invoiceId) {
     throw new Error("Zoho MCP did not return an invoice id.");
   }
 
   const total = draft.lineItems.reduce((s, li) => s + li.quantity * li.rate, 0);
-  return { invoiceId, invoiceNumber: invoiceNumber ?? invoiceId, total, raw: invoice };
+  return { invoiceId, invoiceNumber: invoiceNumber ?? invoiceId, total, invoiceUrl, raw: invoice };
 }
