@@ -9,6 +9,8 @@ import {
   findCustomerByName,
   getInvoicePdfBytes,
 } from "@/lib/zoho/invoices";
+import { isZohoConfigured } from "@/lib/zoho/client";
+import { createInvoiceViaMcp, zohoMcpUrl } from "@/lib/zoho-mcp";
 
 export interface InvoiceDraft {
   customerName: string;
@@ -154,13 +156,36 @@ export function formatDraftSummary(draft: InvoiceDraft): string {
 
 // ─── Execution (deterministic, no LLM) ────────────────────────────────────
 
-export async function executeDraft(draft: InvoiceDraft): Promise<{
+export interface ExecuteResult {
   invoiceNumber: string;
-  filename: string;
-  contentType: string;
-  bytes: Buffer;
   total: number;
-}> {
+  currency: string;
+  /** Present when the PDF could be fetched (via REST token) — otherwise text-only. */
+  pdf?: { bytes: Buffer; filename: string; contentType: string };
+}
+
+export async function executeDraft(draft: InvoiceDraft): Promise<ExecuteResult> {
+  const currency = draft.currency ?? "USD";
+
+  // Preferred path: Zoho's hosted MCP server (ZOHO_MCP_URL).
+  if (zohoMcpUrl()) {
+    const { invoiceNumber, total, invoiceId } = await createInvoiceViaMcp(draft);
+
+    // The MCP toolset doesn't return the PDF file, so fetch it through the
+    // REST API when a refresh token is configured (optional layer).
+    let pdf: ExecuteResult["pdf"];
+    if (isZohoConfigured()) {
+      try {
+        const p = await getInvoicePdfBytes(invoiceId);
+        pdf = { bytes: p.bytes, filename: p.filename, contentType: p.contentType };
+      } catch (err) {
+        console.error("[invoice] PDF fetch via REST failed:", err);
+      }
+    }
+    return { invoiceNumber, total, currency, pdf };
+  }
+
+  // Fallback: direct Zoho REST (needs the refresh-token credentials).
   const existing = await findCustomerByName(draft.customerName);
   const customerId =
     existing?.contact_id ??
@@ -172,7 +197,16 @@ export async function executeDraft(draft: InvoiceDraft): Promise<{
     notes: draft.notes,
   });
 
-  const pdf = await getInvoicePdfBytes(invoiceId);
+  const pdfFetch = await getInvoicePdfBytes(invoiceId);
   const total = draft.lineItems.reduce((s, li) => s + li.quantity * li.rate, 0);
-  return { invoiceNumber, filename: pdf.filename, contentType: pdf.contentType, bytes: pdf.bytes, total };
+  return {
+    invoiceNumber,
+    total,
+    currency,
+    pdf: {
+      bytes: pdfFetch.bytes,
+      filename: pdfFetch.filename,
+      contentType: pdfFetch.contentType,
+    },
+  };
 }

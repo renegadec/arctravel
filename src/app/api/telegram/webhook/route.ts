@@ -76,16 +76,24 @@ export async function POST(request: Request) {
       await sendTelegramMessage(chatId, "Creating the invoice in Zoho…");
       try {
         const result = await executeDraft(pending);
-        const ok = await sendTelegramDocument(chatId, {
-          bytes: result.bytes,
-          filename: result.filename,
-          caption: `🧾 Invoice ${result.invoiceNumber} — ${pending.customerName} — ${pending.currency ?? "USD"}${result.total.toFixed(2)}`,
-          contentType: result.contentType,
-        });
-        if (!ok) {
+        const base = `🧾 Invoice ${result.invoiceNumber} created for ${pending.customerName} — ${result.currency}${result.total.toFixed(2)}`;
+        if (result.pdf) {
+          const ok = await sendTelegramDocument(chatId, {
+            bytes: result.pdf.bytes,
+            filename: result.pdf.filename,
+            caption: base,
+            contentType: result.pdf.contentType,
+          });
+          if (!ok) {
+            await sendTelegramMessage(
+              chatId,
+              `${base}\n\nI couldn't send the PDF — view it in your Zoho portal.`
+            );
+          }
+        } else {
           await sendTelegramMessage(
             chatId,
-            "Invoice created, but I couldn't send the PDF. Check the invoice in your Zoho portal."
+            `${base}\n\nThe PDF can be viewed/emailed from your Zoho portal. Set ZOHO_REFRESH_TOKEN to have the bot send the PDF file here directly.`
           );
         }
       } catch (err) {
