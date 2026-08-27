@@ -91,9 +91,12 @@ export async function POST(request: Request) {
             );
           }
         } else {
+          const linkLine = result.invoiceUrl
+            ? `\n\n📎 View / download the PDF: ${result.invoiceUrl}`
+            : "";
           await sendTelegramMessage(
             chatId,
-            `${base}\n\nThe PDF can be viewed/emailed from your Zoho portal. Set ZOHO_REFRESH_TOKEN to have the bot send the PDF file here directly.`
+            `${base}${linkLine}\n\nThe PDF is delivered by Zoho's email or the link above.`
           );
         }
       } catch (err) {

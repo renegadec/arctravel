@@ -9,7 +9,6 @@ import {
   findCustomerByName,
   getInvoicePdfBytes,
 } from "@/lib/zoho/invoices";
-import { isZohoConfigured } from "@/lib/zoho/client";
 import { createInvoiceViaMcp, zohoMcpUrl } from "@/lib/zoho-mcp";
 
 export interface InvoiceDraft {
@@ -160,8 +159,10 @@ export interface ExecuteResult {
   invoiceNumber: string;
   total: number;
   currency: string;
-  /** Present when the PDF could be fetched (via REST token) — otherwise text-only. */
+  /** Present when the PDF could be fetched — otherwise text-only delivery. */
   pdf?: { bytes: Buffer; filename: string; contentType: string };
+  /** Hosted invoice page (view/download PDF). */
+  invoiceUrl?: string;
 }
 
 export async function executeDraft(draft: InvoiceDraft): Promise<ExecuteResult> {
@@ -169,20 +170,8 @@ export async function executeDraft(draft: InvoiceDraft): Promise<ExecuteResult> 
 
   // Preferred path: Zoho's hosted MCP server (ZOHO_MCP_URL).
   if (zohoMcpUrl()) {
-    const { invoiceNumber, total, invoiceId } = await createInvoiceViaMcp(draft);
-
-    // The MCP toolset doesn't return the PDF file, so fetch it through the
-    // REST API when a refresh token is configured (optional layer).
-    let pdf: ExecuteResult["pdf"];
-    if (isZohoConfigured()) {
-      try {
-        const p = await getInvoicePdfBytes(invoiceId);
-        pdf = { bytes: p.bytes, filename: p.filename, contentType: p.contentType };
-      } catch (err) {
-        console.error("[invoice] PDF fetch via REST failed:", err);
-      }
-    }
-    return { invoiceNumber, total, currency, pdf };
+    const { invoiceNumber, total, invoiceUrl } = await createInvoiceViaMcp(draft);
+    return { invoiceNumber, total, currency, invoiceUrl };
   }
 
   // Fallback: direct Zoho REST (needs the refresh-token credentials).
@@ -197,16 +186,20 @@ export async function executeDraft(draft: InvoiceDraft): Promise<ExecuteResult> 
     notes: draft.notes,
   });
 
-  const pdfFetch = await getInvoicePdfBytes(invoiceId);
+  // Zoho Invoice's REST API has no PDF-download endpoint — PDFs arrive via
+  // email or the hosted invoice link.
+  const pdfFetch = await getInvoicePdfBytes(invoiceId).catch(() => null);
   const total = draft.lineItems.reduce((s, li) => s + li.quantity * li.rate, 0);
   return {
     invoiceNumber,
     total,
     currency,
-    pdf: {
-      bytes: pdfFetch.bytes,
-      filename: pdfFetch.filename,
-      contentType: pdfFetch.contentType,
-    },
+    pdf: pdfFetch
+      ? {
+          bytes: pdfFetch.bytes,
+          filename: pdfFetch.filename,
+          contentType: pdfFetch.contentType,
+        }
+      : undefined,
   };
 }
