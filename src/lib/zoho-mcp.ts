@@ -74,7 +74,14 @@ export async function callZohoMcpTool(
   }
   const result = await client.callTool({ name: tool.name, arguments: args });
   if (result.isError) {
-    throw new Error(`Zoho MCP tool "${tool.name}" returned an error.`);
+    const blocks = (result.content ?? []) as { type?: string; text?: string }[];
+    const errText = blocks
+      .filter((c) => c.type === "text" && typeof c.text === "string")
+      .map((c) => c.text as string)
+      .join(" ");
+    throw new Error(
+      `Zoho MCP tool "${tool.name}" failed: ${errText || "(no details)"}`
+    );
   }
   const blocks = (result.content ?? []) as { type?: string; text?: string }[];
   const text = blocks
@@ -97,9 +104,8 @@ export interface McpInvoiceResult {
 
 /**
  * Create an invoice through Zoho's MCP server.
- * Strategy: find-or-create the contact, then create the invoice.
- * Argument shapes are best-effort; we tune them from the logged schemas
- * after the first live call.
+ * Zoho's tools expect { headers: { X-com-zoho-invoice-organizationid }, body } /
+ * { headers, query_params } — argument shapes confirmed from the live schemas.
  */
 export async function createInvoiceViaMcp(draft: {
   customerName: string;
@@ -107,33 +113,54 @@ export async function createInvoiceViaMcp(draft: {
   lineItems: { name: string; quantity: number; rate: number }[];
   notes?: string;
 }): Promise<McpInvoiceResult> {
-  // 1. Find the contact (try a few common search argument names).
+  const orgId = process.env.ZOHO_INVOICE_ORG_ID;
+  if (!orgId) {
+    throw new Error(
+      "Set ZOHO_INVOICE_ORG_ID in .env.local / the deployed env (your Zoho org id, e.g. 936540707)."
+    );
+  }
+  const headers = { "X-com-zoho-invoice-organizationid": orgId };
+
+  // 1. Find the contact by name.
   let contactId: string | null = null;
   try {
     const found = (await callZohoMcpTool("List all Contacts", {
-      search_text: draft.customerName,
-      page: 1,
-      per_page: 10,
-    })) as { contacts?: { contact_id?: string; contact_name?: string }[]; data?: unknown[] };
-    const list = Array.isArray(found)
-      ? found
-      : (found as { contacts?: unknown[] }).contacts ?? [];
-    const match = (list as { contact_id?: string; contact_name?: string }[]).find(
+      headers,
+      query_params: { contact_name: draft.customerName, page: 1 },
+    })) as { contacts?: unknown[]; data?: unknown[] } | unknown[];
+    const list = Array.isArray(found) ? found : ((found as { contacts?: unknown[] }).contacts ?? (found as { data?: unknown[] }).data ?? []);
+    const name = draft.customerName.toLowerCase();
+    contactId = (
+      list as { contact_id?: string; contact_name?: string; first_name?: string; last_name?: string }[]
+    ).find(
       (c) =>
-        (c.contact_name ?? "").toLowerCase() === draft.customerName.toLowerCase()
-    );
-    contactId = match?.contact_id ?? null;
-  } catch {
-    // fall through — we'll try to create the contact instead
+        (c.contact_name ?? "").toLowerCase() === name ||
+        `${c.first_name ?? ""} ${c.last_name ?? ""}`.trim().toLowerCase() === name
+    )?.contact_id ?? null;
+  } catch (err) {
+    console.error("[zoho-mcp] contact lookup failed:", err);
   }
 
   // 2. Create the contact if we couldn't find one.
   if (!contactId) {
-    const created = (await callZohoMcpTool("Create a Contact", {
+    const contactBody: Record<string, unknown> = {
       contact_name: draft.customerName,
-      email: draft.customerEmail ?? "",
-    })) as { contact?: { contact_id?: string }; contact_id?: string; data?: { contact_id?: string } };
+    };
+    if (draft.customerEmail) {
+      // Email isn't a top-level contact field — it lives under contact_persons.
+      contactBody.contact_persons = [{ email: draft.customerEmail }];
+    }
+    const created = (await callZohoMcpTool("Create a Contact", {
+      headers,
+      body: contactBody,
+    })) as {
+      customer?: { contact_id?: string };
+      contact?: { contact_id?: string };
+      contact_id?: string;
+      data?: { contact_id?: string };
+    };
     contactId =
+      created?.customer?.contact_id ??
       created?.contact?.contact_id ??
       created?.contact_id ??
       (created?.data as { contact_id?: string } | undefined)?.contact_id ??
@@ -143,16 +170,19 @@ export async function createInvoiceViaMcp(draft: {
     }
   }
 
-  // 3. Create the invoice.
+  // 3. Create the invoice (date + customer_id + line_items are required).
   const invoice = (await callZohoMcpTool("Create an Invoice", {
-    customer_id: contactId,
-    contact_id: contactId,
-    line_items: draft.lineItems.map((li) => ({
-      name: li.name,
-      quantity: li.quantity,
-      rate: li.rate,
-    })),
-    notes: draft.notes ?? "",
+    headers,
+    body: {
+      customer_id: contactId,
+      date: new Date().toLocaleDateString("en-CA"), // YYYY-MM-DD
+      line_items: draft.lineItems.map((li) => ({
+        name: li.name,
+        quantity: li.quantity,
+        rate: li.rate,
+      })),
+      notes: draft.notes ?? "",
+    },
   })) as {
     invoice?: { invoice_id?: string; invoice_number?: string };
     invoice_id?: string;
