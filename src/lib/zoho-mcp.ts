@@ -175,8 +175,6 @@ export async function createInvoiceViaMcp(draft: {
   }
 
   // 3. Create the invoice (date + customer_id + line_items are required).
-  //    When we have the customer's email, send it right away (send=true) so
-  //    the invoice isn't stuck in draft and the hosted link actually opens.
   const body = {
     customer_id: contactId,
     date: new Date().toLocaleDateString("en-CA"), // YYYY-MM-DD
@@ -187,21 +185,7 @@ export async function createInvoiceViaMcp(draft: {
     })),
     notes: draft.notes ?? "",
   };
-  let invoiceRaw: unknown;
-  if (draft.customerEmail) {
-    try {
-      invoiceRaw = await callZohoMcpTool("Create an Invoice", {
-        headers,
-        body,
-        query_params: { send: true },
-      });
-    } catch {
-      // Sending can fail (e.g. Zoho missing the address) — retry without send.
-      invoiceRaw = await callZohoMcpTool("Create an Invoice", { headers, body });
-    }
-  } else {
-    invoiceRaw = await callZohoMcpTool("Create an Invoice", { headers, body });
-  }
+  const invoiceRaw = await callZohoMcpTool("Create an Invoice", { headers, body });
   const invoice = invoiceRaw as {
     invoice?: {
       invoice_id?: string;
@@ -234,13 +218,30 @@ export async function createInvoiceViaMcp(draft: {
     throw new Error("Zoho MCP did not return an invoice id.");
   }
 
+  // 4. Email the invoice to the customer when we have their address — this is
+  //    what takes it out of draft ("sent") so the hosted link actually opens.
+  let sent = invoiceStatus === "sent";
+  if (!sent && draft.customerEmail) {
+    try {
+      await callZohoMcpTool("Email an Invoice", {
+        path_variables: { invoice_id: invoiceId },
+        headers,
+        body: { to_mail_ids: [draft.customerEmail] },
+        query_params: { send_attachment: true },
+      });
+      sent = true;
+    } catch (err) {
+      console.error("[zoho-mcp] email invoice failed:", err);
+    }
+  }
+
   const total = draft.lineItems.reduce((s, li) => s + li.quantity * li.rate, 0);
   return {
     invoiceId,
     invoiceNumber: invoiceNumber ?? invoiceId,
     total,
     invoiceUrl,
-    sent: invoiceStatus === "sent",
+    sent,
     raw: invoice,
   };
 }
